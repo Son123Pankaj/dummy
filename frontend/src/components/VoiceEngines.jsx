@@ -197,7 +197,7 @@ export default function VoiceEngines() {
           </div>
 
           <h2>
-            Auditory Precision &amp; Latency Benchmark <span className="title-coral">Silver · Gold · Diamond</span>
+            Auditory Precision &amp; Latency Benchmark <span className="engine-tier-name"><span className="tier-silver">Silver</span> · <span className="tier-gold">Gold</span> · <span className="tier-diamond">Diamond</span></span>
           </h2>
 
           <p>

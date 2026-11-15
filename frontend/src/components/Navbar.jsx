@@ -31,7 +31,7 @@ export default function Navbar({ currentPath, navigateTo, theme, toggleTheme }) 
     <header className={`studio-header ${scrolled ? 'scrolled' : ''}`}>
       <div className="studio-nav-shell">
         <a href="/" className="studio-brand" onClick={e => nav(e, '/')} aria-label="Avyukta IntelliCall – Home">
-          <img src={getAssetUrl(theme === 'dark' ? '/avyukta-premium-dark.png' : '/avyukta-premium-light.png')} alt="Avyukta IntelliCall" />
+          <img src={getAssetUrl(theme === 'dark' ? '/avyukta-navbar-logo.png' : '/avyukta-navbar-logo-light.png')} alt="Avyukta IntelliCall" />
         </a>
         <nav className="studio-desktop-nav" aria-label="Primary navigation">
           {LINKS.map(item => <a key={item.href} href={item.href} onClick={e => nav(e, item.href)} className={currentPath === item.href ? 'active' : ''} aria-current={currentPath === item.href ? 'page' : undefined}>{item.label}</a>)}
