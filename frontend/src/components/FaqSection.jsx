@@ -46,6 +46,61 @@ export const FAQS_DATA = [
     id: 'pricing-9',
     q: 'Can I get a refund?',
     a: 'Unused credit is refundable within 7 days of a top-up. Usage already consumed is not refundable. Full terms are in our Refund & Cancellation policy.'
+  },
+  {
+    id: 'platform-1',
+    q: 'What AI calling capabilities does Avyukta offer?',
+    a: 'Avyukta AI supports inbound and outbound calling, multilingual interactions, lead qualification, customer engagement, appointment scheduling, automated follow-ups, and CRM-connected workflows. Capabilities can be configured around your business requirements.'
+  },
+  {
+    id: 'platform-2',
+    q: 'Can an AI agent transfer a call to a human?',
+    a: 'Yes. Calls can be handed off when a customer requests human assistance, a workflow requires additional support, or a configured business condition is met.'
+  },
+  {
+    id: 'platform-3',
+    q: 'Can I listen to voice samples before choosing a plan?',
+    a: 'Yes. You can preview available voice samples to compare voice quality, language options, and conversational styles before selecting a suitable solution.'
+  },
+  {
+    id: 'platform-4',
+    q: 'Is Avyukta AI suitable for startups and large enterprises?',
+    a: 'Yes. AI communication solutions can be configured for businesses of different sizes, with pricing, infrastructure, and deployment aligned to operational needs.'
+  },
+  {
+    id: 'platform-5',
+    q: 'Which industries can use Avyukta AI?',
+    a: 'Use cases can support banking and financial services, healthcare, real estate, education, e-commerce and retail, insurance, travel and hospitality, automotive, telecommunications, and customer support or BPO. Specific workflows and integrations depend on business requirements.'
+  },
+  {
+    id: 'platform-6',
+    q: 'What makes Avyukta different from other AI communication platforms?',
+    a: 'Avyukta brings AI-powered voice, CRM, omnichannel communication, telephony, and business process automation together in a connected ecosystem. Solutions can be configured around supported integrations and business workflows.'
+  },
+  {
+    id: 'platform-7',
+    q: 'Can Avyukta automate the lead management process?',
+    a: 'Yes. Configurable workflows can help collect, assign, qualify, follow up on, and track leads using business rules and supported integrations.'
+  },
+  {
+    id: 'platform-8',
+    q: 'What reports and analytics are available?',
+    a: 'Depending on the enabled modules, reporting can include call volumes and status, inbound and outbound activity, lead generation and qualification, agent and campaign performance, follow-ups, and conversion tracking.'
+  },
+  {
+    id: 'platform-9',
+    q: 'Can Avyukta integrate with my existing CRM and applications?',
+    a: 'Avyukta can connect with compatible CRM, telephony, and third-party applications through supported APIs and infrastructure. Available integrations depend on your systems and requirements.'
+  },
+  {
+    id: 'platform-10',
+    q: 'Can I request a platform demo or walkthrough?',
+    a: 'Yes. You can request a product demonstration or walkthrough. The Avyukta team can share relevant platform screenshots and working examples based on your use case.'
+  },
+  {
+    id: 'platform-11',
+    q: 'Can Avyukta customize workflows for my business?',
+    a: 'Avyukta can configure supported CRM workflows, AI agent setups, integrations, and communication processes to align with your business objectives and technical requirements.'
   }
 ];
 

@@ -15,5 +15,8 @@ export default function Footer({ navigateTo }) {
       </div>
       <div className="studio-footer-bottom"><span>© {new Date().getFullYear()} Avyukta IntelliCall. All rights reserved.</span><div>{[['Privacy', '/privacy'], ['Terms', '/terms'], ['Refund policy', '/refund']].map(([name,href])=><a key={href} href={href} onClick={e=>local(e,href)}>{name}</a>)}</div></div>
     </div>
+    <a className="floating-whatsapp-widget" href="https://wa.me/918560000600" target="_blank" rel="noreferrer" aria-label="Chat with Avyukta on WhatsApp">
+      <img className="floating-whatsapp-badge-img" src={getAssetUrl('/whatsapp-bot-badge.png')} alt="Avyukta WhatsApp AI + Human Bot" />
+    </a>
   </footer>;
 }

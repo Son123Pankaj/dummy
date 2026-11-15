@@ -108,6 +108,7 @@ const ENGINES = [
 ];
 
 export default function VoiceEngines() {
+  const [priceCases, setPriceCases] = useState({});
   const [playingState, setPlayingState] = useState({
     engineId: null,
     sampleName: null,
@@ -209,6 +210,8 @@ export default function VoiceEngines() {
           {ENGINES.map((engine) => {
             const Icon = engine.icon;
             const isCardActive = playingState.engineId === engine.id && playingState.isPlaying;
+            const priceCase = priceCases[engine.id] || 'A';
+            const price = priceCase === 'A' ? engine.modularPrice : engine.bundlePrice;
 
             return (
               <div 
@@ -226,20 +229,26 @@ export default function VoiceEngines() {
 
                 <h3 className="engine-title">{engine.title}</h3>
                 
-                {/* Dual Commercials Row: Case A Modular vs Case B Bundle */}
                 <div className="engine-price-block">
-                  <div className="engine-pricing-dual-row">
-                    <div className="dual-price-item">
-                      <span className="dual-label">Case A (Modular):</span>
-                      <b className="dual-num">{engine.modularPrice}</b>
-                      <span className="dual-unit">/ min</span>
-                    </div>
-                    <div className="dual-price-item secondary-price">
-                      <span className="dual-label">Case B (Bundle):</span>
-                      <b className="dual-num">{engine.bundlePrice}</b>
-                      <span className="dual-unit">/ min</span>
-                    </div>
+                  <div className="engine-price-toggle" role="group" aria-label={`${engine.tierName} pricing case`}>
+                    <button
+                      type="button"
+                      className={priceCase === 'A' ? 'active' : ''}
+                      aria-pressed={priceCase === 'A'}
+                      onClick={() => setPriceCases((prev) => ({ ...prev, [engine.id]: 'A' }))}
+                    >
+                      Case A · Modular
+                    </button>
+                    <button
+                      type="button"
+                      className={priceCase === 'B' ? 'active' : ''}
+                      aria-pressed={priceCase === 'B'}
+                      onClick={() => setPriceCases((prev) => ({ ...prev, [engine.id]: 'B' }))}
+                    >
+                      Case B · Bundle
+                    </button>
                   </div>
+                  <div className="engine-selected-price"><b className="dual-num">{price}</b><span className="dual-unit">/ min</span></div>
                   <span className="price-gst-sub">excl. GST · per second billing · ₹0 setup</span>
                 </div>
 
