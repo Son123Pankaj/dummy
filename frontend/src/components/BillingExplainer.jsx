@@ -14,7 +14,7 @@ export default function BillingExplainer() {
 
         <div className="bill">
           {/* Voice calls */}
-          <div className="b">
+          <div className="b" id="voice-calls-per-minute">
             <div className="ic">
               <Phone size={22} color="#4f46e5" strokeWidth={2} />
             </div>
@@ -67,7 +67,7 @@ export default function BillingExplainer() {
           </div>
 
           {/* Chat */}
-          <div className="b">
+          <div className="b" id="chat-per-ai-reply">
             <div className="ic">
               <MessageSquare size={22} color="#4f46e5" strokeWidth={2} />
             </div>

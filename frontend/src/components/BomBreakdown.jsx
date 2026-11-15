@@ -59,7 +59,7 @@ export default function BomBreakdown() {
           {/* =========================================================
               CARD 1: BoM 2 - SIP INFRASTRUCTURE
              ========================================================= */}
-          <div className="bom-card bom-sip-card">
+          <div className="bom-card bom-sip-card" id="sip-infrastructure">
             <div className="bom-card-accent sip-accent"></div>
             
             <div className="bom-card-top-header">
@@ -153,7 +153,7 @@ export default function BomBreakdown() {
           {/* =========================================================
               CARD 2: BoM 3 - META / WABA PLATFORM
              ========================================================= */}
-          <div className="bom-card bom-meta-card">
+          <div className="bom-card bom-meta-card" id="meta-waba-platform">
             <div className="bom-card-accent meta-accent"></div>
 
             <div className="bom-card-top-header">
@@ -262,7 +262,7 @@ export default function BomBreakdown() {
 
           <div className="matrix-grid-two-col">
             {/* Case A: Modular A-La-Carte */}
-            <div className="matrix-plan-col case-a-col">
+            <div className="matrix-plan-col case-a-col" id="a-la-carte-architecture">
               <div className="matrix-col-top">
                 <span className="matrix-tier-pill neutral-pill">Case A : Modular Model</span>
                 <h4 className="matrix-col-title">A-La-Carte Architecture</h4>
@@ -296,7 +296,7 @@ export default function BomBreakdown() {
             </div>
 
             {/* Case B: All-in-One Turnkey */}
-            <div className="matrix-plan-col case-b-col">
+            <div className="matrix-plan-col case-b-col" id="all-in-one-solution">
               <div className="matrix-col-top">
                 <span className="matrix-tier-pill pop-pill">Case B : Turnkey Bundle</span>
                 <h4 className="matrix-col-title">All-in-One Solution</h4>

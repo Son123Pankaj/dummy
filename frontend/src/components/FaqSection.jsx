@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
-export const FAQS_DATA = [
+const FAQS_DATA = [
   {
     id: 'pricing-1',
     q: 'How does pay-as-you-go pricing work?',
@@ -104,7 +104,7 @@ export const FAQS_DATA = [
   }
 ];
 
-export default function FaqSection() {
+export default function FaqSection({ items = FAQS_DATA }) {
   // BY DEFAULT NOTHING IS OPEN (Requirement: by default open nhi hona chahiye)
   const [openIds, setOpenIds] = useState([]);
 
@@ -139,7 +139,7 @@ export default function FaqSection() {
 
         {/* 2-Column Responsive Card Grid (2 questions per row/section, by default closed) */}
         <div className="faq-cards-grid">
-          {FAQS_DATA.map((item) => {
+          {items.map((item) => {
             const isOpen = openIds.includes(item.id);
             return (
               <div 

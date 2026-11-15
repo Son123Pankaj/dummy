@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import TrialModal from './components/TrialModal';
+import ImageLightbox from './components/ImageLightbox';
 import { useScrollReveal } from './utils/useScrollReveal';
 
 // Dedicated Core Pages & Dynamic Route Targets
@@ -53,6 +54,7 @@ export default function App() {
 
   // Trial Modal state (Sir's Point 9)
   const [isTrialOpen, setIsTrialOpen] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
 
   // Silky Smooth Apple-Grade Scroll Reveal Hook
   useScrollReveal(currentPath);
@@ -148,6 +150,14 @@ export default function App() {
     setIsTrialOpen(false);
   };
 
+  const handleMainImageClick = event => {
+    const image = event.target instanceof Element ? event.target.closest('img') : null;
+    if (!image || !event.currentTarget.contains(image)) return;
+    event.preventDefault();
+    event.stopPropagation();
+    setImagePreview({ src: image.currentSrc || image.src, alt: image.alt || '' });
+  };
+
   // Render current active page
   const renderCurrentPage = () => {
     const cfg = ROUTE_CONFIG[currentPath] || ROUTE_CONFIG['/'];
@@ -184,7 +194,7 @@ export default function App() {
       />
 
       {/* 2. Page Content View */}
-      <main id="main-content">
+      <main id="main-content" onClickCapture={handleMainImageClick}>
         {renderCurrentPage()}
       </main>
 
@@ -196,6 +206,7 @@ export default function App() {
         isOpen={isTrialOpen} 
         onClose={closeTrialModal} 
       />
+      {imagePreview && <ImageLightbox image={imagePreview} onClose={() => setImagePreview(null)} />}
     </div>
   );
 }

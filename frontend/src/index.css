@@ -233,8 +233,8 @@ header {
 
 [data-theme="dark"] .logo img,
 .dark .logo img,
-[data-theme="dark"] footer img,
-.dark footer img {
+[data-theme="dark"] footer img:not(.floating-whatsapp-badge-img),
+.dark footer img:not(.floating-whatsapp-badge-img) {
   filter: brightness(0) invert(1);
 }
 
@@ -2285,7 +2285,7 @@ section {
 
 [data-theme="dark"] .faq-card-a-text,
 .dark .faq-card-a-text {
-  color: #cbd5e1;
+  color: #ffffff;
 }
 
 [data-theme="dark"] .faq-tab-btn,
