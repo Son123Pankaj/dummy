@@ -123,9 +123,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .studio-wave-bars i {width:3px;height:var(--bar-height);max-height:100%;border-radius:9px;background:linear-gradient(#86e7e2,#3ea9bb);opacity:.86;transform-origin:center}
 .studio-wave-bars.is-playing i {animation:studio-wave .82s ease-in-out infinite alternate;animation-delay:var(--bar-delay)}
 @keyframes studio-wave {0%{transform:scaleY(.38)}100%{transform:scaleY(1.2)}}
-.studio-demo-options {display:flex;gap:7px;flex-wrap:wrap}
-.studio-demo-options button {background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.13);color:#b5d2db;font-size:12px;border-radius:99px;padding:8px 11px;transition:all .2s}
-.studio-demo-options button:hover,.studio-demo-options button.active {color:#fff;background:rgba(93,210,216,.2);border-color:rgba(93,210,216,.45)}
+.studio-demo-controls {display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.studio-demo-options,.studio-demo-genders {display:flex;gap:7px;flex-wrap:wrap}
+.studio-demo-controls button {background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.13);color:#b5d2db;font-size:12px;border-radius:99px;padding:8px 11px;transition:all .2s}
+.studio-demo-controls button:hover,.studio-demo-controls button.active {color:#fff;background:rgba(93,210,216,.2);border-color:rgba(93,210,216,.45)}
 .studio-demo-bottom {border-top:1px solid rgba(255,255,255,.12);margin-top:20px;padding-top:13px;color:#9cbdc7;font-size:11px}
 .studio-demo-bottom>span:last-child {display:flex;gap:5px;align-items:center}
 /* benefit / trust strip */
@@ -646,7 +647,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
  .studio-demo-play {width:48px;height:48px}
  .studio-demo-track strong {font-size:18px}
  .studio-demo-track>span {font-size:9px}
- .studio-demo-options button {font-size:11px;padding:7px 9px}
+ .studio-demo-controls button {font-size:11px;padding:7px 9px}
  .studio-wave-bars {gap:3px}
  .studio-wave-bars i {width:2.5px}
  .studio-benefit-items {display:grid;grid-template-columns:1fr 1fr;justify-items:start;column-gap:18px;row-gap:12px}
