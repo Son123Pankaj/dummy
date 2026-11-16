@@ -43,9 +43,14 @@ export default function PricingPage({ navigateTo }) {
         </div>
         <a href="#plans-section" className="studio-pricing-scroll" onClick={e=>{e.preventDefault();document.getElementById('plans-section')?.scrollIntoView({behavior:'smooth'})}}>Compare plans <ArrowDown size={17}/></a>
       </div>
-      <div className="studio-pricing-hero-visual">
-        <img src={getAssetUrl('/pricingai.png')} alt="Avyukta IntelliCall AI pricing and analytics visualization" />
-      </div>
+      <a
+        href="#plans-section"
+        className="studio-pricing-hero-visual"
+        aria-label="Explore CRM pricing plans"
+        onClick={e=>{e.preventDefault();document.getElementById('plans-section')?.scrollIntoView({behavior:'smooth'})}}
+      >
+        <img src={getAssetUrl('/crm-platform-pricing-promo.png')} alt="Avyukta CRM platform and pricing overview" data-lightbox="false" />
+      </a>
     </div>
   </section>
   <PlanCards />

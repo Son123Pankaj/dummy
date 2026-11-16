@@ -152,7 +152,7 @@ export default function App() {
 
   const handleMainImageClick = event => {
     const image = event.target instanceof Element ? event.target.closest('img') : null;
-    if (!image || !event.currentTarget.contains(image)) return;
+    if (!image || !event.currentTarget.contains(image) || image.dataset.lightbox === 'false') return;
     event.preventDefault();
     event.stopPropagation();
     setImagePreview({ src: image.currentSrc || image.src, alt: image.alt || '' });

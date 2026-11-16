@@ -311,7 +311,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .studio-cta-rings i:nth-child(2){width:300px;height:300px}.studio-cta-rings i:nth-child(3){width:370px;height:370px}
 .studio-footer {background:#0a2431;color:#ccdee4;padding:75px 0 0}
 .studio-footer-top {display:grid;grid-template-columns:1.45fr .65fr .8fr 1.15fr;gap:70px;padding-bottom:66px}
-.studio-footer-intro img {width:230px;display:block;height:auto;max-width:100%;margin-bottom:25px}
+.studio-footer-intro img {width:280px;display:block;height:auto;max-width:100%;margin-bottom:25px}
 .studio-footer-intro p {font-size:15px;line-height:1.8;max-width:300px;color:#a5c0c9;margin:0 0 20px}
 .studio-socials {display:flex;gap:10px}
 .studio-socials a {height:37px;width:37px;display:grid;place-items:center;color:#c7e7ea;border:1px solid rgba(255,255,255,.14);border-radius:50%;transition:transform .2s,background .2s}
@@ -361,7 +361,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 /* pricing redesigned, accurate side-by-side cards */
 .studio-pricing-hero {background:radial-gradient(circle at 80% 20%,rgba(22,160,178,.12),transparent 36%),linear-gradient(145deg,#f7fcfc,#eaf6f8);padding:85px 0 72px;text-align:left}
 [data-theme="dark"] .studio-pricing-hero {background:radial-gradient(circle at 80% 20%,rgba(22,160,178,.16),transparent 36%),#0a2733}
-.studio-pricing-hero-grid {display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);align-items:center;gap:clamp(36px,6vw,80px)}
+.studio-pricing-hero-grid {display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:center;gap:clamp(36px,5vw,68px)}
 .studio-pricing-hero-copy .studio-eyebrow {justify-content:flex-start}
 .studio-pricing-hero h1 {font-size:clamp(48px,5.1vw,74px);margin:18px 0}
 .studio-pricing-hero p {font-size:18px;max-width:620px;margin:0;line-height:1.7}
@@ -369,8 +369,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .studio-pricing-hero-points span {display:flex;align-items:center;gap:7px;font-size:14px;font-weight:550;color:var(--studio-ink)}
 .studio-pricing-hero-points svg {color:var(--studio-accent)}
 .studio-pricing-scroll {display:inline-flex;align-items:center;gap:10px;margin-top:28px;color:var(--studio-accent);font-size:14px;font-weight:680}
-.studio-pricing-hero-visual {overflow:hidden;border:1px solid var(--studio-stroke);border-radius:24px;box-shadow:var(--studio-shadow)}
-.studio-pricing-hero-visual img {display:block;width:100%;aspect-ratio:16/10;object-fit:cover}
+.studio-pricing-hero-visual {display:block;overflow:hidden;border:1px solid var(--studio-stroke);border-radius:24px;box-shadow:var(--studio-shadow);cursor:pointer}
+.studio-pricing-hero-visual:focus-visible {outline:3px solid var(--studio-accent);outline-offset:4px}
+.studio-pricing-hero-visual img {display:block;width:100%;height:auto}
 .image-lightbox {position:fixed;inset:0;z-index:20000;display:grid;place-items:center;padding:32px;background:rgba(2,10,16,.94);backdrop-filter:blur(8px)}
 .image-lightbox-close {position:absolute;top:20px;right:24px;display:grid;place-items:center;width:48px;height:48px;border:1px solid rgba(255,255,255,.25);border-radius:50%;background:rgba(255,255,255,.1);color:#fff;cursor:pointer}
 .image-lightbox-close:hover,.image-lightbox-close:focus-visible {background:rgba(255,255,255,.2);outline:2px solid #fff;outline-offset:3px}
@@ -580,7 +581,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 @media (max-width:900px) {
  .studio-pricing-hero-grid {grid-template-columns:1fr;gap:34px}
  .studio-pricing-hero-copy {max-width:740px}
- .studio-pricing-hero-visual {width:min(100%,760px);margin-inline:auto}
+ .studio-pricing-hero-visual {width:min(100%,840px);margin-inline:auto}
 }
 @media (max-width:760px) {
  .studio-container {width:calc(100% - 36px)}
@@ -684,7 +685,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
  .studio-footer {padding-top:52px}
  .studio-footer-top {grid-template-columns:1fr 1fr;gap:31px 20px;padding-bottom:42px}
  .studio-footer-intro {grid-column:1/-1}
- .studio-footer-intro img {width:205px}
+ .studio-footer-intro img {width:250px}
  .studio-footer-reach {display:flex;grid-column:1/-1;gap:12px}
  .studio-footer-bottom {align-items:start;flex-direction:column}
  .studio-inner-hero h1 {font-size:46px}
