@@ -233,8 +233,8 @@ header {
 
 [data-theme="dark"] .logo img,
 .dark .logo img,
-[data-theme="dark"] footer img:not(.floating-whatsapp-badge-img),
-.dark footer img:not(.floating-whatsapp-badge-img) {
+[data-theme="dark"] footer img:not(.floating-whatsapp-badge-img):not(.studio-footer-logo),
+.dark footer img:not(.floating-whatsapp-badge-img):not(.studio-footer-logo) {
   filter: brightness(0) invert(1);
 }
 
