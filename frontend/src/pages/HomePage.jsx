@@ -2,7 +2,6 @@ import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import HeroCarousel from '../components/HeroCarousel';
 import DynamicPricingSection from '../components/DynamicPricingSection';
-import FullWidthShowcase from '../components/FullWidthShowcase';
 import IndustriesSection from '../components/IndustriesSection';
 import FloatingActions from '../components/FloatingActions';
 import VoiceLibrary from '../components/VoiceLibrary';
@@ -22,20 +21,10 @@ export default function HomePage({ navigateTo }) {
       {/* 1. HERO CAROUSEL */}
       <HeroCarousel navigateTo={navigateTo} />
 
-      {/* 2. DYNAMIC AI PRICING & PLATFORM WORKSPACE (BPA | CRM | Dialer | Voice | Sales) */}
+      {/* 2. DYNAMIC AI PRICING & PLATFORM WORKSPACE (BPA | CRM | Command Center | Sales) */}
       <DynamicPricingSection navigateTo={navigateTo} />
 
-      {/* 3. COMMAND CENTER LIVE OPERATIONS MONITORING */}
-      <FullWidthShowcase 
-        id="command-center"
-        heading="Command Center"
-        imageSrc="/command-center-operations.jpg"
-        imageAlt="Avyukta Command Center live operations monitoring staff, active calls, devices, and lead handling"
-        width={1024}
-        height={600}
-      />
-
-      {/* 4. INDUSTRIES WE SERVE */}
+      {/* 3. INDUSTRIES WE SERVE */}
       <IndustriesSection navigateTo={navigateTo} />
 
       {/* 5. FLOATING AI ASSISTANT & WHATSAPP */}
