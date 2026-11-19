@@ -14,7 +14,7 @@ import {
   Users
 } from 'lucide-react';
 import { Eyebrow } from './StudioParts';
-import { PLANS, MODELS, COMMERCIAL_NOTE, SAMPLES, demoUrl, rateLabel } from '../data/offer';
+import { PLANS, MODELS, SAMPLES, demoUrl, rateLabel } from '../data/offer';
 import { getAssetUrl } from '../utils/assetUrl';
 import { claimPlayback, onOtherPlayback } from '../utils/playback';
 import AiSummarizer from './AiSummarizer';
@@ -311,12 +311,6 @@ export default function PlanCards({ navigateTo }) {
             ))}
           </div>
         </div>
-
-        <div className="studio-plan-brief">
-          <strong>{MODELS[model].label}:</strong> {MODELS[model].detail}
-        </div>
-
-        <p className="commercial-disclosure">{COMMERCIAL_NOTE}</p>
 
         {/* The 3 Cards: SILVER | GOLD | PLATINUM / DIAMOND */}
         <div className="studio-plan-grid conversion-plan-grid">
