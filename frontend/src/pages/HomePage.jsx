@@ -1,8 +1,7 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import HeroCarousel from '../components/HeroCarousel';
-import PlanCards from '../components/PlanCards';
-import DualMarquee from '../components/DualMarquee';
+import DynamicPricingSection from '../components/DynamicPricingSection';
 import FullWidthShowcase from '../components/FullWidthShowcase';
 import IndustriesSection from '../components/IndustriesSection';
 import FloatingActions from '../components/FloatingActions';
@@ -20,58 +19,13 @@ export default function HomePage({ navigateTo }) {
   return (
     <div className="studio-page studio-home conversion-home">
       
-      {/* 2. HERO CAROUSEL */}
+      {/* 1. HERO CAROUSEL */}
       <HeroCarousel navigateTo={navigateTo} />
 
-      {/* 3. VOICE PRICING CARDS */}
-      <PlanCards navigateTo={navigateTo} />
+      {/* 2. DYNAMIC AI PRICING & PLATFORM WORKSPACE (BPA | CRM | Dialer | Voice | Sales) */}
+      <DynamicPricingSection navigateTo={navigateTo} />
 
-      {/* 4. PARTNERS & CLIENTS MARQUEE */}
-      <DualMarquee />
-
-      {/* 5. CRM SECTION (With 2 View Switcher: CRM Platform & CRM Communications) */}
-      <FullWidthShowcase 
-        id="crm"
-        heading="CRM Solutions"
-        images={[
-          {
-            label: 'CRM Platform',
-            src: '/crm-platform-pricing-promo.png',
-            alt: 'Avyukta CRM Solutions platform and contact management dashboard',
-            width: 1365,
-            height: 768
-          },
-          {
-            label: 'CRM Communications',
-            src: '/avyukta-communications-dashboard.png',
-            alt: 'Avyukta CRM omni-channel calling and communications dashboard',
-            width: 1365,
-            height: 768
-          }
-        ]}
-      />
-
-      {/* 6. SALES SECTION */}
-      <FullWidthShowcase 
-        id="sales"
-        heading="Sales Management"
-        imageSrc="/sales-management-dashboard.jpg"
-        imageAlt="Avyukta Sales Management lead tracking and customer journey dashboard"
-        width={1024}
-        height={506}
-      />
-
-      {/* 7. BPA SECTION */}
-      <FullWidthShowcase 
-        id="bpa"
-        heading="Business Process Automation (BPA)"
-        imageSrc="/avyukta-platform-workflow.png"
-        imageAlt="Avyukta Business Process Automation (BPA) workflow"
-        width={1409}
-        height={768}
-      />
-
-      {/* 8. COMMAND CENTER SECTION */}
+      {/* 3. COMMAND CENTER LIVE OPERATIONS MONITORING */}
       <FullWidthShowcase 
         id="command-center"
         heading="Command Center"
@@ -81,13 +35,13 @@ export default function HomePage({ navigateTo }) {
         height={600}
       />
 
-      {/* 9. INDUSTRIES SECTION */}
+      {/* 4. INDUSTRIES WE SERVE */}
       <IndustriesSection navigateTo={navigateTo} />
 
-      {/* 10. FLOATING AI ASSISTANT & WHATSAPP */}
+      {/* 5. FLOATING AI ASSISTANT & WHATSAPP */}
       <FloatingActions />
 
-      {/* 11. REMAINING CONTENT & ESSENTIAL CLOSING (Voice Library Listen, FAQ, Bottom CTA) */}
+      {/* 6. REMAINING CONTENT & ESSENTIAL CLOSING (Voice Library Listen, FAQ, Bottom CTA) */}
       <section className="studio-section sample-section" id="voice-samples">
         <div className="studio-container sample-section-grid">
           <div>
