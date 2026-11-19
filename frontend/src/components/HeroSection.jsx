@@ -1,25 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   ArrowUpRight, 
-  Phone, 
-  Bot, 
-  Zap, 
-  Database, 
+  ArrowRight,
   MessageSquare, 
+  Phone, 
+  Zap, 
+  Sparkles,
   CheckCircle2, 
-  ShieldCheck 
+  ShieldCheck,
+  Headphones
 } from 'lucide-react';
 import { getAssetUrl } from '../utils/assetUrl';
-import heroCallerImg from '../assets/avyukta-ai-caller-hero.png';
+import heroCallerImg from '../assets/avyukta-connected-agent-hero.png';
+import TrialModal from './TrialModal';
 
-const FEATURE_CHIPS = [
-  { id: 'ai-voice', label: 'AI Voice Calling', icon: Bot },
-  { id: 'cloud-dialer', label: 'Smart Cloud Dialer', icon: Zap },
-  { id: 'crm-sync', label: 'CRM Integration', icon: Database },
-  { id: 'whatsapp-comm', label: 'WhatsApp Communication', icon: MessageSquare }
+const CHANNELS = [
+  { 
+    id: 'voice', 
+    label: 'Voice',
+    title: 'AI Voice Calling',
+    detail: 'Sub-500ms turn cadence · Natural Hindi & Indian dialects · Live human handoff',
+    link: '/#voice-samples'
+  },
+  { 
+    id: 'whatsapp', 
+    label: 'WhatsApp',
+    title: 'Meta WhatsApp Automation',
+    detail: 'Instant post-call message drops, lead brochures & automated conversational bots',
+    link: '/contact'
+  },
+  { 
+    id: 'email', 
+    label: 'Email',
+    title: 'Omnichannel Email Sync',
+    detail: 'Automated AI transcripts, summary dispatches & bidirectional CRM ticket logging',
+    link: '/contact'
+  },
+  { 
+    id: 'dialer', 
+    label: 'Dialer',
+    title: 'Cloud & Hosted Dialer',
+    detail: 'Predictive auto-dialing, Pan-India STD CLI (011, 022, 080) & 99.99% telecom SLA',
+    link: '/#solutions'
+  }
 ];
 
 export default function HeroSection({ navigateTo }) {
+  const [activeChannel, setActiveChannel] = useState('voice');
+  const [isTrialOpen, setIsTrialOpen] = useState(false);
+
   const handleNav = (e, path) => {
     e.preventDefault();
     if (path.startsWith('/#')) {
@@ -38,141 +67,214 @@ export default function HeroSection({ navigateTo }) {
     }
   };
 
-  const imageSrc = heroCallerImg || getAssetUrl('/avyukta-ai-caller-hero.png');
+  const currentChannelInfo = CHANNELS.find(c => c.id === activeChannel) || CHANNELS[0];
+  const imageSrc = heroCallerImg || getAssetUrl('/avyukta-connected-agent-hero.png');
 
   return (
-    <section 
-      id="hero" 
-      className="avyukta-hero-section" 
-      aria-label="Avyukta Intellicall Enterprise AI Communication Hero"
-    >
-      {/* Decorative tech background elements (Strictly behind content) */}
-      <div className="hero-bg-grid" aria-hidden="true" />
-      <div className="hero-glow-orb hero-glow-teal" aria-hidden="true" />
-      <div className="hero-glow-orb hero-glow-blue" aria-hidden="true" />
+    <>
+      <section 
+        id="hero" 
+        className="avyukta-hero-section avyukta-connected-hero" 
+        aria-label="Avyukta Intellicall Enterprise AI Communication Hero"
+      >
+        {/* Dynamic ambient cyan glowing ribbons & orbital bokeh */}
+        <div className="hero-ambient-glow hero-ambient-glow-teal" aria-hidden="true" />
+        <div className="hero-ambient-glow hero-ambient-glow-cyan" aria-hidden="true" />
+        
+        {/* Glowing Wave Ribbon SVG spanning across hero stage */}
+        <svg 
+          className="hero-wave-ribbon-svg" 
+          viewBox="0 0 1440 600" 
+          fill="none" 
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient id="cyanWaveGrad" x1="0%" y1="50%" x2="100%" y2="50%">
+              <stop offset="0%" stopColor="#0891b2" stopOpacity="0.05" />
+              <stop offset="25%" stopColor="#06b6d4" stopOpacity="0.25" />
+              <stop offset="55%" stopColor="#2dd4bf" stopOpacity="0.65" />
+              <stop offset="85%" stopColor="#38bdf8" stopOpacity="0.75" />
+              <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.3" />
+            </linearGradient>
+            <linearGradient id="cyanRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#0891b2" stopOpacity="0.2" />
+            </linearGradient>
+            <filter id="waveGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="8" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
 
-      <div className="studio-container hero-inner-container">
-        <div className="hero-two-column-grid">
-          
-          {/* ========================================================= */}
-          {/* 55% LEFT COLUMN: Content, Branding, Highlights, CTAs      */}
-          {/* ========================================================= */}
-          <div className="hero-content-col">
+          {/* Smooth S-curve wave line that passes behind agent */}
+          <path 
+            d="M -100 480 C 250 490, 420 400, 680 370 C 920 345, 1120 420, 1500 340" 
+            stroke="url(#cyanWaveGrad)" 
+            strokeWidth="2.5" 
+            filter="url(#waveGlow)"
+            className="hero-wave-path-main"
+          />
+          <path 
+            d="M -50 510 C 300 520, 480 430, 720 395 C 960 365, 1160 440, 1500 370" 
+            stroke="url(#cyanWaveGrad)" 
+            strokeWidth="1.2" 
+            strokeDasharray="4 8"
+            opacity="0.45"
+          />
+
+          {/* Glowing neon cyan ring in top-right background (matching reference) */}
+          <circle 
+            cx="1240" 
+            cy="180" 
+            r="110" 
+            stroke="url(#cyanRingGrad)" 
+            strokeWidth="3" 
+            filter="url(#waveGlow)"
+            opacity="0.75"
+            className="hero-neon-circle"
+          />
+        </svg>
+
+        <div className="studio-container hero-inner-container">
+          <div className="hero-connected-grid">
             
-            {/* Top Small Badge */}
-            <div className="hero-badge-pill" role="status">
-              <span className="hero-badge-pulse" aria-hidden="true">
-                <span className="pulse-dot" />
-                <span className="pulse-ring" />
-              </span>
-              <span className="hero-badge-text">AI-POWERED BUSINESS COMMUNICATION</span>
-            </div>
+            {/* ========================================================= */}
+            {/* 52% LEFT COLUMN: Content, Branding, Actions, Channel Tabs */}
+            {/* ========================================================= */}
+            <div className="hero-connected-content">
+              
+              {/* Top Tag: ● AI VOICE · TELEPHONY · CRM */}
+              <div className="hero-connected-tag" role="status">
+                <span className="hero-tag-dot" aria-hidden="true" />
+                <span className="hero-tag-text">AI VOICE · TELEPHONY · CRM</span>
+              </div>
 
-            {/* Main Heading with Teal Gradient Highlighting */}
-            <h1 className="hero-main-heading">
-              Smarter Calls.{' '}
-              <span className="hero-heading-highlight">
-                Stronger Customer Connections.
-              </span>
-            </h1>
+              {/* Main Heading: Every call. Connected. */}
+              <h1 className="hero-connected-heading">
+                Every call.{' '}
+                <span className="hero-heading-highlight">
+                  Connected.
+                </span>
+              </h1>
 
-            {/* Comprehensive Platform Description */}
-            <p className="hero-description-text">
-              Bring AI Voice Calling, Cloud Dialers, WhatsApp and CRM together in one 
-              connected communication platform. Engage leads, manage customer conversations 
-              and simplify follow-ups with Avyukta Intellicall.
-            </p>
+              {/* Description */}
+              <p className="hero-connected-subtitle">
+                Qualify inbound leads, run outbound calls and follow up across 
+                channels with Avyukta IntelliCall.
+              </p>
 
-            {/* Feature Highlights: Compact Attractive Icon Chips */}
-            <div className="hero-feature-chips-grid" role="list" aria-label="Key Communication Capabilities">
-              {FEATURE_CHIPS.map(chip => (
-                <div key={chip.id} className="hero-feature-chip" role="listitem">
-                  <div className="hero-chip-icon-box" aria-hidden="true">
-                    <chip.icon size={16} />
-                  </div>
-                  <span className="hero-chip-label">{chip.label}</span>
+              {/* CTA Action Buttons */}
+              <div className="hero-connected-actions">
+                <button 
+                  type="button"
+                  className="hero-btn-sandbox"
+                  onClick={() => setIsTrialOpen(true)}
+                  aria-label="Sign up for sandbox"
+                >
+                  <span>Sign up for sandbox</span>
+                  <ArrowUpRight size={18} className="hero-btn-arrow-up" />
+                </button>
+
+                <a 
+                  href="/#voice-samples"
+                  className="hero-btn-voice-ai"
+                  onClick={e => handleNav(e, '/#voice-samples')}
+                  aria-label="Try Voice AI audio samples"
+                >
+                  <span className="hero-voice-waveform-icon" aria-hidden="true">
+                    <span className="wave-bar bar-1" />
+                    <span className="wave-bar bar-2" />
+                    <span className="wave-bar bar-3" />
+                    <span className="wave-bar bar-4" />
+                  </span>
+                  <span>Try Voice AI</span>
+                  <ArrowRight size={16} className="hero-btn-arrow-right" />
+                </a>
+              </div>
+
+              {/* Channel Filter Pills: Voice | WhatsApp | Email | Dialer */}
+              <div className="hero-channel-strip">
+                <div 
+                  className="hero-channel-tabs" 
+                  role="tablist" 
+                  aria-label="Communication channel selectors"
+                >
+                  {CHANNELS.map(ch => {
+                    const isActive = activeChannel === ch.id;
+                    return (
+                      <button
+                        key={ch.id}
+                        type="button"
+                        role="tab"
+                        aria-selected={isActive}
+                        className={`hero-channel-tab ${isActive ? 'active' : ''}`}
+                        onClick={() => setActiveChannel(ch.id)}
+                      >
+                        {ch.label}
+                      </button>
+                    );
+                  })}
                 </div>
-              ))}
+
+                {/* Micro Channel Highlight Capsule */}
+                <div className="hero-channel-capsule" role="status">
+                  <span className="capsule-pulse-dot" aria-hidden="true" />
+                  <span className="capsule-title">{currentChannelInfo.title}:</span>
+                  <span className="capsule-text">{currentChannelInfo.detail}</span>
+                </div>
+              </div>
+
             </div>
 
-            {/* CTA Buttons Group */}
-            <div className="hero-cta-actions-row">
-              <a 
-                href="/#pricing"
-                className="hero-btn-primary"
-                onClick={e => handleNav(e, '/#pricing')}
-                aria-label="Explore AI Solutions"
-              >
-                <span>Explore AI Solutions</span>
-                <ArrowUpRight size={18} className="hero-btn-arrow-icon" />
-              </a>
+            {/* ========================================================= */}
+            {/* 48% RIGHT COLUMN: Exact Female AI Caller Stage            */}
+            {/* ========================================================= */}
+            <div className="hero-connected-visual">
+              <div className="hero-agent-stage">
+                
+                {/* Ambient radial glow behind the caller */}
+                <div className="hero-agent-ambient-glow" aria-hidden="true" />
 
-              <a 
-                href="tel:+918560000600"
-                className="hero-btn-secondary"
-                aria-label="Talk to an Expert on +91 85600 00600"
-                title="Call +91 85600 00600"
-              >
-                <Phone size={17} className="hero-btn-phone-icon" />
-                <span>Talk to an Expert</span>
-              </a>
-            </div>
+                {/* Female Call Center Specialist with Headset */}
+                <div className="hero-agent-photo-wrapper">
+                  <img 
+                    src={imageSrc}
+                    alt="Avyukta AI Voice and Telephony Specialist with headset"
+                    className="hero-agent-photo"
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
 
-            {/* Sub-strip: Telecom SLA and Trust Assurance */}
-            <div className="hero-trust-indicators" aria-label="Service highlights">
-              <div className="trust-indicator-item">
-                <CheckCircle2 size={15} className="trust-icon" />
-                <span>Sub-500ms Turn Cadence</span>
-              </div>
-              <div className="trust-indicator-item">
-                <CheckCircle2 size={15} className="trust-icon" />
-                <span>Billed on Connected Calls Only</span>
-              </div>
-              <div className="trust-indicator-item">
-                <ShieldCheck size={15} className="trust-icon" />
-                <span>99.99% Carrier Grade Telephony</span>
+                {/* Floating "AI Assist" Pill at Bottom-Right */}
+                <button 
+                  type="button"
+                  className="hero-ai-assist-floating-btn"
+                  onClick={() => setIsTrialOpen(true)}
+                  aria-label="Open AI Assist Consultation"
+                  title="Click to talk with Avyukta AI Assist"
+                >
+                  <MessageSquare size={16} className="ai-assist-icon" />
+                  <span className="ai-assist-label">AI Assist</span>
+                </button>
+
               </div>
             </div>
 
           </div>
-
-          {/* ========================================================= */}
-          {/* 45% RIGHT COLUMN: Exact Avyukta AI Caller Female Visual   */}
-          {/* ========================================================= */}
-          <div className="hero-visual-col">
-            <div className="hero-visual-stage">
-              
-              {/* Soft teal/blue radial glow & tech decorative elements behind subject */}
-              <div className="hero-caller-radial-glow" aria-hidden="true" />
-              
-              {/* Abstract AI Concentric Waves & Orbitals */}
-              <div className="hero-tech-orbitals" aria-hidden="true">
-                <div className="tech-orbital-ring ring-1" />
-                <div className="tech-orbital-ring ring-2" />
-                <div className="tech-orbital-ring ring-3" />
-                <svg className="tech-wave-svg" viewBox="0 0 400 400" fill="none">
-                  <circle cx="200" cy="200" r="180" stroke="currentColor" strokeWidth="1" strokeDasharray="5 7" opacity="0.35" />
-                  <circle cx="200" cy="200" r="135" stroke="currentColor" strokeWidth="1.2" opacity="0.45" />
-                  <circle cx="200" cy="200" r="90" stroke="currentColor" strokeWidth="1" strokeDasharray="3 5" opacity="0.4" />
-                </svg>
-              </div>
-
-              {/* Exact Female Avyukta AI Caller with Headset */}
-              <div className="hero-caller-figure-frame">
-                <img 
-                  src={imageSrc}
-                  alt="Avyukta AI Caller professional with headset"
-                  className="hero-caller-image"
-                  loading="eager"
-                  decoding="async"
-                />
-              </div>
-
-            </div>
-          </div>
-
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Interactive Sandbox & Trial Modal Dialog */}
+      <TrialModal 
+        isOpen={isTrialOpen} 
+        onClose={() => setIsTrialOpen(false)} 
+      />
+    </>
   );
 }
