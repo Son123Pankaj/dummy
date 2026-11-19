@@ -4,7 +4,6 @@ import {
   Users, 
   LayoutDashboard, 
   TrendingUp, 
-  ArrowUpRight, 
   Play, 
   Pause,
   PhoneCall,
@@ -116,20 +115,6 @@ export default function DynamicPricingSection({ navigateTo }) {
   const displayImage = activeCategory === 'crm' 
     ? (CRM_VIEWS[crmView]?.src || currentCategory.image)
     : currentCategory.image;
-
-  const nav = (e, href) => {
-    e.preventDefault();
-    if (href.startsWith('/#')) {
-      const targetId = href.slice(2);
-      const elem = document.getElementById(targetId);
-      if (elem) {
-        elem.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        window.history.pushState({}, '', href);
-        return;
-      }
-    }
-    if (navigateTo) navigateTo(href);
-  };
 
   // Keyboard navigation for vertical categories
   const handleKeyDown = (e, index) => {
@@ -367,57 +352,6 @@ export default function DynamicPricingSection({ navigateTo }) {
                   );
                 })}
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ========================================================= */}
-        {/* 5. BOTTOM NAVIGATION & IMPORTANT LINKS */}
-        {/* ========================================================= */}
-        <div className="dynamic-bottom-links-grid">
-          <div className="bottom-link-col">
-            <h4>Platform Solutions</h4>
-            <ul>
-              <li><a href="/#solutions" onClick={e => nav(e, '/#solutions')}>Smart Calling Solutions</a></li>
-              <li><button type="button" onClick={() => setActiveCategory('bpa')}>Business Process Automation (BPA)</button></li>
-              <li><button type="button" onClick={() => setActiveCategory('crm')}>Customer Relationship Management (CRM)</button></li>
-              <li><button type="button" onClick={() => setActiveCategory('command-center')}>Command Center Operations</button></li>
-              <li><button type="button" onClick={() => setActiveCategory('sales')}>Sales Management &amp; Customer Journey</button></li>
-            </ul>
-          </div>
-
-          <div className="bottom-link-col">
-            <h4>Voice &amp; Calling Plans</h4>
-            <ul>
-              <li><a href="/#pricing" onClick={e => nav(e, '/#pricing')}>Silver Plan – Everyday Enquiries</a></li>
-              <li><a href="/#pricing" onClick={e => nav(e, '/#pricing')}>Gold Plan – Indian Languages (Recommended)</a></li>
-              <li><a href="/#pricing" onClick={e => nav(e, '/#pricing')}>Platinum Plan – Expressive Studio Voices</a></li>
-              <li><a href="/pricing" onClick={e => nav(e, '/pricing')}>Indicative Volume Calculator</a></li>
-              <li><a href="/faq" onClick={e => nav(e, '/faq')}>Frequently Asked Questions (FAQ)</a></li>
-            </ul>
-          </div>
-
-          <div className="bottom-link-col">
-            <h4>Telecom Infrastructure</h4>
-            <ul>
-              <li><a href="/std-did" onClick={e => nav(e, '/std-did')}>Pan-India Local STD CLI (011, 022, 080)</a></li>
-              <li><a href="/voip-minutes" onClick={e => nav(e, '/voip-minutes')}>Carrier-Grade VoIP Minutes</a></li>
-              <li><a href="/cloud-dialer" onClick={e => nav(e, '/cloud-dialer')}>Hosted Asterisk &amp; Vicidial Cloud</a></li>
-              <li><a href="/features" onClick={e => nav(e, '/features')}>Sub-500ms Turn Cadence SLA</a></li>
-              <li><a href="/services" onClick={e => nav(e, '/services')}>Meta WhatsApp Business WABA API</a></li>
-            </ul>
-          </div>
-
-          <div className="bottom-link-col direct-contact-col">
-            <h4>Direct Assistance</h4>
-            <p>Our solutions team helps configure custom call flows, language prompts, and CRM connectors.</p>
-            <div className="direct-contact-actions">
-              <a href="/contact" className="studio-btn studio-btn-primary" onClick={e => nav(e, '/contact')}>
-                Request Tailored Demo <ArrowUpRight size={16} />
-              </a>
-              <a href="tel:+917240001056" className="direct-phone-link">
-                <PhoneCall size={15} /> +91 72400 01056
-              </a>
             </div>
           </div>
         </div>
