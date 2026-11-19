@@ -17,6 +17,7 @@ import { Eyebrow } from './StudioParts';
 import { PLANS, MODELS, COMMERCIAL_NOTE, SAMPLES, demoUrl, rateLabel } from '../data/offer';
 import { getAssetUrl } from '../utils/assetUrl';
 import { claimPlayback, onOtherPlayback } from '../utils/playback';
+import AiSummarizer from './AiSummarizer';
 
 const CARD_TITLES = {
   silver: 'AVYUKTA AI SILVER',
@@ -284,7 +285,14 @@ export default function PlanCards({ navigateTo }) {
         
         <div className="studio-plan-heading">
           <div>
-            <Eyebrow>TRANSPARENT AI VOICE &amp; CALL PRICING</Eyebrow>
+            <div className="plan-heading-eyebrow-row">
+              <Eyebrow>TRANSPARENT AI VOICE &amp; CALL PRICING</Eyebrow>
+              <AiSummarizer 
+                title="AI Voice & Telephony Pricing Plans"
+                content="Avyukta IntelliCall AI Pricing Plans: Silver (₹3.00/min), Gold (₹5.80/min), and Diamond (₹10.00/min). Silver offers 24/7 inbound answering and sub-500ms voice turn cadence. Gold provides multilingual Hindi & English support, automated qualification, and live agent transfer. Diamond delivers studio-grade expressive brand voices, 100+ concurrent channels, and Pan-India STD CLI. Connected calls only billing with zero charge on unanswered calls."
+                label="AI Plan Summary"
+              />
+            </div>
             <h2>AI Pricing <span className="studio-accent">Plans.</span></h2>
             <p>Choose the right voice tier for your callers. Listen to genuine recorded samples, compare verified call features, and request a tailored quote.</p>
           </div>

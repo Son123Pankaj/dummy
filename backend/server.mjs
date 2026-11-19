@@ -61,6 +61,90 @@ export async function createLeadServer({dataDir = resolve(root, 'backend/data'),
         const id = await persist({id:randomUUID(), requestKey, digest, createdAt:new Date().toISOString(), consent:true, consentText:'Contact me about this demo request.', ...details});
         return json(response,201,{id});
       }
+      if (url.pathname === '/api/ai/magic-wand') {
+        if (request.method === 'OPTIONS') {
+          response.writeHead(204, { 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' });
+          return response.end();
+        }
+        if (request.method !== 'POST') return json(response, 405, { error: 'Use POST.' });
+        let size = 0; const chunks = [];
+        for await (const chunk of request) { size += chunk.length; if (size > 16000) return json(response, 413, { error: 'Request is too large.' }); chunks.push(chunk); }
+        let body; try { body = JSON.parse(Buffer.concat(chunks).toString('utf8')); } catch { return json(response, 400, { error: 'Invalid JSON.' }); }
+        const text = (body?.text || '').trim();
+        const action = body?.action || 'improve';
+        if (!text) return json(response, 400, { error: 'Text is required.' });
+
+        let result = text;
+        if (process.env.GEMINI_API_KEY) {
+          try {
+            const promptMap = {
+              improve: `Improve and polish the following text for clarity, professional flow and elegance while keeping its original meaning:\n\n${text}`,
+              professional: `Rewrite the following text professionally for a corporate telecom/call center software inquiry to Avyukta IntelliCall:\n\n${text}`,
+              grammar: `Correct any grammar, spelling, and punctuation errors in the following text without altering its tone:\n\n${text}`,
+              shorten: `Make the following text concise and crisp, keeping key points:\n\n${text}`,
+              expand: `Expand the following inquiry text with helpful telecom and call center details (inbound/outbound call capacity, CRM integration, languages):\n\n${text}`
+            };
+            const prompt = promptMap[action] || promptMap.improve;
+            const geminiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+            });
+            if (geminiRes.ok) {
+              const geminiData = await geminiRes.json();
+              const candidate = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text;
+              if (candidate) result = candidate.trim();
+            }
+          } catch {
+            // deterministic fallback
+          }
+        }
+        if (result === text) {
+          if (action === 'professional') {
+            result = `Dear Avyukta IntelliCall Team,\n\nWe would like to request comprehensive details and a tailored quote regarding:\n${text}\n\nWe look forward to arranging an indicative demonstration at your earliest convenience.\n\nBest regards.`;
+          } else if (action === 'grammar') {
+            result = text.replace(/\bi\b/g, 'I').replace(/\s+([.,!?;:])/g, '$1').replace(/([.!?])\s*([a-z])/g, (_, p1, p2) => `${p1} ${p2.toUpperCase()}`).replace(/^[a-z]/, m => m.toUpperCase());
+            if (!/[.!?]$/.test(result)) result += '.';
+          } else if (action === 'shorten') {
+            result = text.replace(/\b(actually|basically|essentially|kind of|sort of|just wanted to say that)\b/gi, '').replace(/\s{2,}/g, ' ').trim();
+          } else if (action === 'expand') {
+            result = `${text}\n\nKey Requirements:\n• 24/7 Inbound and automated outbound calling\n• Bilingual Hindi & English voice cadence with live interruption\n• Instant CRM integration with live supervisor transfer`;
+          } else {
+            result = text.replace(/^[a-z]/, m => m.toUpperCase());
+            if (!/[.!?]$/.test(result)) result += '.';
+          }
+        }
+        return json(response, 200, { result, action });
+      }
+      if (url.pathname === '/api/ai/summarize') {
+        if (request.method === 'OPTIONS') {
+          response.writeHead(204, { 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' });
+          return response.end();
+        }
+        if (request.method !== 'POST') return json(response, 405, { error: 'Use POST.' });
+        let size = 0; const chunks = [];
+        for await (const chunk of request) { size += chunk.length; if (size > 32000) return json(response, 413, { error: 'Request is too large.' }); chunks.push(chunk); }
+        let body; try { body = JSON.parse(Buffer.concat(chunks).toString('utf8')); } catch { return json(response, 400, { error: 'Invalid JSON.' }); }
+        const text = (body?.text || '').trim();
+        const title = body?.title || 'Summary';
+        if (!text) return json(response, 400, { error: 'Text is required.' });
+
+        const sentences = text
+          .replace(/[#*•✓]/g, '')
+          .split(/(?<=[.?!])\s+/)
+          .map(s => s.trim())
+          .filter(s => s.length > 20);
+
+        const keyHighlights = sentences.slice(0, 4);
+        const takeaway = sentences[0] || `Avyukta IntelliCall enterprise solutions for ${title}.`;
+
+        return json(response, 200, {
+          title,
+          summary: `Executive Summary of ${title}:\n\n${takeaway}\n\nKey Highlights:\n• ${keyHighlights.join('\n• ')}\n\nBusiness Value:\nProvides verified enterprise telecom infrastructure, transparent commercial billing, and high-concurrency conversational AI workflows.`,
+          keyPoints: keyHighlights,
+          readTime: `${Math.max(1, Math.ceil(text.split(/\s+/).length / 200))} min read`
+        });
+      }
       if (url.pathname.startsWith('/api/')) return json(response,404,{error:'Not found.'});
       if (!['GET','HEAD'].includes(request.method)) return json(response,405,{error:'Method not allowed.'});
       const base = await realpath(staticDir);

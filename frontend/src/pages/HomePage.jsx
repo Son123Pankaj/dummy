@@ -5,7 +5,6 @@ import PlanCards from '../components/PlanCards';
 import DynamicPricingSection from '../components/DynamicPricingSection';
 import AutomationShowcase from '../components/AutomationShowcase';
 import IndustriesSection from '../components/IndustriesSection';
-import FloatingActions from '../components/FloatingActions';
 import VoiceLibrary from '../components/VoiceLibrary';
 import FaqSection from '../components/FaqSection';
 import { Eyebrow, BottomCta } from '../components/StudioParts';
@@ -35,10 +34,7 @@ export default function HomePage({ navigateTo }) {
       {/* 3. INDUSTRIES WE SERVE */}
       <IndustriesSection navigateTo={navigateTo} />
 
-      {/* 5. FLOATING AI ASSISTANT & WHATSAPP */}
-      <FloatingActions />
-
-      {/* 6. REMAINING CONTENT & ESSENTIAL CLOSING (Voice Library Listen, FAQ, Bottom CTA) */}
+      {/* 4. REMAINING CONTENT & ESSENTIAL CLOSING (Voice Library Listen, FAQ, Bottom CTA) */}
       <section className="studio-section sample-section" id="voice-samples">
         <div className="studio-container sample-section-grid">
           <div>

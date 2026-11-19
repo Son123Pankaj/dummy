@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ImageLightbox from './components/ImageLightbox';
 import KommunicateWidget from './components/KommunicateWidget';
+import FloatingActions from './components/FloatingActions';
 import HomePage from './pages/HomePage';
 import ServicesPage from './pages/ServicesPage';
 import AboutPage from './pages/AboutPage';
@@ -70,5 +71,5 @@ export default function App() {
   }, [location, page, title, path, aliasHash, hash]);
   const props = {navigateTo, locationKey: location};
   const content = page === 'home' ? <HomePage {...props}/> : page === 'pricing' ? <PricingPage {...props}/> : page === 'contact' ? <ContactPage {...props}/> : page === 'features' ? <FeaturesPage {...props}/> : page === 'services' ? <ServicesPage {...props}/> : page === 'about' ? <AboutPage {...props}/> : ['privacy','terms','refund'].includes(page) ? <PolicyPage type={page} {...props}/> : <section className="pricing-intro studio-container"><h1>We couldn't find that page.</h1><p>Explore our voice samples or request help from our team.</p><a className="studio-btn studio-btn-primary" href="/" onClick={event => {event.preventDefault(); navigateTo('/');}}>Return home</a></section>;
-  return <div className="app-shell"><a className="skip-link" href="#main-content">Skip to content</a><Navbar currentPath={path} navigateTo={navigateTo} theme={theme} toggleTheme={() => setTheme(value => value === 'light' ? 'dark' : 'light')}/><main id="main-content" tabIndex={-1} key={path + url.search} onClickCapture={event => {const target = event.target.closest('img[data-zoom="true"]'); if (target) {event.preventDefault(); setImage({src:target.currentSrc || target.src, alt:target.alt});}}}>{content}</main><Footer navigateTo={navigateTo}/><KommunicateWidget/>{image && <ImageLightbox image={image} onClose={closeImage}/>}</div>;
+  return <div className="app-shell"><a className="skip-link" href="#main-content">Skip to content</a><Navbar currentPath={path} navigateTo={navigateTo} theme={theme} toggleTheme={() => setTheme(value => value === 'light' ? 'dark' : 'light')}/><main id="main-content" tabIndex={-1} key={path + url.search} onClickCapture={event => {const target = event.target.closest('img[data-zoom="true"]'); if (target) {event.preventDefault(); setImage({src:target.currentSrc || target.src, alt:target.alt});}}}>{content}</main><Footer navigateTo={navigateTo}/><FloatingActions /><KommunicateWidget/>{image && <ImageLightbox image={image} onClose={closeImage}/>}</div>;
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-
+import AiSummarizer from './AiSummarizer';
 import { CUSTOMER_FAQS } from '../data/offer';
 
 export default function FaqSection({ items = CUSTOMER_FAQS }) {
@@ -19,9 +19,16 @@ export default function FaqSection({ items = CUSTOMER_FAQS }) {
         
         {/* Section Header */}
         <div className="faq-head-center">
-          <div className="pricing-badge-pro">
-            <span className="badge-dot-coral"></span>
-            <span>✦ HELP &amp; FAQ</span>
+          <div className="faq-badge-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <div className="pricing-badge-pro">
+              <span className="badge-dot-coral"></span>
+              <span>✦ HELP &amp; FAQ</span>
+            </div>
+            <AiSummarizer 
+              title="Frequently Asked Questions (FAQ)"
+              content={items.map(i => `${i.q} ${i.a}`).join('\n\n')}
+              label="AI FAQ Summary"
+            />
           </div>
           
           <h2 className="faq-main-title">
@@ -31,7 +38,7 @@ export default function FaqSection({ items = CUSTOMER_FAQS }) {
           <p className="faq-lead-desc">
             Can&apos;t find what you&apos;re looking for?{' '}
             <a href="mailto:sales@avyukta.in" className="faq-link-highlight">
-              Contact our team
+              sales[At]avyukta.in
             </a>.
           </p>
         </div>
