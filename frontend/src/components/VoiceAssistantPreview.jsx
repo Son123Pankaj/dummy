@@ -1,5 +1,17 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowRight, AudioLines, Check, MessageCircle, Mic, MicOff, Sparkles, Volume2, VolumeX } from 'lucide-react';
+import { 
+  ArrowRight, 
+  AudioLines, 
+  Check, 
+  MessageCircle, 
+  Mic, 
+  MicOff, 
+  Sparkles, 
+  Volume2, 
+  VolumeX,
+  Play,
+  Square
+} from 'lucide-react';
 import { Eyebrow } from './StudioParts';
 
 const PLAN_DETAILS = [
@@ -330,10 +342,60 @@ export default function VoiceAssistantPreview() {
           </div>
 
           <div className="studio-assistant-voice-panel">
-            <div className="studio-assistant-orb" aria-hidden="true"><span><AudioLines size={30} /></span></div>
-            <div className={`studio-assistant-wave ${voiceMode.startsWith('listening-') || voiceMode === 'speaking' ? 'is-active' : ''}`} aria-hidden="true">{[24, 42, 30, 65, 38, 84, 48, 70, 32, 90, 43, 62, 28, 76, 40, 58, 34, 82, 45, 68, 30, 55, 37, 73].map((height, index) => <i key={index} style={{ '--wave-height': `${height}%`, '--wave-delay': `${(index % 6) * 0.1}s` }} />)}</div>
-            <button type="button" className={`studio-assistant-mic ${voiceMode.startsWith('listening-') ? 'is-listening' : ''}`} onClick={voiceMode === 'idle' ? startVoiceConversation : stopVoiceConversation} disabled={voiceMode === 'requesting' || !recognitionAvailable || !speechAvailable} aria-label={voiceMode === 'idle' ? 'Start voice conversation' : 'Stop voice conversation'} title={voiceMode === 'idle' ? 'Start voice conversation' : 'Stop voice conversation'}>{voiceMode.startsWith('listening-') ? <MicOff size={20} /> : <Mic size={20} />}</button>
-            <span className="studio-assistant-voice-status">{voiceMode === 'requesting' ? 'REQUESTING MICROPHONE ACCESS' : voiceMode === 'speaking' ? 'ASSISTANT SPEAKING' : voiceMode === 'listening-name' ? 'LISTENING · SAY YOUR NAME' : voiceMode === 'listening-question' ? 'LISTENING · ASK A QUESTION' : !recognitionAvailable ? 'VOICE CHAT NEEDS CHROME OR EDGE' : 'TAP MIC TO START VOICE CHAT'}</span>
+            <div className="studio-assistant-orb" aria-hidden="true">
+              <span><AudioLines size={28} /></span>
+            </div>
+            
+            <div className={`studio-assistant-wave ${voiceMode.startsWith('listening-') || voiceMode === 'speaking' || speakingText ? 'is-active' : ''}`} aria-hidden="true">
+              {[24, 42, 30, 65, 38, 84, 48, 70, 32, 90, 43, 62, 28, 76, 40, 58, 34, 82, 45, 68, 30, 55, 37, 73].map((height, index) => (
+                <i key={index} style={{ '--wave-height': `${height}%`, '--wave-delay': `${(index % 6) * 0.1}s` }} />
+              ))}
+            </div>
+
+            {/* Bottom Controls Bar with Status on Left and Start/Stop Buttons on Right */}
+            <div className="assistant-voice-controls-bar">
+              <div className="assistant-voice-status-group">
+                <span className={`status-indicator-dot ${voiceMode === 'speaking' || speakingText ? 'playing' : voiceMode.startsWith('listening-') ? 'recording' : 'idle'}`} />
+                <span className="studio-assistant-voice-status">
+                  {voiceMode === 'requesting' 
+                    ? 'REQUESTING MIC...' 
+                    : voiceMode === 'speaking' || speakingText 
+                      ? 'ASSISTANT SPEAKING' 
+                      : voiceMode === 'listening-name' 
+                        ? 'LISTENING · SAY YOUR NAME' 
+                        : voiceMode === 'listening-question' 
+                          ? 'LISTENING · ASK QUESTION' 
+                          : 'CLICK START TO TALK'
+                  }
+                </span>
+              </div>
+
+              <div className="assistant-voice-buttons-group">
+                <button
+                  type="button"
+                  className={`assistant-ctrl-btn start-btn ${voiceMode !== 'idle' ? 'is-running' : ''}`}
+                  onClick={startVoiceConversation}
+                  disabled={voiceMode !== 'idle' || voiceMode === 'requesting'}
+                  aria-label="Start Voice"
+                  title="Start AI Voice Assistant"
+                >
+                  <Play size={12} fill="currentColor" />
+                  <span>Start</span>
+                </button>
+
+                <button
+                  type="button"
+                  className="assistant-ctrl-btn stop-btn"
+                  onClick={stopVoiceConversation}
+                  disabled={voiceMode === 'idle' && !speakingText}
+                  aria-label="Stop Voice"
+                  title="Stop AI Voice Assistant"
+                >
+                  <Square size={11} fill="currentColor" />
+                  <span>Stop</span>
+                </button>
+              </div>
+            </div>
           </div>
 
           <div className="studio-assistant-delivery">

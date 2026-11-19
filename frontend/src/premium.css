@@ -2346,15 +2346,17 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 }
 
 .floating-ai-modal-body .studio-assistant-voice-panel {
-  min-height: 125px !important;
+  min-height: 135px !important;
   border-radius: 14px !important;
-  padding: 12px !important;
+  padding: 12px 12px 42px !important;
   margin-top: 4px !important;
+  position: relative !important;
 }
 
 .floating-ai-modal-body .studio-assistant-orb {
-  width: 54px !important;
-  height: 54px !important;
+  width: 50px !important;
+  height: 50px !important;
+  margin-bottom: 8px !important;
 }
 
 .floating-ai-modal-body .studio-assistant-orb > span svg {
@@ -2363,21 +2365,113 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 }
 
 .floating-ai-modal-body .studio-assistant-wave {
-  bottom: 30px !important;
-  height: 20px !important;
+  bottom: 42px !important;
+  height: 18px !important;
 }
 
-.floating-ai-modal-body .studio-assistant-mic {
-  width: 36px !important;
-  height: 36px !important;
-  right: 12px !important;
-  bottom: 10px !important;
+/* Voice Assistant Bottom Controls Bar (Start and Stop Buttons) */
+.assistant-voice-controls-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px 12px;
+  background: rgba(6, 22, 30, 0.78);
+  backdrop-filter: blur(6px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  z-index: 5;
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
 }
 
-.floating-ai-modal-body .studio-assistant-voice-status {
-  font-size: 8px !important;
-  left: 12px !important;
-  bottom: 10px !important;
+.assistant-voice-status-group {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  flex: 1;
+}
+
+.assistant-voice-status-group .studio-assistant-voice-status {
+  position: static !important;
+  max-width: none !important;
+  font-size: 8.5px !important;
+  font-weight: 750 !important;
+  letter-spacing: 0.07em !important;
+  color: #a7c7cf !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.status-indicator-dot.recording {
+  background: #ef4444;
+  box-shadow: 0 0 8px #ef4444;
+  animation: beaconPulse 1.2s infinite;
+}
+
+.assistant-voice-buttons-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.assistant-ctrl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.18s ease;
+  line-height: 1;
+}
+
+.assistant-ctrl-btn.start-btn {
+  background: linear-gradient(135deg, #0e9eac, #087885);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 2px 8px rgba(14, 158, 172, 0.35);
+}
+
+.assistant-ctrl-btn.start-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #12b7c7, #0a8a99);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(14, 158, 172, 0.45);
+}
+
+.assistant-ctrl-btn.start-btn.is-running {
+  background: #10b981;
+  border-color: #10b981;
+  animation: beaconPulse 1.5s infinite;
+}
+
+.assistant-ctrl-btn.stop-btn {
+  background: rgba(239, 68, 68, 0.14);
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+.assistant-ctrl-btn.stop-btn:hover:not(:disabled) {
+  background: #ef4444;
+  color: #ffffff;
+  border-color: #ef4444;
+  transform: translateY(-1px);
+}
+
+.assistant-ctrl-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .floating-ai-modal-body .studio-assistant-delivery {
