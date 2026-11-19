@@ -1,63 +1,18 @@
-import React, { useEffect, useRef } from 'react';
-import { CheckCircle2, ArrowDown, ShieldCheck } from 'lucide-react';
+﻿import React from 'react';
 import PlanCards from '../components/PlanCards';
 import VolumeCalculator from '../components/VolumeCalculator';
-import BomBreakdown from '../components/BomBreakdown';
-import VoiceEngines from '../components/VoiceEngines';
-import BillingExplainer from '../components/BillingExplainer';
+import VoiceLibrary from '../components/VoiceLibrary';
 import FaqSection from '../components/FaqSection';
+import { CUSTOMER_FAQS, normalizePlan } from '../data/offer';
 import { Eyebrow, BottomCta } from '../components/StudioParts';
-import { getAssetUrl } from '../utils/assetUrl';
-
 export default function PricingPage({ navigateTo }) {
-  const voiceSamplesRef = useRef(null);
-  const advancedDetailsRef = useRef(null);
-
-  useEffect(() => {
-    const targetId = window.location.hash.slice(1);
-    if (targetId === 'voice-samples' && voiceSamplesRef.current) {
-      voiceSamplesRef.current.open = true;
-      const timer = window.setTimeout(() => voiceSamplesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 180);
-      return () => window.clearTimeout(timer);
-    }
-
-    const target = document.getElementById(targetId);
-    if (target && advancedDetailsRef.current?.contains(target)) {
-      advancedDetailsRef.current.open = true;
-      const timer = window.setTimeout(() => document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 180);
-      return () => window.clearTimeout(timer);
-    }
-  }, []);
-
+  const plan = normalizePlan(new URLSearchParams(window.location.search).get('plan'));
   return <div className="studio-page studio-pricing">
-  <section className="studio-pricing-hero">
-    <div className="studio-container studio-pricing-hero-grid">
-      <div className="studio-pricing-hero-copy">
-        <Eyebrow>PRICING WITHOUT THE GUESSWORK</Eyebrow>
-        <h1>Simple pricing.<br/><span>Powerful possibilities.</span></h1>
-        <p>Choose a voice experience that fits your business. Compare modular AI and bundled offerings with clear per-minute rates.</p>
-        <div className="studio-pricing-hero-points">
-          <span><CheckCircle2 size={17}/> Modular or all-in-one</span>
-          <span><CheckCircle2 size={17}/> Flexible volume options</span>
-          <span><ShieldCheck size={17}/> Enterprise-ready support</span>
-        </div>
-        <a href="#plans-section" className="studio-pricing-scroll" onClick={e=>{e.preventDefault();document.getElementById('plans-section')?.scrollIntoView({behavior:'smooth'})}}>Compare plans <ArrowDown size={17}/></a>
-      </div>
-      <a
-        href="#plans-section"
-        className="studio-pricing-hero-visual"
-        aria-label="Explore CRM pricing plans"
-        onClick={e=>{e.preventDefault();document.getElementById('plans-section')?.scrollIntoView({behavior:'smooth'})}}
-      >
-        <img src={getAssetUrl('/crm-platform-pricing-promo.png')} alt="Avyukta CRM platform and pricing overview" data-lightbox="false" />
-      </a>
-    </div>
-  </section>
-  <PlanCards />
-  <VolumeCalculator />
-  <div className="studio-container studio-advanced-details"><details ref={advancedDetailsRef}><summary>Advanced pricing details &amp; technical breakdown <span>View breakdown +</span></summary><div className="studio-advanced-detail-inner"><BomBreakdown/><BillingExplainer/></div></details></div>
-  <div className="studio-container studio-advanced-details"><details id="voice-samples" ref={voiceSamplesRef}><summary>Hear all voice engine samples <span>Explore audio +</span></summary><div className="studio-advanced-detail-inner"><VoiceEngines/></div></details></div>
-  <FaqSection />
-  <BottomCta navigateTo={navigateTo} heading="Need a pricing plan built around you?" text="Tell us about your use case and call volumes. We'll help you find the right fit."/>
+    <section className="pricing-intro studio-container"><Eyebrow>A VOICE YOU LIKE. A COST YOU UNDERSTAND.</Eyebrow><h1>Hear the voices.<br/><span className="studio-accent">Explore the right plan.</span></h1><p>Compare Silver, Gold and Platinum, then confirm the calling setup and complete cost for your business.</p><a className="studio-text-link" href="#voice-samples" onClick={event => {event.preventDefault(); navigateTo(`/pricing${plan ? `?plan=${plan}` : ''}#voice-samples`);}}>Listen before you choose ↓</a></section>
+    <PlanCards navigateTo={navigateTo}/>
+    <section id="voice-samples" className="studio-section sample-section"><div className="studio-container pricing-voice-grid"><div><Eyebrow>THE VOICE STUDIO</Eyebrow><h2>Listen first.<br/><span className="studio-accent">Choose with confidence.</span></h2><p>No form or microphone needed. These are prerecorded examples. Request a tailored demo to check your business conversation and preferred language.</p></div><VoiceLibrary key={plan} initialPlan={plan} navigateTo={navigateTo}/></div></section>
+    <VolumeCalculator/>
+    <section className="studio-section billing-summary" id="billing"><div className="studio-container"><Eyebrow>UNDERSTAND YOUR COMPLETE COST</Eyebrow><h2>What should your quote explain?</h2><div className="customer-job-grid"><article><h3>Usage and phone charges</h3><p>Confirm the AI rate, phone connection, number rental, WhatsApp charges and any fixed platform fees.</p></article><article><h3>Minimums and commitments</h3><p>Ask about initial recharge, deposits, monthly volume, unused credit and cancellation before activation.</p></article><article><h3>How a call is measured</h3><p>The referenced offer uses a 30-second minimum, then six-second increments. A 31-second connected call bills as 36 seconds. Confirm both AI and phone-provider rules.</p></article></div></div></section>
+    <FaqSection items={CUSTOMER_FAQS}/><BottomCta navigateTo={navigateTo} heading="Want a complete estimate?" text="Share your preferred voice, language and monthly calling needs. Our team can help clarify the scope and commercials."/>
   </div>;
 }

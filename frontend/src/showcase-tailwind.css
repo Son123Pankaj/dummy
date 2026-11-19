@@ -1,0 +1,5 @@
+﻿@layer theme, utilities;
+@import "tailwindcss/theme.css" layer(theme) prefix(tw);
+/* Unlayered utilities must outrank the existing unlayered universal reset. */
+@import "tailwindcss/utilities.css" prefix(tw);
+@source "./components/ProductShowcase.jsx";

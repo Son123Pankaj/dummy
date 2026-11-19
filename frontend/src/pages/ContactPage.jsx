@@ -1,168 +1,41 @@
-import React, { useState } from 'react';
-import Swal from 'sweetalert2';
-import { 
-  MapPin, 
-  Phone, 
-  Mail, 
-  Clock, 
-  Send, 
-  CheckCircle2, 
-  Sparkles, 
-  ArrowRight, 
-  ShieldCheck, 
-  ExternalLink, 
-  MessageCircle, 
-  AlertCircle,
-  Building2,
-  Globe2,
-  Headphones,
-  Award
-} from 'lucide-react';
+﻿import React, { useRef, useState } from 'react';
+import { Mail, Phone, ArrowUpRight, CheckCircle2, Send } from 'lucide-react';
+import { PLANS, SAMPLES, normalizePlan } from '../data/offer';
 
-export default function ContactPage({ onOpenTrial }) {
-  const [formSent, setFormSent] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    company: '',
-    message: ''
-  });
+export default function ContactPage() {
+  const params = new URLSearchParams(window.location.search);
+  const selectedPlan = normalizePlan(params.get('plan'));
+  const selectedVoice = SAMPLES.find(sample => sample.plan === selectedPlan && sample.name === params.get('voice'))?.name || '';
+  const [form, setForm] = useState({name: '', email: '', phone: '', company: '', useCase: '', language: '', message: '', plan: selectedPlan, voice: selectedVoice, consent: false, website: ''});
   const [errors, setErrors] = useState({});
-
-  const validateField = (name, value) => {
-    let error = '';
-    const trimmed = (value || '').trim();
-
-    if (name === 'name') {
-      if (!trimmed) {
-        error = 'Full name is required';
-      } else if (trimmed.length < 2) {
-        error = 'Name must be at least 2 characters';
-      } else if (/\d/.test(trimmed)) {
-        error = 'Name cannot contain numbers';
-      } else if (!/^[a-zA-Z\s'.]+$/.test(trimmed)) {
-        error = 'Name can only contain letters and spaces';
-      }
-    }
-
-    if (name === 'email') {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}$/;
-      if (!trimmed) {
-        error = 'Corporate email is required';
-      } else if (!emailRegex.test(trimmed)) {
-        error = 'Please enter a valid corporate email (e.g. name@company.com)';
-      }
-    }
-
-    if (name === 'phone') {
-      const digitsOnly = trimmed.replace(/\D/g, '');
-      if (!trimmed) {
-        error = 'Phone / WhatsApp number is required';
-      } else if (/[a-zA-Z]/.test(trimmed)) {
-        error = 'Phone number cannot contain letters';
-      } else if (digitsOnly.length < 10) {
-        error = 'Phone number must have at least 10 digits';
-      } else if (digitsOnly.length > 15) {
-        error = 'Phone number cannot exceed 15 digits';
-      }
-    }
-
-    if (name === 'company') {
-      if (!trimmed) {
-        error = 'Company or BPO name is required';
-      } else if (trimmed.length < 2) {
-        error = 'Company name must be at least 2 characters';
-      }
-    }
-
-    return error;
+  const [status, setStatus] = useState('idle');
+  const [receipt, setReceipt] = useState('');
+  const [failure, setFailure] = useState('');
+  const key = useRef(crypto.randomUUID());
+  const change = event => {const {name, value, checked, type} = event.target; setForm(previous => ({...previous, [name]: type === 'checkbox' ? checked : value, ...(name === 'plan' ? {voice: ''} : {})})); setErrors(previous => ({...previous, [name]: ''})); key.current = crypto.randomUUID();};
+  const validate = () => {
+    const next = {};
+    if (form.name.trim().length < 2) next.name = 'Please enter your name.';
+    if (!form.email.trim() && !form.phone.trim()) next.phone = 'Add a phone number or email so we can contact you.';
+    if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) next.email = 'Enter a valid email address.';
+    if (form.phone && !/^\+?[\d\s().-]{7,25}$/.test(form.phone.trim())) next.phone = 'Enter a valid phone number, including the country code if outside India.';
+    if (!form.useCase) next.useCase = 'Choose what you would like help with.';
+    if (!form.consent) next.consent = 'Please confirm we may contact you about this request.';
+    setErrors(next); return Object.keys(next).length === 0;
   };
-
-  const validateAll = () => {
-    const newErrors = {};
-    const fields = ['name', 'email', 'phone', 'company'];
-    fields.forEach((field) => {
-      const err = validateField(field, formData[field]);
-      if (err) newErrors[field] = err;
-    });
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    let sanitizedValue = value;
-
-    if (name === 'name') {
-      sanitizedValue = value.replace(/[^a-zA-Z\s'.]/g, '');
-    } else if (name === 'phone') {
-      sanitizedValue = value.replace(/[^0-9+\- ]/g, '');
-    }
-
-    setFormData((prev) => ({ ...prev, [name]: sanitizedValue }));
-
-    if (errors[name]) {
-      const err = validateField(name, sanitizedValue);
-      setErrors((prev) => ({ ...prev, [name]: err }));
-    }
-  };
-
-  const handleBlur = (e) => {
-    const { name, value } = e.target;
-    const err = validateField(name, value);
-    setErrors((prev) => ({ ...prev, [name]: err }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!validateAll()) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Please check form errors',
-        text: 'Kindly fill in all required fields accurately.',
-        confirmButtonColor: '#ea580c'
-      });
-      return;
-    }
-
-    const waMsg = `Hello Avyukta Team,\n\nNew Inquiry:\n👤 Name: ${formData.name}\n🏢 Company: ${formData.company}\n📞 Phone: ${formData.phone}\n✉️ Email: ${formData.email}\n📝 Details: ${formData.message || 'I would like to discuss AI voice bots and SIP telephony.'}`;
-    const waUrl = `https://wa.me/917240001056?text=${encodeURIComponent(waMsg)}`;
-
+  const submit = async event => {
+    event.preventDefault(); if (!validate() || status === 'submitting') return;
+    setStatus('submitting'); setFailure('');
+    const controller = new AbortController(); const timeout = setTimeout(() => controller.abort(), 15000);
     try {
-      window.open(waUrl, '_blank');
-    } catch {
-      // ignore
-    }
-
-    Swal.fire({
-      icon: 'info',
-      title: 'Your WhatsApp message is ready',
-      text: 'Review the prepared inquiry and press Send in WhatsApp to share it with our team.',
-      confirmButtonText: 'Understood',
-      confirmButtonColor: '#087f7d'
-    });
-
-    setFormSent(true);
+      const response = await fetch(import.meta.env.VITE_LEAD_ENDPOINT || '/api/leads', {method: 'POST', headers: {'Content-Type': 'application/json', 'Idempotency-Key': key.current}, body: JSON.stringify({...form, source: 'website-demo', page: window.location.pathname}), signal: controller.signal});
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || !result.id) throw new Error(result.error || 'We could not save your request. Please retry or contact us directly.');
+      setReceipt(result.id); setStatus('success');
+    } catch (error) {setStatus('error'); setFailure(error.name === 'AbortError' ? 'The request took too long. Please retry; the same request will not be saved twice.' : error.message);}
+    finally {clearTimeout(timeout);}
   };
-
-  return (
-    <div className="studio-page studio-contact">
-      <section className="studio-inner-hero studio-contact-hero"><div className="studio-container studio-inner-hero-grid"><div><span className="studio-eyebrow"><span className="studio-eyebrow-dot"/>LET'S TALK ABOUT YOUR BUSINESS</span><h1>Great things start<br/><span>with a conversation.</span></h1><p>Have a question or a project in mind? Tell us what you're building, and we'll help find the right communication solution.</p></div><div className="studio-contact-hero-visual"><div className="studio-contact-hero-icon"><Mail size={38}/></div><span>WE'D LOVE TO HEAR FROM YOU</span><h2>Let's make it happen.</h2><p>AI Voice · Cloud Telephony · CRM</p></div></div></section>
-      <section className="studio-section studio-contact-section"><div className="studio-container studio-contact-grid">
-        <div className="studio-contact-aside"><span className="studio-eyebrow"><span className="studio-eyebrow-dot"/>REACH OUT</span><h2>We're here to help.</h2><p>Explore how we can support your next step—from initial discovery to deployment.</p>
-          <a href="tel:+917240001056" className="studio-contact-info"><div><Phone size={21}/></div><span><small>CALL OUR TEAM</small><strong>+91 72400 01056</strong></span><ArrowRight size={18}/></a>
-          <a href="mailto:sales@avyukta.in" className="studio-contact-info"><div><Mail size={21}/></div><span><small>EMAIL US</small><strong>sales@avyukta.in</strong></span><ArrowRight size={18}/></a>
-          <div className="studio-contact-info static"><div><MapPin size={21}/></div><span><small>FIND US</small><strong>Jaipur, Rajasthan, India</strong></span></div>
-          <div className="studio-contact-time"><Clock size={18}/> Technical support operations: 24 × 6</div>
-        </div>
-        <div className="studio-contact-form-card">
-          {!formSent ? <><div className="studio-form-head"><span>BUSINESS INQUIRY</span><h2>Tell us a little about your project.</h2><p>We'll open a WhatsApp message with your details so you can send your inquiry directly.</p></div>
-          <form className="studio-contact-form" onSubmit={handleSubmit} noValidate><div className="studio-form-grid">
-            {[{name:'name',label:'Full name',placeholder:'Your name',type:'text'},{name:'email',label:'Work email',placeholder:'you@company.com',type:'email'},{name:'phone',label:'Phone / WhatsApp',placeholder:'+91 98765 43210',type:'tel'},{name:'company',label:'Company',placeholder:'Your company',type:'text'}].map(field=><label key={field.name}>{field.label}<input type={field.type} name={field.name} value={formData[field.name]} onChange={handleChange} onBlur={handleBlur} placeholder={field.placeholder} aria-invalid={Boolean(errors[field.name])} aria-describedby={errors[field.name]?`${field.name}-error`:undefined}/>{errors[field.name]&&<small id={`${field.name}-error`} className="studio-form-error">{errors[field.name]}</small>}</label>)}
-          </div><label>How can we help?<textarea name="message" value={formData.message} onChange={handleChange} rows={5} placeholder="Tell us about your requirement, expected volume or use case..."/></label><button type="submit" className="studio-btn studio-btn-primary studio-form-submit">Continue on WhatsApp <Send size={18}/></button><p className="studio-form-footnote"><ShieldCheck size={15}/> Your inquiry is only shared when you send the WhatsApp message.</p></form></> : <div className="studio-form-success"><CheckCircle2 size={48}/><h2>Almost there!</h2><p>A pre-filled WhatsApp inquiry was opened. Please press Send in WhatsApp to share it with our team.</p><button type="button" className="studio-btn studio-btn-primary" onClick={()=>setFormSent(false)}>Send another inquiry <ArrowRight size={16}/></button></div>}
-        </div>
-      </div></section>
-    </div>
-  );
+  const whatsapp = `https://wa.me/917240001056?text=${encodeURIComponent(`Hello Avyukta team, I would like a demo.\nName: ${form.name}\nCompany: ${form.company}\nPlan: ${form.plan}\nVoice: ${form.voice}\nUse case: ${form.useCase}\nLanguage: ${form.language}\n${form.message}`)}`;
+  const input = (name, label, type = 'text', placeholder = '', required = false) => <label>{label}{required ? ' *' : ' (optional)'}<input name={name} type={type} value={form[name]} onChange={change} autoComplete={{name:'name', email:'email', phone:'tel', company:'organization'}[name]} maxLength={name === 'phone' ? 25 : 160} placeholder={placeholder} aria-required={required} aria-invalid={Boolean(errors[name])} aria-describedby={errors[name] ? `${name}-error` : undefined}/>{errors[name] && <small id={`${name}-error`} role="alert" className="studio-form-error">{errors[name]}</small>}</label>;
+  return <div className="studio-page studio-contact"><section className="pricing-intro studio-container"><span className="studio-eyebrow">LET'S MAKE IT RELEVANT TO YOU</span><h1>Your business.<br/><span className="studio-accent">Your first conversation.</span></h1><p>Tell us what you want your AI assistant to help with. Choose a voice, share a preferred language and request a tailored demo.</p></section><section className="studio-section studio-contact-section"><div className="studio-container studio-contact-grid"><aside className="studio-contact-aside"><h2>Start with a real use case.</h2><p>We'll explore the conversation, supported integrations and complete cost with you. No need to know the technical terms.</p><ol className="contact-next-steps"><li>Share your requirement.</li><li>Review a voice and call flow.</li><li>Confirm the setup and quote.</li></ol><a href="tel:+917240001056" className="studio-contact-info"><Phone size={21}/><span><small>CALL OUR TEAM</small><strong>+91 72400 01056</strong></span><ArrowUpRight size={18}/></a><a href="mailto:sales@avyukta.in" className="studio-contact-info"><Mail size={21}/><span><small>EMAIL US</small><strong>sales@avyukta.in</strong></span><ArrowUpRight size={18}/></a></aside><div className="studio-contact-form-card">{status === 'success' ? <div className="studio-form-success" role="status"><CheckCircle2 size={48}/><h2>Your request is saved.</h2><p>Reference: <strong>{receipt}</strong></p><p>You can also reach our team by phone or email with this reference. This is a demo request, not a confirmed appointment.</p><button className="studio-btn studio-btn-primary" type="button" onClick={() => {setStatus('idle'); key.current = crypto.randomUUID();}}>Make another request</button></div> : <><div className="studio-form-head"><span>REQUEST A DEMO</span><h2>What would a useful call do for you?</h2><p>Add your name and at least one contact method. Company and additional details are optional.</p></div><form onSubmit={submit} className="studio-contact-form" noValidate><fieldset disabled={status === 'submitting'} className="lead-fields"><div className="studio-form-grid">{input('name', 'Your name', 'text', 'Your name', true)}{input('company', 'Company', 'text', 'Business name')}{input('phone', 'Phone / WhatsApp', 'tel', '+91…')}{input('email', 'Email', 'email', 'you@company.com')}<label>What do you need help with? *<select name="useCase" value={form.useCase} onChange={change} aria-required="true" aria-invalid={Boolean(errors.useCase)} aria-describedby={errors.useCase ? 'useCase-error' : undefined}><option value="">Choose a use case</option>{['Answer customer enquiries','Follow up leads','Appointments and reminders','Customer support','Something else'].map(item => <option key={item}>{item}</option>)}</select>{errors.useCase && <small id="useCase-error" className="studio-form-error" role="alert">{errors.useCase}</small>}</label>{input('language', 'Preferred language', 'text', 'e.g. Hindi and English')}<label>Voice plan (optional)<select name="plan" value={form.plan} onChange={change}><option value="">Help me choose</option>{PLANS.map(plan => <option key={plan.id} value={plan.id}>{plan.name}</option>)}</select></label><label>Voice (optional)<select name="voice" value={form.voice} onChange={change}><option value="">Help me choose</option>{SAMPLES.filter(sample => !form.plan || sample.plan === form.plan).map(sample => <option key={sample.id} value={sample.name}>{sample.name} · {sample.tier}</option>)}</select></label></div><label className="lead-message">Anything else? (optional)<textarea name="message" value={form.message} onChange={change} rows={4} maxLength={3000} placeholder="Share your call volume, common customer questions or an example conversation."/></label><div className="lead-trap" aria-hidden="true"><label>Website<input name="website" value={form.website} onChange={change} tabIndex={-1} autoComplete="off"/></label></div><label className="lead-consent"><input name="consent" type="checkbox" checked={form.consent} onChange={change} aria-required="true" aria-describedby={errors.consent ? 'consent-error' : undefined}/><span>I agree that Avyukta may use these details to contact me about this demo request. <a href="/privacy" target="_blank" rel="noreferrer">Privacy policy</a></span></label>{errors.consent && <small id="consent-error" role="alert" className="studio-form-error">{errors.consent}</small>}{failure && <p className="lead-submit-error" role="alert">{failure} Your details are still here.</p>}<button type="submit" className="studio-btn studio-btn-primary studio-form-submit">{status === 'submitting' ? 'Saving your request…' : 'Request my demo'}<Send size={17}/></button></fieldset><p className="studio-form-footnote">Your request is confirmed only when a saved reference appears.</p><a className="contact-whatsapp-alternative" href={whatsapp} target="_blank" rel="noopener noreferrer">Prefer WhatsApp? Prepare a message <ArrowUpRight size={15}/></a><p className="studio-form-footnote">WhatsApp opens a draft. Review it and press Send to contact our team.</p></form></>}</div></div></section></div>;
 }

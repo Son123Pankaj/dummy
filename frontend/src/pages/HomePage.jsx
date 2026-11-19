@@ -1,49 +1,37 @@
-import React, { useState } from 'react';
-import { ArrowUpRight, AudioLines, Bot, PhoneForwarded, MessagesSquare, Check, Layers3, Globe2, Sparkles, ShieldCheck, Headphones } from 'lucide-react';
-import StudioVoiceDemo from '../components/StudioVoiceDemo';
-import VoiceAssistantPreview from '../components/VoiceAssistantPreview';
+﻿import React from 'react';
+import { ArrowUpRight, PhoneIncoming, CalendarCheck, MessagesSquare, Check, ArrowRight } from 'lucide-react';
+import VoiceLibrary from '../components/VoiceLibrary';
+import PlanCards from '../components/PlanCards';
 import FaqSection from '../components/FaqSection';
-import PricingTopicMarquee from '../components/PricingTopicMarquee';
-import { HOME_FAQS } from '../components/pageFaqData';
-import { Eyebrow, SectionHeading, FeatureCard, StudioButton, BottomCta } from '../components/StudioParts';
-import { getAssetUrl } from '../utils/assetUrl';
+import ProductShowcase from '../components/ProductShowcase';
+import { CUSTOMER_FAQS } from '../data/offer';
+import { Eyebrow, SectionHeading, StudioButton, BottomCta } from '../components/StudioParts';
 
-const core = [
-  { icon: Bot, category:'01 / CONVERSATIONAL AI', title:'AI voice agents', text:'Human-like conversations for lead qualification, appointments, follow-ups and customer care.', items:['Inbound + outbound calls','Multilingual voice workflows'], path:'/ai-caller' },
-  { icon: PhoneForwarded, category:'02 / CLOUD TELEPHONY', title:'Cloud dialer', text:'Everything your agents need to connect faster, with call routing, monitoring and reporting in one place.', items:['Predictive + progressive dialing','SIP, DID and IVR'], path:'/cloud-dialer' },
-  { icon: MessagesSquare, category:'03 / CONNECTED CUSTOMER DATA', title:'CRM & WhatsApp', text:'Keep leads, call histories, WhatsApp conversations and follow-ups connected across your team.', items:['Lead lifecycle visibility','Automated handoffs'], path:'/whatsapp-crm' }
-];
-const HOW = [
-  { n:'01', title:'Connect your channels', text:'Bring your numbers, calling workflows and customer information into one place.' },
-  { n:'02', title:'Shape the conversation', text:'Configure an AI agent, call flow or campaign around what your customers actually need.' },
-  { n:'03', title:'Improve every interaction', text:'Review conversations, track outcomes and route complex cases to the right people.' }
+const jobs = [
+  { icon: PhoneIncoming, title: 'Answer everyday enquiries', text: 'Help callers find answers about your services, timings and process using information you approve.' },
+  { icon: MessagesSquare, title: 'Follow up interested customers', text: 'Ask a few useful questions, understand what the customer needs and help your team plan the next step.' },
+  { icon: CalendarCheck, title: 'Help arrange the next step', text: 'Discuss appointment requests, reminders and human handoffs that fit your business setup.' },
 ];
 export default function HomePage({ navigateTo }) {
-  const [pricingCase, setPricingCase] = useState('A');
-  const nav = (e, to) => { e.preventDefault(); navigateTo(to); };
-  const voicePlans = [
-    { id: 'silver', name: 'Silver', rate: pricingCase === 'A' ? '3.00' : '5.00', description: 'Natural conversational voices' },
-    { id: 'gold', name: 'Gold · Popular', rate: pricingCase === 'A' ? '5.80' : '7.00', description: 'Fast, multilingual conversations' },
-    { id: 'diamond', name: 'Diamond', rate: pricingCase === 'A' ? '10.00' : '11.00', description: 'Studio-grade expressive voices' }
-  ];
-  return <div className="studio-page studio-home">
+  const nav = (event, path) => { event.preventDefault(); navigateTo(path); };
+  return <div className="studio-page studio-home conversion-home">
     <section className="studio-hero"><div className="studio-hero-noise" aria-hidden="true"/><div className="studio-container studio-hero-grid">
-      <div className="studio-hero-copy"><Eyebrow>AI VOICE & CONNECTED COMMUNICATIONS</Eyebrow>
-        <h1>Better conversations.<br/><span>Built for scale.</span></h1>
-        <p>Meet the smarter way to talk to customers. AI voice agents, cloud calling and connected CRM—beautifully brought together in one business-ready platform.</p>
-        <div className="studio-actions"><StudioButton href="/contact" onClick={e=>nav(e,'/contact')}>Talk to our team</StudioButton><StudioButton href="/pricing" secondary onClick={e=>nav(e,'/pricing')}>Explore pricing</StudioButton></div>
-        <div className="studio-hero-proof"><div className="studio-hero-proof-icon"><ShieldCheck size={22}/></div><p><strong>Built on real telecom experience</strong><span>Reliable infrastructure. Thoughtful automation. Human support when it matters.</span></p></div>
+      <div className="studio-hero-copy"><Eyebrow>AI CALLING FOR YOUR BUSINESS</Eyebrow>
+        <h1>Every conversation.<br/><span>A clearer next step.</span></h1>
+        <p className="hero-product-line">AI calling assistants for enquiries, follow-ups and bookings.</p>
+        <p>Let an AI assistant handle routine customer conversations using your business information. Hear the voices and explore how it could work for your team.</p>
+        <div className="studio-actions"><StudioButton href="#voice-samples" onClick={event => nav(event, '/#voice-samples')}>Listen to the voices</StudioButton><StudioButton href="/contact" secondary onClick={event => nav(event, '/contact')}>Request a demo</StudioButton></div>
+        <div className="hero-reassurance"><span><Check size={16}/> Listen without signing up</span><span><Check size={16}/> Silver, Gold & Platinum</span></div>
       </div>
-      <div className="studio-hero-visual"><div className="studio-hero-glow" aria-hidden="true"/><div className="studio-photo-card"><img src={getAssetUrl('/carousel-slide2.jpg')} alt="Customer communication professional using a headset in a modern office"/><div className="studio-photo-overlay"><span className="studio-photo-live"><i/> AI + HUMAN INTELLIGENCE</span><div className="studio-photo-insight"><AudioLines size={21}/><span>Conversations that feel natural.<br/>Outcomes that make sense.</span></div></div></div><div className="studio-hero-demo"><StudioVoiceDemo compact /></div><div className="studio-hero-orbit" aria-hidden="true"><Sparkles size={20}/></div></div>
+      <div className="conversion-hero-player"><div className="hero-player-caption"><span>YOUR FIRST LISTEN</span><span>01 / VOICE</span></div><VoiceLibrary compact navigateTo={navigateTo}/><p>Find a sound you like. Then test it with your own business scenario.</p></div>
     </div></section>
-    <section className="studio-benefit-strip"><div className="studio-container"><p>ONE CONNECTED COMMUNICATION ECOSYSTEM</p><div className="studio-benefit-items"><span><Bot size={19}/> AI voice</span><span><Headphones size={19}/> Cloud calling</span><span><Layers3 size={19}/> CRM integration</span><span><Globe2 size={19}/> Global connectivity</span></div></div></section>
-    <VoiceAssistantPreview />
-    <section className="studio-section studio-price-teaser studio-home-pricing"><div className="studio-container"><div className="studio-home-pricing-heading"><Eyebrow>STRAIGHTFORWARD PRICING</Eyebrow><h2>Find the right <span className="studio-accent">AI voice plan.</span></h2><p>Compare AI voice rates. GST extra.</p></div><div className="studio-home-pricing-toggle" role="group" aria-label="Choose pricing model"><button type="button" className={pricingCase==='A'?'active':''} aria-pressed={pricingCase==='A'} onClick={()=>setPricingCase('A')}><span>Case A</span> Modular</button><button type="button" className={pricingCase==='B'?'active':''} aria-pressed={pricingCase==='B'} onClick={()=>setPricingCase('B')}><span>Case B</span> Bundle</button></div><div className="studio-home-plan-grid">{voicePlans.map((plan,index)=><article key={plan.id} className={index===1?'featured':''} onClick={event=>{if(!event.target.closest('a'))nav(event,`/pricing#plan-${plan.id}`)}}><span className={`tier-${plan.id}`}>{plan.name}</span><strong>₹{plan.rate}<small>/ min</small></strong><p>{plan.description}</p><div className="studio-home-plan-actions"><a className="studio-home-plan-action" href="/pricing#voice-samples" onClick={e=>nav(e,'/pricing#voice-samples')}>Explore voice <AudioLines size={16}/></a><a className="studio-home-plan-action" href="/pricing#plans-section" onClick={e=>nav(e,'/pricing#plans-section')}>Explore rates <ArrowUpRight size={16}/></a></div></article>)}</div><p className="studio-home-pricing-note">{pricingCase==='A'?'AI voice priced separately; SIP and WhatsApp are billed separately.':'AI voice bundle rate; included services depend on the selected offer.'} Rates exclude GST.</p><div className="studio-home-pricing-actions"><StudioButton href="/pricing#plans-section" onClick={e=>nav(e,'/pricing#plans-section')}>Compare all plans</StudioButton><StudioButton href="/pricing#voice-samples" onClick={e=>nav(e,'/pricing#voice-samples')}>Listen to voice samples</StudioButton></div></div></section>
-    <PricingTopicMarquee navigateTo={navigateTo} />
-    <section className="studio-section studio-solutions" id="solutions"><div className="studio-container"><SectionHeading centered eyebrow="WHAT WE DO" title="Power every" accent="customer conversation." text="Focus on the moments that matter. The technology underneath should simply work."/><div className="studio-feature-grid three">{core.map((a,i)=><FeatureCard key={a.title} icon={a.icon} category={a.category} title={a.title} text={a.text} items={a.items} number={`0${i+1}`} onClick={()=>navigateTo(a.path)}/>)}</div><div className="studio-section-link"><a href="/services" onClick={e=>nav(e,'/services')}>See all solutions <ArrowUpRight size={18}/></a></div></div></section>
-    <section className="studio-section studio-spotlight"><div className="studio-container studio-spotlight-grid studio-workflow-layout"><div className="studio-spotlight-art avyukta-workflow-art"><img src={getAssetUrl('/avyukta-platform-workflow.png')} alt="Avyukta AI, CRM, dialer and omnichannel workflow" loading="lazy"/></div><div className="studio-spotlight-heading"><Eyebrow>AVYUKTA AI-POWERED ECOSYSTEM</Eyebrow><h2>One connected platform for every customer conversation.</h2><ul className="studio-workflow-points"><li><Check size={18}/> Capture and validate leads across channels</li><li><Check size={18}/> Connect AI voice, chat, CRM and telephony</li><li><Check size={18}/> Automate follow-ups, scheduling and reporting</li></ul></div></div></section>
-    <section className="studio-section studio-how" id="business-ecosystem"><div className="studio-container"><SectionHeading centered eyebrow="FROM FIRST HELLO TO LASTING RELATIONSHIPS" title="Simple to start." accent="Made to grow." text="A clear path from your first workflow to a connected customer experience."/><div className="studio-steps-grid">{HOW.map(step=><article key={step.n}><span>{step.n}</span><h3>{step.title}</h3><p>{step.text}</p></article>)}</div></div></section>
-    <FaqSection items={HOME_FAQS} />
-    <BottomCta navigateTo={navigateTo}/>
+    <ProductShowcase navigateTo={navigateTo}/>
+    <section className="studio-section customer-jobs" id="how-it-works"><div className="studio-container"><SectionHeading centered eyebrow="LESS ROUTINE WORK. MORE USEFUL CONVERSATIONS." title="What could your assistant" accent="help with?" text="Start with one job your team handles every day. We'll help you confirm the call flow, language and setup."/><div className="customer-job-grid">{jobs.map(({icon: Icon, title, text}, index) => <article key={title}><span className="job-number">0{index + 1}</span><Icon size={25}/><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
+    <section className="studio-section sample-section" id="voice-samples"><div className="studio-container sample-section-grid"><div><Eyebrow>HEAR THE DIFFERENCE</Eyebrow><h2>Your customers hear a voice.<br/><span className="studio-accent">Make it the right one.</span></h2><p>Explore prerecorded examples from all three plans. Choose the sound first, then ask us to demonstrate your language and business script.</p><div className="sample-steps"><span>01 · Choose a plan</span><span>02 · Compare the voices</span><span>03 · Request your own demo</span></div><a className="studio-text-link" href="/pricing" onClick={event => nav(event, '/pricing')}>See rates and what's included <ArrowUpRight size={17}/></a></div><VoiceLibrary navigateTo={navigateTo}/></div></section>
+    <section className="studio-section customer-workflow" id="business-ecosystem"><div className="studio-container"><SectionHeading eyebrow="A PRACTICAL EXAMPLE" title="From a new enquiry" accent="to a useful follow-up." text="Illustrative property-enquiry workflow. Exact actions and integrations depend on the setup you agree with our team."/><div className="workflow-story">{[['A customer asks about a property', 'An enquiry arrives from your website or your calling list.'], ['The assistant asks a few questions', 'It follows your approved script to understand interest, requirements and a preferred next step.'], ['Your team knows what to do next', 'Discuss how the conversation summary and visit request can reach your team through supported tools.']].map(([title, text], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p>{index < 2 && <ArrowRight className="workflow-arrow" size={22}/>}</article>)}</div></div></section>
+    <PlanCards navigateTo={navigateTo}/>
+    <section className="studio-section setup-section"><div className="studio-container"><SectionHeading centered eyebrow="START WITH YOUR BUSINESS" title="A simple path" accent="to your first demo."/><div className="customer-job-grid">{[['Tell us the job', 'Share the questions, language and outcome you have in mind.'], ['Review the conversation', 'Choose a voice and agree what the assistant should say and do.'], ['Test before you launch', 'Check real conversations, handoffs and the complete quote with our team.']].map(([title, text], index) => <article key={title}><span className="job-number">0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
+    <FaqSection items={CUSTOMER_FAQS.slice(0, 8)}/>
+    <div id="conversion" className="product-conversion-anchor"><BottomCta navigateTo={navigateTo} heading="Let's hear it for your business." text="Bring a use case and a preferred language. We'll help you explore the right voice and calling setup."/></div>
   </div>;
 }
