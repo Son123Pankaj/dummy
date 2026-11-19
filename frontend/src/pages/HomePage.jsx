@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import HeroCarousel from '../components/HeroCarousel';
 import DynamicPricingSection from '../components/DynamicPricingSection';
+import AutomationShowcase from '../components/AutomationShowcase';
 import IndustriesSection from '../components/IndustriesSection';
 import FloatingActions from '../components/FloatingActions';
 import VoiceLibrary from '../components/VoiceLibrary';
@@ -23,6 +24,9 @@ export default function HomePage({ navigateTo }) {
 
       {/* 2. DYNAMIC AI PRICING & PLATFORM WORKSPACE (BPA | CRM | Command Center | Sales) */}
       <DynamicPricingSection navigateTo={navigateTo} />
+
+      {/* 2.5 WHAT DO YOU WANT TO AUTOMATE? (Interactive 12-Category Workflow Engine) */}
+      <AutomationShowcase navigateTo={navigateTo} />
 
       {/* 3. INDUSTRIES WE SERVE */}
       <IndustriesSection navigateTo={navigateTo} />
