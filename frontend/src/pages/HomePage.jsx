@@ -29,14 +29,26 @@ export default function HomePage({ navigateTo }) {
       {/* 4. PARTNERS & CLIENTS MARQUEE */}
       <DualMarquee />
 
-      {/* 5. CRM SECTION */}
+      {/* 5. CRM SECTION (With 2 View Switcher: CRM Platform & Communications/Sales) */}
       <FullWidthShowcase 
         id="crm"
         heading="CRM Solutions"
-        imageSrc="/crm-platform-pricing-promo.png"
-        imageAlt="Avyukta CRM Solutions high-resolution dashboard"
-        width={1365}
-        height={768}
+        images={[
+          {
+            label: 'CRM Platform',
+            src: '/crm-platform-pricing-promo.png',
+            alt: 'Avyukta CRM Solutions high-resolution dashboard',
+            width: 1365,
+            height: 768
+          },
+          {
+            label: 'Communications & Sales',
+            src: '/avyukta-communications-dashboard.png',
+            alt: 'Avyukta Communications and calling dashboard',
+            width: 1365,
+            height: 768
+          }
+        ]}
       />
 
       {/* 6. SALES SECTION */}
