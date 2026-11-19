@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import HeroCarousel from '../components/HeroCarousel';
 import PlanCards from '../components/PlanCards';
@@ -63,10 +63,10 @@ export default function HomePage({ navigateTo }) {
       <FullWidthShowcase 
         id="command-center"
         heading="Command Center"
-        imageSrc="/about-telecom-noc.jpg"
-        imageAlt="Avyukta Command Center and network operations center monitoring"
+        imageSrc="/command-center-operations.jpg"
+        imageAlt="Avyukta Command Center live operations monitoring staff, active calls, devices, and lead handling"
         width={1024}
-        height={682}
+        height={600}
       />
 
       {/* 9. INDUSTRIES SECTION */}

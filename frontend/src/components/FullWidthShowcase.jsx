@@ -5,10 +5,11 @@ export default function FullWidthShowcase({ id, heading, imageSrc, imageAlt, wid
   return (
     <section id={id} className="fullwidth-showcase-section" aria-label={heading}>
       <div className="fullwidth-showcase-container">
+        {/* Required Structure: H1 Heading Displayed First */}
+        <h1 className="fullwidth-showcase-heading">{heading}</h1>
+
+        {/* Relevant Image Placed Immediately After H1 */}
         <div className="fullwidth-showcase-frame">
-          <div className="fullwidth-showcase-overlay">
-            <h2 className="fullwidth-showcase-heading">{heading}</h2>
-          </div>
           <img 
             src={getAssetUrl(imageSrc)} 
             alt={imageAlt}

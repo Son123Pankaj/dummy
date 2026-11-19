@@ -1,10 +1,37 @@
-﻿import React, { useState } from 'react';
-import { Check, ArrowUpRight, Sparkles, Volume2 } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { 
+  Check, 
+  ArrowUpRight, 
+  Sparkles, 
+  Volume2, 
+  Pause, 
+  Play, 
+  Square, 
+  PhoneCall, 
+  ShieldCheck, 
+  Zap, 
+  Users 
+} from 'lucide-react';
 import { Eyebrow } from './StudioParts';
 import { PLANS, MODELS, COMMERCIAL_NOTE, demoUrl, rateLabel } from '../data/offer';
 
 export default function PlanCards({ navigateTo }) {
   const [model, setModel] = useState('modular');
+  const [audioState, setAudioState] = useState({
+    activeCard: null, // 'silver' | 'gold' | 'platinum'
+    status: 'idle',   // 'idle' | 'playing' | 'paused'
+  });
+
+  const utteranceRef = useRef(null);
+
+  // Stop speech if user navigates away or component unmounts
+  useEffect(() => {
+    return () => {
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
 
   const local = (event, path) => {
     if (!navigateTo) return;
@@ -21,15 +48,87 @@ export default function PlanCards({ navigateTo }) {
     navigateTo(path);
   };
 
+  // Card-wise speech text generator strictly matching the card's details
+  const getCardSpeechText = (plan) => {
+    const rate = rateLabel(plan[model]);
+    const modelName = MODELS[model].label;
+
+    if (plan.id === 'silver') {
+      return `Silver Plan. Everyday customer conversations. Starting at ₹${rate} per connected minute on ${modelName}, excluding GST. Key call capabilities include: Automated inbound routine enquiry answering, outbound reminder and follow-up calling, sub-500ms voice turn cadence, and basic lead capture. Billed on connected calls only; unanswered and failed calls cost zero rupees.`;
+    }
+    if (plan.id === 'gold') {
+      return `Gold Plan. Recommended and most popular for Indian businesses. Starting at ₹${rate} per connected minute on ${modelName}, excluding GST. Key call capabilities include: Multilingual calling in Hindi, English, and regional Indian dialects, automated lead qualification calls and booking, natural human turn-taking with live interruption handling, one-click live transfer to human supervisors, and Meta WhatsApp post-call summary drops. Thirty-second minimum pulse with six-second increments.`;
+    }
+    return `Platinum Plan. Expressive brand voices. Starting at ₹${rate} per connected minute on ${modelName}, excluding GST. Key call capabilities include: Studio-grade expressive brand voices with emotional inflection, high-concurrency outbound dialing for up to one hundred concurrent channels, custom Pan-India STD CLI for trusted caller ID, enterprise CRM synchronization with speech sentiment intelligence, and carrier-grade 99.99% uptime SLA.`;
+  };
+
+  // Handle Play / Pause for a specific card
+  const handleToggleVoice = (plan) => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+      alert('Voice speech synthesis is not supported in this browser. Please use Chrome, Edge, or Safari.');
+      return;
+    }
+
+    const synth = window.speechSynthesis;
+
+    // If currently playing this card -> Pause
+    if (audioState.activeCard === plan.id && audioState.status === 'playing') {
+      synth.pause();
+      setAudioState({ activeCard: plan.id, status: 'paused' });
+      return;
+    }
+
+    // If currently paused on this card -> Resume
+    if (audioState.activeCard === plan.id && audioState.status === 'paused') {
+      synth.resume();
+      setAudioState({ activeCard: plan.id, status: 'playing' });
+      return;
+    }
+
+    // If another card was playing or idle -> Stop previous and start this card
+    synth.cancel();
+
+    const textToRead = getCardSpeechText(plan);
+    const utterance = new SpeechSynthesisUtterance(textToRead);
+    utteranceRef.current = utterance;
+
+    utterance.rate = 0.96;
+    utterance.pitch = 1.0;
+
+    // Pick a natural English voice if available
+    const voices = synth.getVoices();
+    const preferredVoice = voices.find(v => (v.lang.includes('en-IN') || v.lang.includes('en-US') || v.lang.includes('en-GB')) && !v.name.includes('Google') === false) || voices.find(v => v.lang.startsWith('en'));
+    if (preferredVoice) utterance.voice = preferredVoice;
+
+    utterance.onend = () => {
+      setAudioState({ activeCard: null, status: 'idle' });
+    };
+
+    utterance.onerror = () => {
+      setAudioState({ activeCard: null, status: 'idle' });
+    };
+
+    setAudioState({ activeCard: plan.id, status: 'playing' });
+    synth.speak(utterance);
+  };
+
+  // Handle Stop for a specific card
+  const handleStopVoice = (planId) => {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+    setAudioState({ activeCard: null, status: 'idle' });
+  };
+
   return (
     <section id="pricing" className="studio-plan-section">
       <div className="studio-container">
         
         <div className="studio-plan-heading">
           <div>
-            <Eyebrow>TRANSPARENT AI VOICE PRICING</Eyebrow>
+            <Eyebrow>TRANSPARENT AI VOICE &amp; CALL PRICING</Eyebrow>
             <h2>Voice Pricing <span className="studio-accent">Plans.</span></h2>
-            <p>Choose the right voice tier for your callers. Compare indicative rates, then request a tailored quote.</p>
+            <p>Choose the right voice tier for your callers. Listen to each plan independently, compare verified call features, and request a tailored quote.</p>
           </div>
 
           <div className="studio-plan-toggle" role="group" aria-label="Pricing model toggle">
@@ -57,11 +156,15 @@ export default function PlanCards({ navigateTo }) {
         <div className="studio-plan-grid conversion-plan-grid">
           {PLANS.map(plan => {
             const isGold = plan.id === 'gold';
+            const isCardActive = audioState.activeCard === plan.id;
+            const isPlaying = isCardActive && audioState.status === 'playing';
+            const isPaused = isCardActive && audioState.status === 'paused';
+
             return (
               <article 
                 id={`plan-${plan.id}`} 
                 key={plan.id} 
-                className={`studio-plan-card ${isGold ? 'featured' : ''}`}
+                className={`studio-plan-card ${isGold ? 'featured' : ''} ${isCardActive ? 'has-audio-playing' : ''}`}
               >
                 {isGold && (
                   <div className="plan-recommended-badge">
@@ -77,6 +180,54 @@ export default function PlanCards({ navigateTo }) {
                   <p>{plan.description}</p>
                 </div>
 
+                {/* Card-Wise Independent Voice / Audio Control */}
+                <div className="card-voice-control-box" aria-label={`${plan.name} plan audio playback`}>
+                  {!isCardActive ? (
+                    <button
+                      type="button"
+                      className="card-audio-play-btn"
+                      onClick={() => handleToggleVoice(plan)}
+                      aria-label={`Listen to ${plan.name} Plan details`}
+                      title={`Listen to ${plan.name} Plan details`}
+                    >
+                      <Volume2 size={16} className="audio-btn-icon" />
+                      <span>Listen to {plan.name} Plan</span>
+                    </button>
+                  ) : (
+                    <div className="card-audio-active-bar">
+                      <div className="card-audio-status-wrap">
+                        <div className={`audio-visualizer-bars ${isPlaying ? 'is-animating' : ''}`}>
+                          <span /><span /><span /><span />
+                        </div>
+                        <span className="card-audio-status-text">
+                          {isPlaying ? `Reading ${plan.name}...` : 'Paused'}
+                        </span>
+                      </div>
+
+                      <div className="card-audio-btn-group">
+                        <button
+                          type="button"
+                          className="card-audio-action-btn pause"
+                          onClick={() => handleToggleVoice(plan)}
+                          aria-label={isPlaying ? `Pause ${plan.name} audio` : `Resume ${plan.name} audio`}
+                          title={isPlaying ? 'Pause' : 'Resume'}
+                        >
+                          {isPlaying ? <Pause size={14} /> : <Play size={14} />}
+                        </button>
+                        <button
+                          type="button"
+                          className="card-audio-action-btn stop"
+                          onClick={() => handleStopVoice(plan.id)}
+                          aria-label={`Stop ${plan.name} audio`}
+                          title="Stop"
+                        >
+                          <Square size={13} />
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
                 <div className="studio-plan-price">
                   <strong><small>₹</small>{rateLabel(plan[model])}</strong>
                   <span>per connected minute · indicative · GST extra</span>
@@ -84,6 +235,7 @@ export default function PlanCards({ navigateTo }) {
 
                 <div className="studio-plan-divider" />
 
+                {/* Verified Call-Related Features Checklist */}
                 <ul className="plan-feature-list">
                   {plan.features.map(feature => (
                     <li key={feature}>
@@ -91,34 +243,77 @@ export default function PlanCards({ navigateTo }) {
                       <span>{feature}</span>
                     </li>
                   ))}
-                  {/* Verified differentiator bullet points */}
+
+                  {/* Silver Call Capabilities */}
                   {plan.id === 'silver' && (
-                    <li>
-                      <Check size={16} className="plan-check-icon" />
-                      <span>Everyday inbound &amp; outbound routine calls</span>
-                    </li>
+                    <>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>Inbound routine enquiry answering (24/7)</span>
+                      </li>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>Outbound automated reminder &amp; follow-up calls</span>
+                      </li>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>Sub-500ms voice turn cadence</span>
+                      </li>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>Billed on connected calls only (unanswered ₹0)</span>
+                      </li>
+                    </>
                   )}
+
+                  {/* Gold Call Capabilities (Recommended) */}
                   {plan.id === 'gold' && (
                     <>
                       <li>
                         <Check size={16} className="plan-check-icon" />
-                        <span>Hindi, English &amp; regional Indian dialects</span>
+                        <span>Multilingual Hindi, English &amp; regional Indian dialects</span>
                       </li>
                       <li>
                         <Check size={16} className="plan-check-icon" />
-                        <span>Live interruption handling &amp; WhatsApp handoff</span>
+                        <span>Automated lead qualification &amp; booking calls</span>
+                      </li>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>Natural human turn-taking &amp; live interruption handling</span>
+                      </li>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>1-click live transfer to human supervisors</span>
+                      </li>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>Meta WhatsApp post-call summary &amp; link drops</span>
                       </li>
                     </>
                   )}
+
+                  {/* Platinum Call Capabilities */}
                   {plan.id === 'platinum' && (
                     <>
                       <li>
                         <Check size={16} className="plan-check-icon" />
-                        <span>Studio-grade emotional expressiveness</span>
+                        <span>Studio-grade expressive brand voices with emotion inflection</span>
                       </li>
                       <li>
                         <Check size={16} className="plan-check-icon" />
-                        <span>Custom brand voice match &amp; priority setup</span>
+                        <span>High-concurrency outbound dialing (100+ concurrent channels)</span>
+                      </li>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>Custom Pan-India STD CLI (011, 022, 080) caller ID</span>
+                      </li>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>Enterprise CRM sync with speech sentiment intelligence</span>
+                      </li>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>Dedicated telecom SLA &amp; 99.99% carrier uptime</span>
                       </li>
                     </>
                   )}
@@ -131,7 +326,7 @@ export default function PlanCards({ navigateTo }) {
                     onClick={event => local(event, '/#voice-samples')}
                   >
                     <Volume2 size={16} />
-                    <span>Hear {plan.name} voices</span>
+                    <span>Hear {plan.name} samples</span>
                   </a>
 
                   <a 
@@ -148,10 +343,45 @@ export default function PlanCards({ navigateTo }) {
           })}
         </div>
 
+        {/* Call Telephony & Voice Infrastructure Trust Banner */}
+        <div className="call-telephony-highlights" aria-label="Core call infrastructure features">
+          <div className="call-highlight-item">
+            <div className="call-highlight-icon"><PhoneCall size={20} /></div>
+            <div>
+              <strong>Pan-India Local STD CLI</strong>
+              <p>Display trusted 011, 022, 080 caller ID across Indian telecom circles so callers pick up.</p>
+            </div>
+          </div>
+
+          <div className="call-highlight-item">
+            <div className="call-highlight-icon"><Zap size={20} /></div>
+            <div>
+              <strong>Sub-500ms Voice Cadence</strong>
+              <p>Conversational AI engine with natural pacing that accommodates mid-sentence interruptions.</p>
+            </div>
+          </div>
+
+          <div className="call-highlight-item">
+            <div className="call-highlight-icon"><ShieldCheck size={20} /></div>
+            <div>
+              <strong>Connected-Only Billing</strong>
+              <p>Only answered calls are billed. Unanswered, busy, and failed calls cost ₹0.</p>
+            </div>
+          </div>
+
+          <div className="call-highlight-item">
+            <div className="call-highlight-icon"><Users size={20} /></div>
+            <div>
+              <strong>1-Click Human Handoff</strong>
+              <p>Seamlessly route high-intent callers to available live supervisors without disconnection.</p>
+            </div>
+          </div>
+        </div>
+
         <div className="custom-offer">
           <div>
-            <strong>Need high volume or a tailored enterprise setup?</strong>
-            <p>Discuss dedicated SIP trunks, carrier DIDs, custom CRM connectors, and SLA commitments.</p>
+            <strong>Need high volume or a tailored enterprise telecom setup?</strong>
+            <p>Discuss dedicated SIP trunks, carrier DIDs, custom CRM connectors, and SLA commitments with our engineers.</p>
           </div>
           <a href="/contact" onClick={event => local(event, '/contact')}>
             Talk to our team <ArrowUpRight size={17} />
