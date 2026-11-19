@@ -752,13 +752,13 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 /* ============================================================ */
 .avyukta-hero-section {
   position: relative;
-  min-height: clamp(740px, 90vh, 920px);
+  min-height: max(780px, 90vh);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: clamp(32px, 5vh, 60px) 0 clamp(24px, 4vh, 48px);
-  background: linear-gradient(180deg, rgba(233, 248, 249, 0.42) 0%, var(--studio-bg) 100%);
+  padding: clamp(36px, 5vh, 60px) 0 0;
+  background: linear-gradient(180deg, rgba(233, 248, 249, 0.45) 0%, var(--studio-bg) 100%);
 }
 [data-theme="dark"] .avyukta-hero-section {
   background: linear-gradient(180deg, rgba(16, 47, 60, 0.48) 0%, var(--studio-bg) 100%);
@@ -807,9 +807,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 /* Two-Column Grid (55% Left / 45% Right) */
 .hero-two-column-grid {
   display: grid;
-  grid-template-columns: 55fr 45fr;
-  gap: clamp(28px, 4vw, 56px);
-  align-items: center;
+  grid-template-columns: 55% 45%;
+  gap: clamp(24px, 3.5vw, 52px);
+  align-items: flex-end;
   width: 100%;
   min-height: inherit;
 }
@@ -819,7 +819,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-self: center;
   z-index: 2;
+  padding-bottom: clamp(32px, 5vh, 60px);
 }
 
 /* Small Top Badge */
@@ -1019,34 +1021,35 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 /* 45% Right Column Visual Stage */
 .hero-visual-col {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-end;
+  justify-content: flex-end;
   position: relative;
   z-index: 2;
+  height: 100%;
 }
 .hero-visual-stage {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: clamp(520px, 68vh, 700px);
+  min-height: clamp(620px, 75vh, 780px);
   display: flex;
   align-items: flex-end;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 /* Glow & Waves behind the caller */
 .hero-caller-radial-glow {
   position: absolute;
-  width: clamp(340px, 38vw, 500px);
-  height: clamp(340px, 38vw, 500px);
+  width: clamp(380px, 42vw, 560px);
+  height: clamp(380px, 42vw, 560px);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(11, 153, 167, 0.26) 0%, rgba(2, 132, 199, 0.12) 48%, transparent 72%);
+  background: radial-gradient(circle, rgba(11, 153, 167, 0.28) 0%, rgba(2, 132, 199, 0.14) 48%, transparent 72%);
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  right: 6%;
+  transform: translateY(-50%);
   pointer-events: none;
   z-index: 0;
-  filter: blur(25px);
+  filter: blur(28px);
 }
 .hero-tech-orbitals {
   position: absolute;
@@ -1057,8 +1060,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   z-index: 0;
 }
 .tech-wave-svg {
-  width: clamp(340px, 40vw, 480px);
-  height: clamp(340px, 40vw, 480px);
+  width: clamp(360px, 42vw, 500px);
+  height: clamp(360px, 42vw, 500px);
   color: var(--studio-accent);
   animation: tech-orbit-spin 75s linear infinite;
 }
@@ -1070,16 +1073,17 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   height: 100%;
   display: flex;
   align-items: flex-end;
-  justify-content: center;
+  justify-content: flex-end;
   z-index: 2;
 }
 .hero-caller-image {
   display: block;
-  width: 100%;
-  max-height: clamp(540px, 68vh, 700px);
+  width: auto;
+  max-width: 100%;
+  max-height: clamp(580px, 78vh, 760px);
   object-fit: contain;
-  object-position: bottom center;
-  filter: drop-shadow(0 20px 42px rgba(11, 153, 167, 0.2));
+  object-position: bottom right;
+  filter: drop-shadow(0 20px 45px rgba(11, 153, 167, 0.22));
   transition: transform 0.4s ease;
 }
 .hero-caller-figure-frame:hover .hero-caller-image {
@@ -1185,15 +1189,17 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 @media (max-width: 1024px) {
   .avyukta-hero-section {
     min-height: auto;
-    padding: 36px 0 44px;
+    padding: 36px 0 0;
   }
   .hero-two-column-grid {
     grid-template-columns: 1fr;
     gap: 36px;
+    align-items: center;
   }
   .hero-content-col {
     text-align: center;
     align-items: center;
+    padding-bottom: 0;
   }
   .hero-badge-pill {
     align-self: center;
@@ -1212,26 +1218,27 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   .hero-trust-indicators {
     justify-content: center;
   }
-  .hero-visual-stage {
+  .hero-visual-col, .hero-visual-stage, .hero-caller-figure-frame {
+    align-items: flex-end;
+    justify-content: center;
     min-height: 480px;
+  }
+  .hero-caller-radial-glow {
+    right: 50%;
+    transform: translate(50%, -50%);
   }
   .hero-caller-image {
     max-height: 520px;
-  }
-  .hero-float-card.card-top-left {
-    left: 8px;
-  }
-  .hero-float-card.card-bottom-right {
-    right: 8px;
+    object-position: bottom center;
   }
 }
 
 @media (max-width: 640px) {
   .avyukta-hero-section {
-    padding: 24px 0 36px;
+    padding: 24px 0 0;
   }
   .hero-main-heading {
-    font-size: 29px;
+    font-size: 30px;
     letter-spacing: -0.03em;
   }
   .hero-feature-chips-grid {
@@ -1249,11 +1256,11 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
     width: 100%;
     justify-content: center;
   }
-  .hero-caller-image {
-    max-height: 400px;
+  .hero-visual-stage {
+    min-height: 380px;
   }
-  .hero-float-card {
-    display: none;
+  .hero-caller-image {
+    max-height: 420px;
   }
   .hero-trust-indicators {
     flex-direction: column;

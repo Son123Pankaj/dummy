@@ -6,7 +6,6 @@ import {
   Zap, 
   Database, 
   MessageSquare, 
-  Headphones, 
   CheckCircle2, 
   ShieldCheck 
 } from 'lucide-react';
@@ -156,20 +155,6 @@ export default function HeroSection({ navigateTo }) {
                   <circle cx="200" cy="200" r="135" stroke="currentColor" strokeWidth="1.2" opacity="0.45" />
                   <circle cx="200" cy="200" r="90" stroke="currentColor" strokeWidth="1" strokeDasharray="3 5" opacity="0.4" />
                 </svg>
-              </div>
-
-              {/* Floating Tech Badge 1 (Top-Left): Active AI Voice Status */}
-              <div className="hero-float-card card-top-left" aria-label="AI Voice Agent Active">
-                <div className="float-card-avatar">
-                  <Headphones size={18} />
-                </div>
-                <div className="float-card-details">
-                  <div className="float-card-status">
-                    <span className="live-status-dot" />
-                    <span className="status-label">AI VOICE CALLER</span>
-                  </div>
-                  <strong className="float-card-title">Live Interactive Cadence</strong>
-                </div>
               </div>
 
               {/* Exact Female Avyukta AI Caller with Headset */}
