@@ -1,4 +1,4 @@
-﻿import React, { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Mail, Phone, ArrowUpRight, CheckCircle2, Send } from 'lucide-react';
 import { PLANS, SAMPLES, normalizePlan } from '../data/offer';
 import AiMagicWand from '../components/AiMagicWand';

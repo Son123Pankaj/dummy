@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
-import HeroCarousel from '../components/HeroCarousel';
+import HeroSection from '../components/HeroSection';
 import PlanCards from '../components/PlanCards';
 import DynamicPricingSection from '../components/DynamicPricingSection';
 import AutomationShowcase from '../components/AutomationShowcase';
@@ -19,8 +19,8 @@ export default function HomePage({ navigateTo }) {
   return (
     <div className="studio-page studio-home conversion-home">
       
-      {/* 1. HERO CAROUSEL */}
-      <HeroCarousel navigateTo={navigateTo} />
+      {/* 1. LARGE HIGH-CONVERSION AI SAAS HERO SECTION */}
+      <HeroSection navigateTo={navigateTo} />
 
       {/* 2. TRANSPARENT AI PRICING PLANS (Silver, Gold & Diamond) */}
       <PlanCards navigateTo={navigateTo} />
