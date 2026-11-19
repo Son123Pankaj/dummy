@@ -15,6 +15,18 @@ import {
 import { Eyebrow } from './StudioParts';
 import { PLANS, MODELS, COMMERCIAL_NOTE, demoUrl, rateLabel } from '../data/offer';
 
+const CARD_TITLES = {
+  silver: 'AVYUKTA AI SILVER',
+  gold: 'AVYUKTA AI GOLD',
+  platinum: 'AVYUKTA AI DIAMOND'
+};
+
+const DISPLAY_NAMES = {
+  silver: 'Silver',
+  gold: 'Gold',
+  platinum: 'Diamond'
+};
+
 export default function PlanCards({ navigateTo }) {
   const [model, setModel] = useState('modular');
   const [audioState, setAudioState] = useState({
@@ -54,12 +66,12 @@ export default function PlanCards({ navigateTo }) {
     const modelName = MODELS[model].label;
 
     if (plan.id === 'silver') {
-      return `Silver Plan. Everyday customer conversations. Starting at ₹${rate} per connected minute on ${modelName}, excluding GST. Key call capabilities include: Automated inbound routine enquiry answering, outbound reminder and follow-up calling, sub-500ms voice turn cadence, and basic lead capture. Billed on connected calls only; unanswered and failed calls cost zero rupees.`;
+      return `Avyukta AI Silver Plan. Everyday customer conversations. Starting at ₹${rate} per connected minute on ${modelName}, excluding GST. Key call capabilities include: Automated inbound routine enquiry answering, outbound reminder and follow-up calling, sub-500ms voice turn cadence, and basic lead capture. Billed on connected calls only; unanswered and failed calls cost zero rupees.`;
     }
     if (plan.id === 'gold') {
-      return `Gold Plan. Recommended and most popular for Indian businesses. Starting at ₹${rate} per connected minute on ${modelName}, excluding GST. Key call capabilities include: Multilingual calling in Hindi, English, and regional Indian dialects, automated lead qualification calls and booking, natural human turn-taking with live interruption handling, one-click live transfer to human supervisors, and Meta WhatsApp post-call summary drops. Thirty-second minimum pulse with six-second increments.`;
+      return `Avyukta AI Gold Plan. Recommended and most popular for Indian businesses. Starting at ₹${rate} per connected minute on ${modelName}, excluding GST. Key call capabilities include: Multilingual calling in Hindi, English, and regional Indian dialects, automated lead qualification calls and booking, natural human turn-taking with live interruption handling, one-click live transfer to human supervisors, and Meta WhatsApp post-call summary drops. Thirty-second minimum pulse with six-second increments.`;
     }
-    return `Platinum Plan. Expressive brand voices. Starting at ₹${rate} per connected minute on ${modelName}, excluding GST. Key call capabilities include: Studio-grade expressive brand voices with emotional inflection, high-concurrency outbound dialing for up to one hundred concurrent channels, custom Pan-India STD CLI for trusted caller ID, enterprise CRM synchronization with speech sentiment intelligence, and carrier-grade 99.99% uptime SLA.`;
+    return `Avyukta AI Diamond Plan. Expressive brand voices. Starting at ₹${rate} per connected minute on ${modelName}, excluding GST. Key call capabilities include: Studio-grade expressive brand voices with emotional inflection, high-concurrency outbound dialing for up to one hundred concurrent channels, custom Pan-India STD CLI for trusted caller ID, enterprise CRM synchronization with speech sentiment intelligence, and carrier-grade 99.99% uptime SLA.`;
   };
 
   // Handle Play / Pause for a specific card
@@ -127,7 +139,7 @@ export default function PlanCards({ navigateTo }) {
         <div className="studio-plan-heading">
           <div>
             <Eyebrow>TRANSPARENT AI VOICE &amp; CALL PRICING</Eyebrow>
-            <h2>Voice Pricing <span className="studio-accent">Plans.</span></h2>
+            <h2>AI Pricing <span className="studio-accent">Plans.</span></h2>
             <p>Choose the right voice tier for your callers. Listen to each plan independently, compare verified call features, and request a tailored quote.</p>
           </div>
 
@@ -175,23 +187,23 @@ export default function PlanCards({ navigateTo }) {
 
                 <div className="studio-plan-card-top">
                   <span className="plan-purpose">{plan.label}</span>
-                  <div className="studio-plan-symbol" aria-hidden="true">{plan.icon}</div>
-                  <h3>{plan.name}</h3>
+                  <div className="studio-plan-symbol" aria-hidden="true">{plan.id === 'platinum' ? 'D' : plan.icon}</div>
+                  <h3 className="plan-main-title">{CARD_TITLES[plan.id] || `AVYUKTA AI ${plan.name.toUpperCase()}`}</h3>
                   <p>{plan.description}</p>
                 </div>
 
                 {/* Card-Wise Independent Voice / Audio Control */}
-                <div className="card-voice-control-box" aria-label={`${plan.name} plan audio playback`}>
+                <div className="card-voice-control-box" aria-label={`${CARD_TITLES[plan.id] || plan.name} audio playback`}>
                   {!isCardActive ? (
                     <button
                       type="button"
                       className="card-audio-play-btn"
                       onClick={() => handleToggleVoice(plan)}
-                      aria-label={`Listen to ${plan.name} Plan details`}
-                      title={`Listen to ${plan.name} Plan details`}
+                      aria-label={`Listen to ${CARD_TITLES[plan.id] || plan.name} details`}
+                      title={`Listen to ${CARD_TITLES[plan.id] || plan.name} details`}
                     >
                       <Volume2 size={16} className="audio-btn-icon" />
-                      <span>Listen to {plan.name} Plan</span>
+                      <span>Listen to {DISPLAY_NAMES[plan.id] || plan.name} Plan</span>
                     </button>
                   ) : (
                     <div className="card-audio-active-bar">
@@ -200,7 +212,7 @@ export default function PlanCards({ navigateTo }) {
                           <span /><span /><span /><span />
                         </div>
                         <span className="card-audio-status-text">
-                          {isPlaying ? `Reading ${plan.name}...` : 'Paused'}
+                          {isPlaying ? `Reading ${DISPLAY_NAMES[plan.id] || plan.name}...` : 'Paused'}
                         </span>
                       </div>
 
@@ -209,7 +221,7 @@ export default function PlanCards({ navigateTo }) {
                           type="button"
                           className="card-audio-action-btn pause"
                           onClick={() => handleToggleVoice(plan)}
-                          aria-label={isPlaying ? `Pause ${plan.name} audio` : `Resume ${plan.name} audio`}
+                          aria-label={isPlaying ? `Pause ${DISPLAY_NAMES[plan.id] || plan.name} audio` : `Resume ${DISPLAY_NAMES[plan.id] || plan.name} audio`}
                           title={isPlaying ? 'Pause' : 'Resume'}
                         >
                           {isPlaying ? <Pause size={14} /> : <Play size={14} />}
@@ -218,7 +230,7 @@ export default function PlanCards({ navigateTo }) {
                           type="button"
                           className="card-audio-action-btn stop"
                           onClick={() => handleStopVoice(plan.id)}
-                          aria-label={`Stop ${plan.name} audio`}
+                          aria-label={`Stop ${DISPLAY_NAMES[plan.id] || plan.name} audio`}
                           title="Stop"
                         >
                           <Square size={13} />
@@ -326,7 +338,7 @@ export default function PlanCards({ navigateTo }) {
                     onClick={event => local(event, '/#voice-samples')}
                   >
                     <Volume2 size={16} />
-                    <span>Hear {plan.name} samples</span>
+                    <span>Hear {DISPLAY_NAMES[plan.id] || plan.name} samples</span>
                   </a>
 
                   <a 
@@ -334,7 +346,7 @@ export default function PlanCards({ navigateTo }) {
                     href={demoUrl(plan.id)} 
                     onClick={event => local(event, demoUrl(plan.id))}
                   >
-                    <span>Request {plan.name} demo</span>
+                    <span>Request {DISPLAY_NAMES[plan.id] || plan.name} demo</span>
                     <ArrowUpRight size={17} />
                   </a>
                 </div>

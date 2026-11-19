@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import HeroCarousel from '../components/HeroCarousel';
+import PlanCards from '../components/PlanCards';
 import DynamicPricingSection from '../components/DynamicPricingSection';
 import AutomationShowcase from '../components/AutomationShowcase';
 import IndustriesSection from '../components/IndustriesSection';
@@ -22,7 +23,10 @@ export default function HomePage({ navigateTo }) {
       {/* 1. HERO CAROUSEL */}
       <HeroCarousel navigateTo={navigateTo} />
 
-      {/* 2. DYNAMIC AI PRICING & PLATFORM WORKSPACE (BPA | CRM | Command Center | Sales) */}
+      {/* 2. TRANSPARENT AI PRICING PLANS (Silver, Gold & Diamond) */}
+      <PlanCards navigateTo={navigateTo} />
+
+      {/* 3. DYNAMIC AI PRICING & PLATFORM WORKSPACE (BPA | CRM | Command Center | Sales) */}
       <DynamicPricingSection navigateTo={navigateTo} />
 
       {/* 2.5 WHAT DO YOU WANT TO AUTOMATE? (Interactive 12-Category Workflow Engine) */}

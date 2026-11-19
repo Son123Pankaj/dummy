@@ -399,6 +399,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .studio-popular-tag {display:inline-flex;align-items:center;gap:5px;background:#e7f8f8;color:#057c87;padding:5px 10px;font-size:10px;font-weight:760;letter-spacing:.08em;border-radius:999px;position:absolute;right:17px;top:23px}
 .studio-plan-symbol {height:42px;width:42px;display:grid;place-items:center;background:var(--studio-soft);color:var(--studio-accent);font-size:18px;font-weight:700;border-radius:13px;margin-bottom:17px}
 .studio-plan-card h3 {font-size:27px;letter-spacing:-.035em;margin-bottom:6px}
+.studio-plan-card h3.plan-main-title {font-size:clamp(19px,1.65vw,25px);font-weight:800;letter-spacing:-.025em;line-height:1.2;margin-bottom:8px}
 .studio-plan-card-top>p {font-size:13px;line-height:1.57}
 .studio-plan-price {min-height:91px;display:flex;flex-direction:column;justify-content:center;gap:0}
 .studio-plan-price strong {color:var(--studio-ink);font-size:42px;letter-spacing:-.05em;font-weight:650;line-height:1.16}
