@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import HeroSection from '../components/HeroSection';
 import PlanCards from '../components/PlanCards';
+import WhyAvyuktaSection from '../components/WhyAvyuktaSection';
 import DynamicPricingSection from '../components/DynamicPricingSection';
 import DualMarquee from '../components/DualMarquee';
 import AutomationShowcase from '../components/AutomationShowcase';
@@ -25,6 +26,9 @@ export default function HomePage({ navigateTo }) {
 
       {/* 2. TRANSPARENT AI PRICING PLANS (Silver, Gold & Diamond) */}
       <PlanCards navigateTo={navigateTo} />
+
+      {/* 2.5 THE AVYUKTA ADVANTAGE (Why Avyukta - Lower Cost, 17+ Yrs, 700+ Clients, Full Telephony & AI) */}
+      <WhyAvyuktaSection navigateTo={navigateTo} />
 
       {/* 3. DYNAMIC AI PRICING & PLATFORM WORKSPACE (BPA | CRM | Command Center | Sales) */}
       <DynamicPricingSection navigateTo={navigateTo} />

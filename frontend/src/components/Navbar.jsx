@@ -3,6 +3,7 @@ import { ArrowUpRight, Menu, X, Moon, Sun, PhoneCall } from 'lucide-react';
 import { getAssetUrl } from '../utils/assetUrl';
 
 const LINKS = [
+  { label: 'Why Avyukta', href: '/#why-avyukta' },
   { label: 'Solutions', href: '/#solutions' },
   { label: 'Voice Pricing', href: '/#pricing' },
   { label: 'Partners', href: '/#partners' },

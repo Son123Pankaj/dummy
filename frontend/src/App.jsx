@@ -15,6 +15,7 @@ import { useScrollReveal } from './utils/useScrollReveal';
 
 const ROUTES = {
   '/': ['home', 'AI Calling Assistants for Your Business'],
+  '/why-avyukta': ['home', 'Why Choose Avyukta IntelliCall', 'why-avyukta'],
   '/services': ['services', 'Calling and Telecom Services'],
   '/cloud-dialer': ['services', 'Cloud Calling for Your Team', 'cloud-dialer'],
   '/voip-minutes': ['services', 'Phone Connectivity', 'voip-minutes'],

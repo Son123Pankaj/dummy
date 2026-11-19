@@ -4633,3 +4633,318 @@ button:active:not(:disabled),
 }
 
 
+
+
+/* ============================================================ */
+/* SECTION: WHY AVYUKTA INTELLICALL (THE AVYUKTA ADVANTAGE)      */
+/* Lower Cost, 17+ Yrs, 700+ Clients, 11 Countries, 91 Cities,  */
+/* 72-Hr Refund, Advanced AI, SIP/GSM/PBX/Analog, Routes, CRM,   */
+/* AI Agent Barge & Whisper                                     */
+/* ============================================================ */
+.why-avyukta-section {
+  position: relative;
+  padding: clamp(60px, 8vh, 96px) 0;
+  background: var(--studio-bg);
+  border-top: 1px solid var(--studio-stroke);
+  overflow: hidden;
+}
+
+.why-avyukta-header {
+  text-align: center;
+  max-width: 820px;
+  margin: 0 auto clamp(36px, 5vh, 52px);
+}
+.why-avyukta-main-heading {
+  font-size: clamp(30px, 3.4vw, 48px);
+  line-height: 1.15;
+  font-weight: 750;
+  letter-spacing: -0.04em;
+  color: var(--studio-ink);
+  margin: 12px 0 16px;
+  font-family: 'Jost', sans-serif;
+}
+.why-avyukta-subheading {
+  font-size: clamp(15px, 1.1vw, 17px);
+  line-height: 1.6;
+  color: var(--studio-muted);
+  font-family: 'Jost', sans-serif;
+  margin: 0;
+}
+
+/* 4 Key Pillars Stats Bar */
+.why-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: clamp(36px, 5vh, 48px);
+}
+.why-stat-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px 22px;
+  border-radius: 18px;
+  background: var(--studio-surface);
+  border: 1px solid var(--studio-stroke);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, border-color 0.2s ease;
+}
+.why-stat-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--studio-accent);
+  box-shadow: 0 12px 28px -6px rgba(11, 153, 167, 0.14);
+}
+.why-stat-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--studio-soft);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition: transform 0.22s ease;
+}
+.why-stat-card:hover .why-stat-icon-wrap {
+  transform: scale(1.1);
+}
+.why-stat-body {
+  display: flex;
+  flex-direction: column;
+}
+.why-stat-value {
+  font-size: clamp(20px, 1.8vw, 25px);
+  font-weight: 800;
+  color: var(--studio-ink);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+.why-stat-label {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--studio-accent);
+  margin-top: 2px;
+}
+.why-stat-sub {
+  font-size: 11.5px;
+  color: var(--studio-muted);
+  line-height: 1.4;
+  margin-top: 4px;
+}
+
+/* 6 Core Advantages Grid */
+.why-advantages-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-bottom: clamp(36px, 5vh, 48px);
+}
+.why-advantage-card {
+  display: flex;
+  flex-direction: column;
+  padding: 26px;
+  border-radius: 20px;
+  background: var(--studio-surface);
+  border: 1.5px solid var(--studio-stroke);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, border-color 0.25s ease;
+}
+.why-advantage-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--studio-accent);
+  box-shadow: 0 16px 36px -8px rgba(11, 153, 167, 0.18);
+}
+.why-card-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.why-card-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--studio-soft);
+  color: var(--studio-accent);
+  display: grid;
+  place-items: center;
+  transition: transform 0.22s ease;
+}
+.why-advantage-card:hover .why-card-icon-box {
+  transform: scale(1.12);
+}
+.why-card-badge {
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 11px;
+  border-radius: 999px;
+}
+.badge-emerald {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.28);
+}
+.badge-teal {
+  background: rgba(11, 153, 167, 0.12);
+  color: var(--studio-accent);
+  border: 1px solid rgba(11, 153, 167, 0.28);
+}
+.badge-blue {
+  background: rgba(2, 132, 199, 0.12);
+  color: #0284c7;
+  border: 1px solid rgba(2, 132, 199, 0.28);
+}
+.badge-purple {
+  background: rgba(147, 51, 234, 0.12);
+  color: #9333ea;
+  border: 1px solid rgba(147, 51, 234, 0.28);
+}
+.badge-amber {
+  background: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.28);
+}
+.badge-rose {
+  background: rgba(244, 63, 94, 0.12);
+  color: #f43f5e;
+  border: 1px solid rgba(244, 63, 94, 0.28);
+}
+
+.why-card-title {
+  font-size: 19px;
+  font-weight: 750;
+  color: var(--studio-ink);
+  letter-spacing: -0.02em;
+  margin: 0 0 10px;
+  font-family: 'Jost', sans-serif;
+}
+.why-card-desc {
+  font-size: 14px;
+  line-height: 1.62;
+  color: var(--studio-muted);
+  margin: 0 0 18px;
+  flex-grow: 1;
+}
+
+.why-card-tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding-top: 14px;
+  border-top: 1px solid var(--studio-stroke);
+}
+.why-card-tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 650;
+  color: var(--studio-ink);
+  background: var(--studio-soft);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+.why-tag-check {
+  color: #10b981;
+  flex-shrink: 0;
+}
+
+/* Bottom Refund Assurance Banner */
+.why-refund-assurance-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 28px 34px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(11, 153, 167, 0.06) 100%);
+  border: 1.5px solid rgba(16, 185, 129, 0.3);
+  box-shadow: 0 12px 32px -6px rgba(16, 185, 129, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+[data-theme="dark"] .why-refund-assurance-banner {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.14) 0%, rgba(11, 153, 167, 0.1) 100%);
+  border-color: rgba(16, 185, 129, 0.4);
+}
+.refund-assurance-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.refund-icon-circle {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  background: rgba(16, 185, 129, 0.16);
+  color: #10b981;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.refund-text-group {
+  display: flex;
+  flex-direction: column;
+}
+.refund-title {
+  font-size: 18px;
+  font-weight: 750;
+  color: var(--studio-ink);
+  margin: 0 0 6px;
+  font-family: 'Jost', sans-serif;
+}
+.refund-desc {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--studio-muted);
+  margin: 0;
+  max-width: 660px;
+}
+.refund-action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .why-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .why-advantages-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .why-refund-assurance-banner {
+    flex-direction: column;
+    text-align: center;
+  }
+  .refund-assurance-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  .refund-action-buttons {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 640px) {
+  .why-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .why-advantages-grid {
+    grid-template-columns: 1fr;
+  }
+  .refund-action-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+  .refund-action-buttons .studio-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
