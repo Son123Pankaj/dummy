@@ -6,7 +6,6 @@ import {
   Zap, 
   Database, 
   MessageSquare, 
-  Sparkles, 
   Headphones, 
   CheckCircle2, 
   ShieldCheck 
@@ -182,17 +181,6 @@ export default function HeroSection({ navigateTo }) {
                   loading="eager"
                   decoding="async"
                 />
-              </div>
-
-              {/* Floating Tech Badge 2 (Bottom-Right): Telecom Cadence */}
-              <div className="hero-float-card card-bottom-right" aria-label="Sub-500ms Latency SLA">
-                <div className="float-card-avatar accent-glow">
-                  <Sparkles size={17} />
-                </div>
-                <div className="float-card-details">
-                  <strong className="float-card-title">Sub-500ms Voice Cadence</strong>
-                  <span className="float-card-sub">Human-level interruption handling</span>
-                </div>
               </div>
 
             </div>
