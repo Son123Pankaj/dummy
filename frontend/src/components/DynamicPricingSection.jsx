@@ -2,12 +2,12 @@ import React, { useState, useRef } from 'react';
 import { 
   Workflow, 
   Users, 
-  PhoneCall, 
-  Mic, 
+  LayoutDashboard, 
   TrendingUp, 
   ArrowUpRight, 
   Play, 
   Pause,
+  PhoneCall,
   ShieldCheck,
   Cpu,
   Award,
@@ -19,7 +19,7 @@ import {
 import { Eyebrow } from './StudioParts';
 import { getAssetUrl } from '../utils/assetUrl';
 
-// The 5 Required Categories with exact full forms and complete images
+// The 4 Required Categories in exact order: 1. BPA | 2. CRM | 3. Command Center | 4. Sales
 const CATEGORIES = [
   { 
     id: 'bpa', 
@@ -39,20 +39,12 @@ const CATEGORIES = [
     altImage: '/avyukta-communications-dashboard.png'
   },
   { 
-    id: 'dialer', 
-    label: 'Dialer', 
-    subtitle: 'Cloud Calling', 
-    icon: PhoneCall,
-    fullForm: 'Cloud Predictive Dialer (Dialer)',
-    image: '/dialer-india-hero.jpg'
-  },
-  { 
-    id: 'voice', 
-    label: 'Voice', 
-    subtitle: 'AI Voice Agents', 
-    icon: Mic,
-    fullForm: 'Artificial Intelligence Voice Agent (AI Voice)',
-    image: '/pricingai.png'
+    id: 'command-center', 
+    label: 'Command Center', 
+    subtitle: 'Operations & Monitoring', 
+    icon: LayoutDashboard,
+    fullForm: 'Command Center',
+    image: '/command-center-operations.jpg'
   },
   { 
     id: 'sales', 
@@ -145,10 +137,10 @@ export default function DynamicPricingSection({ navigateTo }) {
         <div className="dynamic-section-heading">
           <Eyebrow>DYNAMIC PLATFORM &amp; PRICING WORKSPACE</Eyebrow>
           <h2 className="dynamic-section-title">
-            One Connected Workspace. <span className="studio-accent">Five Core Solutions.</span>
+            One Connected Workspace. <span className="studio-accent">Four Core Solutions.</span>
           </h2>
           <p className="dynamic-section-desc">
-            Explore Avyukta&apos;s process automation, customer CRM, cloud dialer, conversational AI voice calling, and sales pipeline management. Select any category to view its dedicated architecture.
+            Explore Avyukta&apos;s process automation, customer CRM, live operations command center, and sales pipeline management. Select any category to view its dedicated architecture.
           </p>
         </div>
 
@@ -156,7 +148,7 @@ export default function DynamicPricingSection({ navigateTo }) {
         <div className="dynamic-workspace-shell">
           
           {/* ========================================================= */}
-          {/* 1. LEFT-SIDE CATEGORY NAVIGATION (BPA, CRM, Dialer, Voice, Sales) */}
+          {/* 1. LEFT-SIDE CATEGORY NAVIGATION (BPA, CRM, Command Center, Sales) */}
           {/* ========================================================= */}
           <aside className="dynamic-category-sidebar">
             <div className="dynamic-sidebar-header">
@@ -344,8 +336,7 @@ export default function DynamicPricingSection({ navigateTo }) {
               <li><a href="/#solutions" onClick={e => nav(e, '/#solutions')}>Smart Calling Solutions</a></li>
               <li><button type="button" onClick={() => setActiveCategory('bpa')}>Business Process Automation (BPA)</button></li>
               <li><button type="button" onClick={() => setActiveCategory('crm')}>Customer Relationship Management (CRM)</button></li>
-              <li><button type="button" onClick={() => setActiveCategory('dialer')}>Cloud Predictive Dialer</button></li>
-              <li><button type="button" onClick={() => setActiveCategory('voice')}>Artificial Intelligence Voice Agent (AI Voice)</button></li>
+              <li><button type="button" onClick={() => setActiveCategory('command-center')}>Command Center Operations</button></li>
               <li><button type="button" onClick={() => setActiveCategory('sales')}>Sales Management &amp; Customer Journey</button></li>
             </ul>
           </div>
