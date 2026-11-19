@@ -15,6 +15,7 @@ const LINKS = [
 export default function Navbar({ currentPath, navigateTo, theme, toggleTheme }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeHash, setActiveHash] = useState(() => window.location.hash);
 
   useEffect(() => {
     const check = () => setScrolled(window.scrollY > 12);
@@ -32,6 +33,17 @@ export default function Navbar({ currentPath, navigateTo, theme, toggleTheme }) 
     return () => window.removeEventListener('keydown', esc);
   }, [menuOpen]);
 
+  useEffect(() => {
+    const syncHash = () => setActiveHash(window.location.hash);
+    syncHash();
+    window.addEventListener('hashchange', syncHash);
+    window.addEventListener('popstate', syncHash);
+    return () => {
+      window.removeEventListener('hashchange', syncHash);
+      window.removeEventListener('popstate', syncHash);
+    };
+  }, [currentPath]);
+
   const nav = (e, href) => {
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     e.preventDefault();
@@ -43,6 +55,7 @@ export default function Navbar({ currentPath, navigateTo, theme, toggleTheme }) 
       if (target) {
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         window.history.pushState({}, '', href);
+        setActiveHash(`#${targetId}`);
         return;
       }
     }
@@ -67,17 +80,20 @@ export default function Navbar({ currentPath, navigateTo, theme, toggleTheme }) 
         </a>
 
         <nav className="studio-desktop-nav" aria-label="Primary navigation">
-          {LINKS.map(item => (
-            <a 
-              key={item.href} 
-              href={item.href} 
-              onClick={e => nav(e, item.href)} 
-              className={currentPath === item.href ? 'active' : ''} 
-              aria-current={currentPath === item.href ? 'page' : undefined}
-            >
-              {item.label}
-            </a>
-          ))}
+          {LINKS.map(item => {
+            const isActive = currentPath === item.href || (currentPath === '/' && activeHash === item.href.slice(1));
+            return (
+              <a 
+                key={item.href} 
+                href={item.href} 
+                onClick={e => nav(e, item.href)} 
+                className={isActive ? 'active' : ''} 
+                aria-current={isActive ? 'location' : undefined}
+              >
+                {item.label}
+              </a>
+            );
+          })}
         </nav>
 
         <div className="studio-nav-actions">
@@ -120,17 +136,21 @@ export default function Navbar({ currentPath, navigateTo, theme, toggleTheme }) 
         hidden={!menuOpen}
       >
         <nav aria-label="Mobile navigation">
-          {LINKS.map(item => (
-            <a 
-              key={item.href} 
-              href={item.href} 
-              className={currentPath === item.href ? 'active' : ''} 
-              onClick={e => nav(e, item.href)}
-            >
-              {item.label}
-              <ArrowUpRight size={17} />
-            </a>
-          ))}
+          {LINKS.map(item => {
+            const isActive = currentPath === item.href || (currentPath === '/' && activeHash === item.href.slice(1));
+            return (
+              <a 
+                key={item.href} 
+                href={item.href} 
+                className={isActive ? 'active' : ''} 
+                aria-current={isActive ? 'location' : undefined}
+                onClick={e => nav(e, item.href)}
+              >
+                {item.label}
+                <ArrowUpRight size={17} />
+              </a>
+            );
+          })}
         </nav>
         <a 
           className="studio-btn studio-btn-primary" 

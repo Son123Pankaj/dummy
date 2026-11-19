@@ -8,6 +8,7 @@ const REVEAL_SELECTORS = [
   '.why-choose-head',
   '.home-pillar-card',
   '.home-service-card',
+  '.studio-plan-card',
   '.plan-luxury-card',
   '.bom-card',
   '.bom-comparison-matrix-card',
@@ -26,7 +27,13 @@ const REVEAL_SELECTORS = [
   '.bill',
   '.features-visual-card',
   '.industry-card',
-  '.bpa-flow-container'
+  '.bpa-flow-container',
+  '.auto-category-card',
+  '.auto-workflow-column',
+  '.brand-logo-tile',
+  '.faq-card-item',
+  '.dynamic-category-tab',
+  '.dual-marquee-section'
 ].join(', ');
 
 export function useScrollReveal(triggerDep) {

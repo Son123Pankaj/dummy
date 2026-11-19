@@ -346,7 +346,7 @@ export default function PlanCards({ navigateTo }) {
               <article 
                 id={`plan-${plan.id}`} 
                 key={plan.id} 
-                className={`studio-plan-card ${isGold ? 'featured' : ''} ${isDropdownOpen ? 'dropdown-active' : ''} ${isCardActive ? 'has-audio-playing' : ''}`}
+                className={`studio-plan-card plan-tier-${plan.id} ${isGold ? 'featured' : ''} ${isDropdownOpen ? 'dropdown-active' : ''} ${isCardActive ? 'has-audio-playing' : ''}`}
               >
                 {isGold && (
                   <div className="plan-recommended-badge">

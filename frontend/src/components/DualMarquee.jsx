@@ -433,7 +433,7 @@ export default function DualMarquee() {
               <h2 className="marquee-title">Our Technology Ecosystem</h2>
               <span className="marquee-subheading-tag">Our Affiliates</span>
               <p className="marquee-subtitle">
-                Certified integrations with global CRM leaders, Tier-1 telecom carriers, and enterprise telephony gateway manufacturers.
+                A connected ecosystem spanning CRM platforms, telecom carriers, and enterprise telephony hardware used across modern communication workflows.
               </p>
             </div>
             <button 

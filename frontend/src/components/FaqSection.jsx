@@ -62,7 +62,7 @@ export default function FaqSection({ items = CUSTOMER_FAQS }) {
 
         {/* 2-Column Responsive Card Grid */}
         <div className="faq-cards-grid">
-          {visibleItems.map((item, index) => {
+          {visibleItems.map((item) => {
             const isOpen = activeId === item.id;
             return (
               <div 
@@ -88,17 +88,19 @@ export default function FaqSection({ items = CUSTOMER_FAQS }) {
                   </div>
                 </button>
 
-                {isOpen && (
-                  <div 
-                    className="faq-card-body" 
-                    id={`faq-answer-${item.id}`}
-                    role="region"
-                    aria-labelledby={`faq-question-${item.id}`}
-                  >
-                    <div className="faq-card-divider"></div>
-                    <p className="faq-card-a-text">{item.a}</p>
+                <div className="faq-answer-reveal" aria-hidden={!isOpen}>
+                  <div>
+                    <div 
+                      className="faq-card-body" 
+                      id={`faq-answer-${item.id}`}
+                      role="region"
+                      aria-labelledby={`faq-question-${item.id}`}
+                    >
+                      <div className="faq-card-divider"></div>
+                      <p className="faq-card-a-text">{item.a}</p>
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
             );
           })}

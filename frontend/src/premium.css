@@ -1,25 +1,41 @@
 /* AVYUKTA / 2026 – Refined responsive design system. Applied after the legacy styles. */
 :root {
-  --studio-bg: #f8fafb;
-  --studio-surface: #fff;
-  --studio-ink: #112b3c;
-  --studio-muted: #637788;
-  --studio-stroke: #dfebef;
-  --studio-accent: #0b99a7;
-  --studio-accent-deep: #087784;
+  --color-primary: #0d2636;
+  --color-teal: #008c9e;
+  --color-cyan: #16b8ce;
+  --color-bg: #f6f9fc;
+  --color-surface: #ffffff;
+  --color-text: #102a3a;
+  --color-text-secondary: #64748b;
+  --color-border: #dfe8ee;
+  --studio-bg: var(--color-bg);
+  --studio-surface: var(--color-surface);
+  --studio-ink: var(--color-text);
+  --studio-muted: var(--color-text-secondary);
+  --studio-stroke: var(--color-border);
+  --studio-accent: var(--color-teal);
+  --studio-accent-deep: #007786;
   --studio-orange: #ff844d;
   --studio-soft: #e9f8f9;
   --studio-shadow: 0 28px 70px -42px rgba(12,42,62,.3);
   --studio-radius: 22px;
 }
 [data-theme="dark"] {
-  --studio-bg: #071b24;
-  --studio-surface: #102f3c;
-  --studio-ink: #f3faff;
-  --studio-muted: #aec2cb;
-  --studio-stroke: rgba(187,228,239,.16);
-  --studio-accent: #49cbd4;
-  --studio-accent-deep: #66e0e1;
+  --color-primary: #dff8fb;
+  --color-teal: #42c7d5;
+  --color-cyan: #69dbe7;
+  --color-bg: #071b24;
+  --color-surface: #102f3c;
+  --color-text: #f3faff;
+  --color-text-secondary: #aec2cb;
+  --color-border: rgba(187,228,239,.16);
+  --studio-bg: var(--color-bg);
+  --studio-surface: var(--color-surface);
+  --studio-ink: var(--color-text);
+  --studio-muted: var(--color-text-secondary);
+  --studio-stroke: var(--color-border);
+  --studio-accent: var(--color-teal);
+  --studio-accent-deep: var(--color-cyan);
   --studio-soft: rgba(56,173,186,.11);
   --studio-shadow: 0 28px 70px -42px rgba(0,0,0,.75);
   --bg: var(--studio-bg);
@@ -391,10 +407,33 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .studio-plan-brief {color:var(--studio-muted);font-size:14px;margin-bottom:22px;line-height:1.6}
 .studio-plan-brief strong {color:var(--studio-ink)}
 .studio-plan-grid {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;align-items:stretch}
-.studio-plan-card {position:relative;overflow:hidden;border:1px solid var(--studio-stroke);background:var(--studio-surface);border-radius:20px;padding:20px 20px 18px;display:flex;flex-direction:column;transition:transform .3s,box-shadow .3s,border-color .3s;min-width:0;scroll-margin-top:110px}
-.studio-plan-card:hover {transform:translateY(-4px);border-color:rgba(36,178,189,.4);box-shadow:var(--studio-shadow)}
-.studio-plan-card.featured {border-color:rgba(24,162,172,.7);box-shadow:0 14px 30px -20px rgba(13,154,171,.5)}
-.studio-plan-card.featured::before {content:"";position:absolute;inset:0 0 auto;height:4px;background:linear-gradient(90deg,#0d9daa,#78e8d8)}
+.studio-plan-card {position:relative;overflow:hidden;border:1px solid var(--studio-stroke);background:var(--studio-surface);border-radius:20px;padding:22px 20px 20px;display:flex;flex-direction:column;transition:transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;min-width:0;scroll-margin-top:110px}
+.studio-plan-card:hover {transform:translateY(-6px);box-shadow:0 20px 44px -14px rgba(13, 38, 54, 0.16)}
+.studio-plan-card:hover .studio-plan-symbol {transform:scale(1.08);transition:transform 0.25s ease}
+
+/* Special Tier Design: Bronze */
+.studio-plan-card.plan-tier-bronze::before {content:"";position:absolute;inset:0 0 auto;height:4px;background:linear-gradient(90deg, #b45309, #d97706)}
+.studio-plan-card.plan-tier-bronze .studio-plan-symbol {background:rgba(217, 119, 6, 0.12);color:#b45309}
+.studio-plan-card.plan-tier-bronze:hover {border-color:rgba(217, 119, 6, 0.55);box-shadow:0 20px 44px -14px rgba(180, 83, 9, 0.18)}
+
+/* Special Tier Design: Silver */
+.studio-plan-card.plan-tier-silver::before {content:"";position:absolute;inset:0 0 auto;height:4px;background:linear-gradient(90deg, #94a3b8, #cbd5e1)}
+.studio-plan-card.plan-tier-silver .studio-plan-symbol {background:rgba(148, 163, 184, 0.14);color:#475569}
+.studio-plan-card.plan-tier-silver:hover {border-color:rgba(148, 163, 184, 0.6);box-shadow:0 20px 44px -14px rgba(71, 85, 105, 0.16)}
+
+/* Special Tier Design: Gold (Recommended) */
+.studio-plan-card.plan-tier-gold,
+.studio-plan-card.featured {border-color:rgba(245, 158, 11, 0.65);box-shadow:0 12px 34px -12px rgba(245, 158, 11, 0.22)}
+.studio-plan-card.plan-tier-gold::before,
+.studio-plan-card.featured::before {content:"";position:absolute;inset:0 0 auto;height:4px;background:linear-gradient(90deg, #f59e0b, #fbbf24)}
+.studio-plan-card.plan-tier-gold .studio-plan-symbol {background:rgba(245, 158, 11, 0.14);color:#d97706}
+.studio-plan-card.plan-tier-gold:hover,
+.studio-plan-card.featured:hover {transform:translateY(-6px);border-color:#f59e0b;box-shadow:0 24px 50px -12px rgba(245, 158, 11, 0.32)}
+
+/* Special Tier Design: Platinum */
+.studio-plan-card.plan-tier-platinum::before {content:"";position:absolute;inset:0 0 auto;height:4px;background:linear-gradient(90deg, #008C9E, #16B8CE)}
+.studio-plan-card.plan-tier-platinum .studio-plan-symbol {background:rgba(0, 140, 158, 0.14);color:#008C9E}
+.studio-plan-card.plan-tier-platinum:hover {border-color:#008C9E;box-shadow:0 22px 48px -14px rgba(0, 140, 158, 0.28)}
 .studio-plan-card-top {min-height:115px}
 .studio-popular-tag {display:inline-flex;align-items:center;gap:5px;background:#e7f8f8;color:#057c87;padding:4px 9px;font-size:9.5px;font-weight:760;letter-spacing:.08em;border-radius:999px;position:absolute;right:16px;top:18px}
 .studio-plan-symbol {height:36px;width:36px;display:grid;place-items:center;background:var(--studio-soft);color:var(--studio-accent);font-size:16px;font-weight:700;border-radius:10px;margin-bottom:10px}
@@ -788,6 +827,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   filter: blur(70px);
   top: 5%;
   left: -80px;
+  animation: gentlePulseGlow 7s ease-in-out infinite alternate;
 }
 .hero-glow-blue {
   width: 600px;
@@ -796,6 +836,36 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   filter: blur(80px);
   bottom: -40px;
   right: 5%;
+  animation: gentlePulseGlow 9s ease-in-out infinite alternate-reverse;
+}
+
+/* ============================================================ */
+/* BOUNCING & FLOATING ANIMATION KEYFRAMES                      */
+/* ============================================================ */
+@keyframes gentleFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes gentlePulseGlow {
+  0%, 100% {
+    opacity: 0.14;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.24;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes subtlePhoneWiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-8deg); }
+  75% { transform: rotate(8deg); }
 }
 
 .hero-inner-container {
@@ -824,7 +894,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   padding-bottom: clamp(32px, 5vh, 60px);
 }
 
-/* Small Top Badge */
+/* Small Top Badge with Gentle Floating Effect */
 .hero-badge-pill {
   display: inline-flex;
   align-items: center;
@@ -836,6 +906,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   border: 1px solid rgba(11, 153, 167, 0.28);
   box-shadow: 0 2px 8px rgba(11, 153, 167, 0.08);
   margin-bottom: 20px;
+  animation: gentleFloat 4.5s ease-in-out infinite;
 }
 .hero-badge-pulse {
   position: relative;
@@ -915,12 +986,16 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   background: var(--studio-surface);
   border: 1px solid var(--studio-stroke);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.25s ease;
 }
 .hero-feature-chip:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   border-color: var(--studio-accent);
-  box-shadow: 0 6px 16px rgba(11, 153, 167, 0.12);
+  box-shadow: 0 8px 20px rgba(11, 153, 167, 0.16);
+}
+.hero-feature-chip:hover .hero-chip-icon-box {
+  transform: scale(1.12);
+  transition: transform 0.22s ease;
 }
 .hero-chip-icon-box {
   width: 28px;
@@ -931,6 +1006,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   display: grid;
   place-items: center;
   flex-shrink: 0;
+  transition: transform 0.22s ease;
 }
 .hero-chip-label {
   font-size: 13.5px;
@@ -959,18 +1035,26 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   font-weight: 700;
   text-decoration: none;
   box-shadow: 0 10px 24px -6px rgba(11, 153, 167, 0.45);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, filter 0.25s ease;
+  cursor: pointer;
 }
 .hero-btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 14px 30px -4px rgba(11, 153, 167, 0.55);
   filter: brightness(1.04);
 }
+.hero-btn-primary:active {
+  transform: translateY(0) scale(0.98);
+}
+.hero-btn-primary:focus-visible {
+  outline: 2px solid var(--studio-accent);
+  outline-offset: 3px;
+}
 .hero-btn-arrow-icon {
-  transition: transform 0.2s ease;
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .hero-btn-primary:hover .hero-btn-arrow-icon {
-  transform: translate(2px, -2px);
+  transform: translate(3px, -3px);
 }
 .hero-btn-secondary {
   display: inline-flex;
@@ -984,13 +1068,25 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   font-size: 15px;
   font-weight: 650;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
 }
 .hero-btn-secondary:hover {
   border-color: var(--studio-accent);
   background: var(--studio-soft);
   color: var(--studio-accent) !important;
   transform: translateY(-2px);
+  box-shadow: 0 8px 20px -6px rgba(11, 153, 167, 0.2);
+}
+.hero-btn-secondary:active {
+  transform: translateY(0) scale(0.98);
+}
+.hero-btn-secondary:focus-visible {
+  outline: 2px solid var(--studio-accent);
+  outline-offset: 3px;
+}
+.hero-btn-secondary:hover .hero-btn-phone-icon {
+  animation: subtlePhoneWiggle 0.4s ease;
 }
 .hero-btn-phone-icon {
   color: var(--studio-accent);
@@ -1502,17 +1598,21 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   min-width: 200px;
   height: 86px;
   box-shadow: 0 4px 16px -8px rgba(11, 42, 54, 0.08);
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
   cursor: default;
 }
 
 .brand-logo-tile:hover,
 .brand-logo-tile:focus-visible {
-  transform: translateY(-3px);
+  transform: translateY(-5px) scale(1.02);
   border-color: var(--studio-accent);
-  box-shadow: 0 12px 28px -8px rgba(11, 42, 54, 0.16);
+  box-shadow: 0 14px 32px -8px rgba(11, 42, 54, 0.18);
   outline: none;
+}
+.brand-logo-tile:hover .brand-logo-svg {
+  transform: scale(1.05);
+  transition: transform 0.25s ease;
 }
 
 .brand-logo-wrap {
@@ -3236,6 +3336,11 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .dynamic-category-tab:hover {
   background: var(--studio-soft);
   color: var(--studio-ink);
+  transform: translateX(4px);
+}
+.dynamic-category-tab:hover .cat-tab-icon-wrap {
+  transform: scale(1.08);
+  transition: transform 0.25s ease;
 }
 .dynamic-category-tab.active {
   background: var(--studio-soft);
@@ -4408,6 +4513,23 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   color: var(--studio-accent);
 }
 
+.faq-answer-reveal {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.28s cubic-bezier(.2,.8,.2,1), opacity 0.2s ease;
+}
+
+.faq-answer-reveal > div {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.faq-card-item.is-open .faq-answer-reveal {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
 .faq-expand-action-row {
   display: flex;
   justify-content: center;
@@ -4446,21 +4568,65 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 }
 
 /* ============================================================ */
+/* UNIVERSAL BUTTON HOVER ELEVATION & CLICK FEEDBACK           */
+/* ============================================================ */
+.studio-btn,
+.studio-plan-cta,
+.faq-view-toggle-btn {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.25s ease, 
+              background 0.2s ease, 
+              border-color 0.2s ease;
+}
+
+.studio-btn:hover:not(:disabled),
+.studio-plan-cta:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.studio-btn:hover svg,
+.studio-plan-cta:hover svg,
+.studio-text-link:hover svg {
+  transform: translate(3px, -3px);
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+button:active:not(:disabled),
+.studio-btn:active:not(:disabled),
+.hero-btn-primary:active,
+.hero-btn-secondary:active,
+.faq-view-toggle-btn:active,
+.studio-plan-cta:active:not(:disabled) {
+  transform: translateY(0) scale(0.98) !important;
+}
+
+/* ============================================================ */
 /* ACCESSIBILITY & PREFERS-REDUCED-MOTION                       */
 /* ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   .marquee-track,
   .marquee-track.reverse-scroll,
-  .pricing-topic-marquee-track {
+  .pricing-topic-marquee-track,
+  .hero-badge-pill,
+  .hero-glow-teal,
+  .hero-glow-blue,
+  .hero-btn-secondary:hover .hero-btn-phone-icon {
     animation: none !important;
   }
   .industry-card,
   .brand-logo-tile,
   .partner-logo-card,
+  .studio-plan-card,
+  .auto-category-card,
+  .auto-step-card,
+  .dynamic-category-tab,
   .faq-view-toggle-btn,
   .faq-card-item,
-  .hero-cta-primary,
-  .hero-cta-secondary {
+  .faq-answer-reveal,
+  .hero-btn-primary,
+  .hero-btn-secondary,
+  .hero-btn-primary:hover .hero-btn-arrow-icon,
+  .studio-btn:hover svg {
     transition: none !important;
     transform: none !important;
   }

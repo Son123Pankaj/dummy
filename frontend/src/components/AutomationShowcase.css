@@ -61,10 +61,13 @@
 }
 
 .auto-category-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-5px);
   border-color: var(--studio-accent);
   background: var(--studio-soft);
-  box-shadow: 0 8px 24px rgba(11, 153, 167, 0.12);
+  box-shadow: 0 12px 28px rgba(11, 153, 167, 0.16);
+}
+.auto-category-card:hover .auto-card-icon-wrap {
+  transform: scale(1.08);
 }
 
 .auto-category-card.active {
@@ -250,8 +253,9 @@
 }
 
 .auto-step-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-5px);
   border-color: var(--studio-accent);
+  box-shadow: 0 12px 28px -6px rgba(11, 42, 54, 0.12);
 }
 
 .auto-step-header {
