@@ -7,7 +7,11 @@ import {
   Pause, 
   Play, 
   Square, 
-  ChevronDown
+  ChevronDown,
+  PhoneCall, 
+  Zap, 
+  ShieldCheck, 
+  Users
 } from 'lucide-react';
 import { Eyebrow } from './StudioParts';
 import { PLANS, MODELS, COMMERCIAL_NOTE, SAMPLES, demoUrl, rateLabel } from '../data/offer';
