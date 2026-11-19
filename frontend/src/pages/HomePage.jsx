@@ -29,7 +29,7 @@ export default function HomePage({ navigateTo }) {
       {/* 4. PARTNERS & CLIENTS MARQUEE */}
       <DualMarquee />
 
-      {/* 5. CRM SECTION (With 2 View Switcher: CRM Platform & Communications/Sales) */}
+      {/* 5. CRM SECTION (With 2 View Switcher: CRM Platform & CRM Communications) */}
       <FullWidthShowcase 
         id="crm"
         heading="CRM Solutions"
@@ -37,14 +37,14 @@ export default function HomePage({ navigateTo }) {
           {
             label: 'CRM Platform',
             src: '/crm-platform-pricing-promo.png',
-            alt: 'Avyukta CRM Solutions high-resolution dashboard',
+            alt: 'Avyukta CRM Solutions platform and contact management dashboard',
             width: 1365,
             height: 768
           },
           {
-            label: 'Communications & Sales',
+            label: 'CRM Communications',
             src: '/avyukta-communications-dashboard.png',
-            alt: 'Avyukta Communications and calling dashboard',
+            alt: 'Avyukta CRM omni-channel calling and communications dashboard',
             width: 1365,
             height: 768
           }
@@ -55,10 +55,10 @@ export default function HomePage({ navigateTo }) {
       <FullWidthShowcase 
         id="sales"
         heading="Sales Management"
-        imageSrc="/avyukta-communications-dashboard.png"
-        imageAlt="Avyukta Sales Management and calling dashboard"
-        width={1365}
-        height={768}
+        imageSrc="/sales-management-dashboard.jpg"
+        imageAlt="Avyukta Sales Management lead tracking and customer journey dashboard"
+        width={1024}
+        height={506}
       />
 
       {/* 7. BPA SECTION */}
