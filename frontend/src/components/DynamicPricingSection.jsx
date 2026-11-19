@@ -3,17 +3,7 @@ import {
   Workflow, 
   Users, 
   LayoutDashboard, 
-  TrendingUp, 
-  Play, 
-  Pause,
-  PhoneCall,
-  ShieldCheck,
-  Cpu,
-  Award,
-  Building2,
-  GraduationCap,
-  Briefcase,
-  Globe2
+  TrendingUp 
 } from 'lucide-react';
 import { Eyebrow } from './StudioParts';
 import { getAssetUrl } from '../utils/assetUrl';
@@ -76,43 +66,9 @@ const CRM_VIEWS = [
   }
 ];
 
-// Verified Technology & Channel Partners (Reference: Dialer Philippines & Avyukta)
-const PARTNERS = [
-  { name: 'Zoho', category: 'CRM & Cloud Ecosystem', accent: '#f0483e' },
-  { name: 'Genesys', category: 'Enterprise Contact Center', accent: '#ff4f1f' },
-  { name: 'Bitrix24', category: 'CRM & Collaboration', accent: '#2fc7f7' },
-  { name: 'Tata Tele Business', category: 'Carrier Telecom Network', accent: '#0084ff' },
-  { name: 'Airtel', category: 'Carrier Telecom Network', accent: '#ed1c24' },
-  { name: 'Spectranet', category: 'Enterprise High-Speed Fiber', accent: '#00a88f' },
-  { name: 'AudioCodes', category: 'Voice Gateways & SBC', accent: '#00539b' },
-  { name: 'Sangoma', category: 'Telephony & PBX Systems', accent: '#f37023' },
-  { name: 'Dinstar', category: 'VoIP & GSM Gateways', accent: '#0a4c95' },
-  { name: 'Poly / Plantronics', category: 'Audio & Headset Hardware', accent: '#e31837' },
-  { name: 'Asterisk / Digium', category: 'Open Source PBX Engine', accent: '#f47920' },
-  { name: 'Freemate', category: 'BPO Headset Systems', accent: '#1a73e8' }
-];
-
-// Verified Enterprise Clients (Reference: Dialer Philippines & Avyukta)
-const CLIENTS = [
-  { name: 'Sony', subtitle: 'Global Consumer Enterprise', icon: Globe2, accent: '#0284c7' },
-  { name: 'FirstMeridian®', subtitle: 'Workforce & Staffing Solutions', icon: Users, accent: '#0284c7' },
-  { name: 'StarTek Global', subtitle: 'Omnichannel BPO Services', icon: PhoneCall, accent: '#8b5cf6' },
-  { name: 'BookMyBai', subtitle: 'On-Demand Household Services', icon: Users, accent: '#f97316' },
-  { name: 'Analytics Group', subtitle: 'Data & Enterprise Intelligence', icon: TrendingUp, accent: '#6366f1' },
-  { name: 'Armor Security', subtitle: 'Enterprise Safety & Operations', icon: ShieldCheck, accent: '#06b6d4' },
-  { name: 'PM Industries', subtitle: 'Enterprise Telecom Infra', icon: Cpu, accent: '#a855f7' },
-  { name: 'Humanary Health', subtitle: 'Healthcare Telephony', icon: Award, accent: '#ef4444' },
-  { name: 'Ebhaiya Services', subtitle: 'Digital Commerce Logistics', icon: Building2, accent: '#10b981' },
-  { name: 'Edvice', subtitle: 'Smart Counseling & EduTech', icon: GraduationCap, accent: '#14b8a6' },
-  { name: 'KCPC Group', subtitle: 'Regional Commercial Enterprise', icon: Briefcase, accent: '#3b82f6' },
-  { name: 'TIPS-G Global', subtitle: 'International SIP Solutions', icon: Globe2, accent: '#84cc16' }
-];
-
 export default function DynamicPricingSection({ navigateTo }) {
   const [activeCategory, setActiveCategory] = useState('bpa');
   const [crmView, setCrmView] = useState(0); // 0: CRM Platform, 1: Communications, 2: Employee Workspace
-  const [clientsPaused, setClientsPaused] = useState(false);
-  const [partnersPaused, setPartnersPaused] = useState(false);
   const tabRefs = useRef([]);
 
   const currentCategory = CATEGORIES.find(c => c.id === activeCategory) || CATEGORIES[0];
@@ -280,140 +236,6 @@ export default function DynamicPricingSection({ navigateTo }) {
               </div>
             </div>
           </main>
-        </div>
-
-        {/* ========================================================= */}
-        {/* 1. OUR CLIENTS SECTION                                    */}
-        {/* ========================================================= */}
-        <div className="dynamic-network-marquee-block clients-marquee-block" id="our-clients">
-          <div className="marquee-top-bar">
-            <div>
-              <span className="marquee-eyebrow">ENTERPRISE CLIENTELE</span>
-              <h3 className="marquee-main-title">Our Clients</h3>
-              <p className="marquee-sub-desc">
-                Trusted by leading BPOs, healthcare networks, staffing leaders, and fast-growing enterprises across India and the Philippines.
-              </p>
-            </div>
-            <button 
-              type="button" 
-              className="marquee-pause-toggle-btn"
-              onClick={() => setClientsPaused(prev => !prev)}
-              aria-label={clientsPaused ? 'Resume clients marquee' : 'Pause clients marquee'}
-            >
-              {clientsPaused ? <Play size={13} /> : <Pause size={13} />}
-              <span>{clientsPaused ? 'Resume' : 'Pause'}</span>
-            </button>
-          </div>
-
-          <div 
-            className={`dynamic-marquee-window ${clientsPaused ? 'is-paused' : ''}`}
-            tabIndex={0}
-            role="region"
-            aria-label="Our Clients marquee"
-          >
-            <div className="dynamic-marquee-track client-track">
-              {/* Group 1 */}
-              <div className="dynamic-marquee-group">
-                {CLIENTS.map((c, idx) => {
-                  const Icon = c.icon;
-                  return (
-                    <div key={`client-g1-${idx}`} className="network-pill-card client">
-                      <div className="network-card-header">
-                        <span className="network-tag client">CLIENT</span>
-                        <span className="network-status-dot" style={{ background: c.accent }} />
-                      </div>
-                      <div className="network-icon-title">
-                        <Icon size={16} style={{ color: c.accent }} />
-                        <strong className="network-name">{c.name}</strong>
-                      </div>
-                      <span className="network-sub">{c.subtitle}</span>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Group 2 (Duplicate for continuous loop) */}
-              <div className="dynamic-marquee-group" aria-hidden="true">
-                {CLIENTS.map((c, idx) => {
-                  const Icon = c.icon;
-                  return (
-                    <div key={`client-g2-${idx}`} className="network-pill-card client">
-                      <div className="network-card-header">
-                        <span className="network-tag client">CLIENT</span>
-                        <span className="network-status-dot" style={{ background: c.accent }} />
-                      </div>
-                      <div className="network-icon-title">
-                        <Icon size={16} style={{ color: c.accent }} />
-                        <strong className="network-name">{c.name}</strong>
-                      </div>
-                      <span className="network-sub">{c.subtitle}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ========================================================= */}
-        {/* 2. OUR TECHNOLOGY PARTNERS & AFFILIATES SECTION           */}
-        {/* ========================================================= */}
-        <div className="dynamic-network-marquee-block partners-marquee-block" id="our-partners">
-          <div className="marquee-top-bar">
-            <div>
-              <span className="marquee-eyebrow">HARDWARE, TELECOM &amp; CRM ECOSYSTEM</span>
-              <h3 className="marquee-main-title">Our Technology Partners &amp; Affiliates</h3>
-              <p className="marquee-sub-desc">
-                Certified integrations with global CRM leaders, Tier-1 telecom carriers, and enterprise telephony gateway manufacturers.
-              </p>
-            </div>
-            <button 
-              type="button" 
-              className="marquee-pause-toggle-btn"
-              onClick={() => setPartnersPaused(prev => !prev)}
-              aria-label={partnersPaused ? 'Resume partners marquee' : 'Pause partners marquee'}
-            >
-              {partnersPaused ? <Play size={13} /> : <Pause size={13} />}
-              <span>{partnersPaused ? 'Resume' : 'Pause'}</span>
-            </button>
-          </div>
-
-          <div 
-            className={`dynamic-marquee-window ${partnersPaused ? 'is-paused' : ''}`}
-            tabIndex={0}
-            role="region"
-            aria-label="Our Technology Partners marquee"
-          >
-            <div className="dynamic-marquee-track partner-track">
-              {/* Group 1 */}
-              <div className="dynamic-marquee-group">
-                {PARTNERS.map((p, idx) => (
-                  <div key={`partner-g1-${idx}`} className="network-pill-card partner">
-                    <div className="network-card-header">
-                      <span className="network-tag partner">PARTNER</span>
-                      <span className="network-status-dot" style={{ background: p.accent || '#0b99a7' }} />
-                    </div>
-                    <strong className="network-name">{p.name}</strong>
-                    <span className="network-sub">{p.category}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Group 2 (Duplicate for continuous loop) */}
-              <div className="dynamic-marquee-group" aria-hidden="true">
-                {PARTNERS.map((p, idx) => (
-                  <div key={`partner-g2-${idx}`} className="network-pill-card partner">
-                    <div className="network-card-header">
-                      <span className="network-tag partner">PARTNER</span>
-                      <span className="network-status-dot" style={{ background: p.accent || '#0b99a7' }} />
-                    </div>
-                    <strong className="network-name">{p.name}</strong>
-                    <span className="network-sub">{p.category}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
 
       </div>

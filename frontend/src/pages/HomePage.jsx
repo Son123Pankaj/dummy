@@ -3,6 +3,7 @@ import { ArrowUpRight } from 'lucide-react';
 import HeroSection from '../components/HeroSection';
 import PlanCards from '../components/PlanCards';
 import DynamicPricingSection from '../components/DynamicPricingSection';
+import DualMarquee from '../components/DualMarquee';
 import AutomationShowcase from '../components/AutomationShowcase';
 import IndustriesSection from '../components/IndustriesSection';
 import VoiceLibrary from '../components/VoiceLibrary';
@@ -28,13 +29,16 @@ export default function HomePage({ navigateTo }) {
       {/* 3. DYNAMIC AI PRICING & PLATFORM WORKSPACE (BPA | CRM | Command Center | Sales) */}
       <DynamicPricingSection navigateTo={navigateTo} />
 
-      {/* 2.5 WHAT DO YOU WANT TO AUTOMATE? (Interactive 12-Category Workflow Engine) */}
+      {/* 3.5 OUR CLIENTS & OUR AFFILIATES SECTIONS (Continuous Marquees) */}
+      <DualMarquee />
+
+      {/* 4. WHAT DO YOU WANT TO AUTOMATE? (Interactive 12-Category Workflow Engine) */}
       <AutomationShowcase navigateTo={navigateTo} />
 
-      {/* 3. INDUSTRIES WE SERVE */}
+      {/* 5. INDUSTRIES WE SERVE */}
       <IndustriesSection navigateTo={navigateTo} />
 
-      {/* 4. REMAINING CONTENT & ESSENTIAL CLOSING (Voice Library Listen, FAQ, Bottom CTA) */}
+      {/* 6. REMAINING CONTENT & ESSENTIAL CLOSING (Voice Library Listen, FAQ, Bottom CTA) */}
       <section className="studio-section sample-section" id="voice-samples">
         <div className="studio-container sample-section-grid">
           <div>
@@ -55,7 +59,7 @@ export default function HomePage({ navigateTo }) {
       </section>
 
       <section id="faq" className="homepage-faq-wrap">
-        <FaqSection items={CUSTOMER_FAQS.slice(0, 8)} />
+        <FaqSection />
       </section>
 
       <div id="conversion" className="product-conversion-anchor">
