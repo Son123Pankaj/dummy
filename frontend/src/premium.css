@@ -391,26 +391,26 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .studio-plan-brief {color:var(--studio-muted);font-size:14px;margin-bottom:22px;line-height:1.6}
 .studio-plan-brief strong {color:var(--studio-ink)}
 .studio-plan-grid {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;align-items:stretch}
-.studio-plan-card {position:relative;overflow:hidden;border:1px solid var(--studio-stroke);background:var(--studio-surface);border-radius:22px;padding:26px 22px 22px;display:flex;flex-direction:column;transition:transform .3s,box-shadow .3s,border-color .3s;min-width:0;scroll-margin-top:110px}
-.studio-plan-card:hover {transform:translateY(-6px);border-color:rgba(36,178,189,.4);box-shadow:var(--studio-shadow)}
-.studio-plan-card.featured {border-color:rgba(24,162,172,.7);box-shadow:0 16px 35px -24px rgba(13,154,171,.6)}
+.studio-plan-card {position:relative;overflow:hidden;border:1px solid var(--studio-stroke);background:var(--studio-surface);border-radius:20px;padding:20px 20px 18px;display:flex;flex-direction:column;transition:transform .3s,box-shadow .3s,border-color .3s;min-width:0;scroll-margin-top:110px}
+.studio-plan-card:hover {transform:translateY(-4px);border-color:rgba(36,178,189,.4);box-shadow:var(--studio-shadow)}
+.studio-plan-card.featured {border-color:rgba(24,162,172,.7);box-shadow:0 14px 30px -20px rgba(13,154,171,.5)}
 .studio-plan-card.featured::before {content:"";position:absolute;inset:0 0 auto;height:4px;background:linear-gradient(90deg,#0d9daa,#78e8d8)}
-.studio-plan-card-top {min-height:184px}
-.studio-popular-tag {display:inline-flex;align-items:center;gap:5px;background:#e7f8f8;color:#057c87;padding:5px 10px;font-size:10px;font-weight:760;letter-spacing:.08em;border-radius:999px;position:absolute;right:17px;top:23px}
-.studio-plan-symbol {height:42px;width:42px;display:grid;place-items:center;background:var(--studio-soft);color:var(--studio-accent);font-size:18px;font-weight:700;border-radius:13px;margin-bottom:17px}
-.studio-plan-card h3 {font-size:27px;letter-spacing:-.035em;margin-bottom:6px}
-.studio-plan-card h3.plan-main-title {font-size:clamp(19px,1.65vw,25px);font-weight:800;letter-spacing:-.025em;line-height:1.2;margin-bottom:8px}
-.studio-plan-card-top>p {font-size:13px;line-height:1.57}
-.studio-plan-price {min-height:91px;display:flex;flex-direction:column;justify-content:center;gap:0}
-.studio-plan-price strong {color:var(--studio-ink);font-size:42px;letter-spacing:-.05em;font-weight:650;line-height:1.16}
-.studio-plan-price strong small {font-size:23px;letter-spacing:0;margin-right:2px}
-.studio-plan-price>span {font-size:12px;color:var(--studio-muted);margin-top:6px}
-.studio-plan-price .studio-plan-custom-price {font-size:31px}
-.studio-plan-divider {height:1px;background:var(--studio-stroke);margin:14px 0 21px}
-.studio-plan-card ul {display:flex;flex-direction:column;gap:13px;list-style:none;margin:0 0 27px;flex:1}
-.studio-plan-card li {font-size:13px;line-height:1.4;color:var(--studio-muted);display:flex;align-items:start;gap:9px}
-.studio-plan-card li svg {color:var(--studio-accent);flex-shrink:0;margin-top:1px}
-.studio-plan-cta {display:flex;align-items:center;justify-content:space-between;gap:9px;border:1px solid var(--studio-stroke);padding:13px 15px;border-radius:12px;font-size:13px;font-weight:700;background:var(--studio-bg);color:var(--studio-ink);transition:background .2s,transform .2s}
+.studio-plan-card-top {min-height:115px}
+.studio-popular-tag {display:inline-flex;align-items:center;gap:5px;background:#e7f8f8;color:#057c87;padding:4px 9px;font-size:9.5px;font-weight:760;letter-spacing:.08em;border-radius:999px;position:absolute;right:16px;top:18px}
+.studio-plan-symbol {height:36px;width:36px;display:grid;place-items:center;background:var(--studio-soft);color:var(--studio-accent);font-size:16px;font-weight:700;border-radius:10px;margin-bottom:10px}
+.studio-plan-card h3 {font-size:22px;letter-spacing:-.035em;margin-bottom:4px}
+.studio-plan-card h3.plan-main-title {font-size:clamp(17px,1.4vw,21px);font-weight:800;letter-spacing:-.025em;line-height:1.2;margin-bottom:5px}
+.studio-plan-card-top>p {font-size:12.5px;line-height:1.45;color:var(--studio-muted);margin:0}
+.studio-plan-price {min-height:68px;display:flex;flex-direction:column;justify-content:center;gap:0;margin-top:2px}
+.studio-plan-price strong {color:var(--studio-ink);font-size:36px;letter-spacing:-.05em;font-weight:700;line-height:1.1}
+.studio-plan-price strong small {font-size:20px;letter-spacing:0;margin-right:2px}
+.studio-plan-price>span {font-size:11.5px;color:var(--studio-muted);margin-top:3px}
+.studio-plan-price .studio-plan-custom-price {font-size:28px}
+.studio-plan-divider {height:1px;background:var(--studio-stroke);margin:10px 0 12px}
+.studio-plan-card ul {display:flex;flex-direction:column;gap:8px;list-style:none;margin:0 0 12px;padding:0}
+.studio-plan-card li {font-size:12.5px;line-height:1.35;color:var(--studio-muted);display:flex;align-items:start;gap:8px}
+.studio-plan-card li svg {color:var(--studio-accent);flex-shrink:0;margin-top:2px}
+.studio-plan-cta {display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--studio-stroke);padding:10px 14px;border-radius:10px;font-size:12.5px;font-weight:700;background:var(--studio-bg);color:var(--studio-ink);transition:background .2s,transform .2s;min-height:42px;width:100%}
 .studio-plan-cta:hover {background:var(--studio-soft);transform:translateY(-2px)}
 .studio-plan-cta.primary {color:white;background:#0b8e9d;border-color:#0b8e9d}
 .studio-plan-cta.primary:hover {background:#066d78}
@@ -1369,7 +1369,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .card-voice-dropdown-wrapper {
   position: relative;
   width: 100%;
-  margin: 14px 0 16px;
+  margin: 10px 0 12px;
+  margin-top: auto;
   z-index: 25;
 }
 
@@ -1378,13 +1379,13 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  min-height: 44px;
-  padding: 10px 14px;
-  border-radius: 12px;
+  min-height: 38px;
+  padding: 8px 12px;
+  border-radius: 10px;
   border: 1px solid var(--studio-stroke);
   background: var(--studio-soft);
   color: var(--studio-ink);
-  font-size: 13.5px;
+  font-size: 12px;
   font-weight: 650;
   cursor: pointer;
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);

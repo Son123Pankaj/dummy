@@ -30,6 +30,29 @@ const DISPLAY_NAMES = {
   platinum: 'Diamond'
 };
 
+const PLAN_FEATURES = {
+  silver: [
+    'Inbound routine enquiry answering (24/7)',
+    'Outbound automated reminder & follow-up calls',
+    'Sub-500ms voice turn cadence',
+    'Billed on connected calls only (unanswered ₹0)'
+  ],
+  gold: [
+    'Multilingual Hindi, English & regional Indian dialects',
+    'Automated lead qualification & booking calls',
+    'Natural human turn-taking & live interruption handling',
+    '1-click live transfer to human supervisors',
+    'Meta WhatsApp post-call summary & link drops'
+  ],
+  platinum: [
+    'Studio-grade expressive brand voices with inflection',
+    'High-concurrency outbound (100+ concurrent channels)',
+    'Custom Pan-India STD CLI (011, 022, 080) caller ID',
+    'Enterprise CRM sync with sentiment intelligence',
+    'Dedicated telecom SLA & 99.99% carrier uptime'
+  ]
+};
+
 // Real metadata mapping for genuine prerecorded audio files in /samples/
 const SAMPLE_DETAILS = {
   // Silver (silver-1.mp3 through silver-8.mp3)
@@ -331,86 +354,12 @@ export default function PlanCards({ navigateTo }) {
 
                 {/* Verified Call-Related Features Checklist (Core Plan Content) */}
                 <ul className="plan-feature-list">
-                  {plan.features.map(feature => (
+                  {(PLAN_FEATURES[plan.id] || plan.features).map(feature => (
                     <li key={feature}>
-                      <Check size={16} className="plan-check-icon" />
+                      <Check size={15} className="plan-check-icon" />
                       <span>{feature}</span>
                     </li>
                   ))}
-
-                  {/* Silver Call Capabilities */}
-                  {plan.id === 'silver' && (
-                    <>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Inbound routine enquiry answering (24/7)</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Outbound automated reminder &amp; follow-up calls</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Sub-500ms voice turn cadence</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Billed on connected calls only (unanswered ₹0)</span>
-                      </li>
-                    </>
-                  )}
-
-                  {/* Gold Call Capabilities (Recommended) */}
-                  {plan.id === 'gold' && (
-                    <>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Multilingual Hindi, English &amp; regional Indian dialects</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Automated lead qualification &amp; booking calls</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Natural human turn-taking &amp; live interruption handling</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>1-click live transfer to human supervisors</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Meta WhatsApp post-call summary &amp; link drops</span>
-                      </li>
-                    </>
-                  )}
-
-                  {/* Platinum Call Capabilities */}
-                  {plan.id === 'platinum' && (
-                    <>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Studio-grade expressive brand voices with emotion inflection</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>High-concurrency outbound dialing (100+ concurrent channels)</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Custom Pan-India STD CLI (011, 022, 080) caller ID</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Enterprise CRM sync with speech sentiment intelligence</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Dedicated telecom SLA &amp; 99.99% carrier uptime</span>
-                      </li>
-                    </>
-                  )}
                 </ul>
 
                 {/* Independent Card-Wise Voice Dropdown Component (Below Content) */}
@@ -584,21 +533,12 @@ export default function PlanCards({ navigateTo }) {
 
                 <div className="plan-conversion-actions">
                   <a 
-                    className="studio-plan-cta" 
-                    href="/#voice-samples" 
-                    onClick={event => local(event, '/#voice-samples')}
-                  >
-                    <Volume2 size={16} />
-                    <span>Hear {DISPLAY_NAMES[plan.id] || plan.name} samples</span>
-                  </a>
-
-                  <a 
                     className={`studio-plan-cta ${isGold ? 'primary' : ''}`} 
                     href={demoUrl(plan.id, currentSample?.name)} 
                     onClick={event => local(event, demoUrl(plan.id, currentSample?.name))}
                   >
                     <span>Request {DISPLAY_NAMES[plan.id] || plan.name} demo</span>
-                    <ArrowUpRight size={17} />
+                    <ArrowUpRight size={16} />
                   </a>
                 </div>
               </article>
