@@ -2142,57 +2142,92 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   margin: 0;
 }
 
-/* 4. Marquee Block */
+/* 4. Clients & Partners Distinct Sections (Dialer Philippines Presentation) */
 .dynamic-network-marquee-block {
-  margin: 40px 0 60px;
-  padding: 36px 0;
-  border-top: 1px solid var(--studio-stroke);
-  border-bottom: 1px solid var(--studio-stroke);
+  margin: 40px 0;
+  padding: 32px 28px;
+  border-radius: 20px;
+  background: var(--studio-surface);
+  border: 1px solid var(--studio-stroke);
+  box-shadow: var(--studio-shadow);
+  position: relative;
+  overflow: hidden;
+}
+.dynamic-network-marquee-block.clients-marquee-block {
+  border-left: 4px solid #10b981;
+}
+.dynamic-network-marquee-block.partners-marquee-block {
+  border-left: 4px solid var(--studio-accent);
 }
 .marquee-top-bar {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   gap: 16px;
+  flex-wrap: wrap;
 }
 .marquee-eyebrow {
   font-size: 10px;
   font-weight: 750;
   letter-spacing: 0.12em;
   color: var(--studio-accent);
+  text-transform: uppercase;
+}
+.clients-marquee-block .marquee-eyebrow {
+  color: #10b981;
 }
 .marquee-main-title {
-  font-size: 18px;
+  font-size: clamp(20px, 2.2vw, 26px);
   font-weight: 700;
   color: var(--studio-ink);
-  margin: 4px 0 0;
+  margin: 3px 0 4px;
+  letter-spacing: -0.025em;
+}
+.marquee-sub-desc {
+  font-size: 14px;
+  color: var(--studio-muted);
+  margin: 0;
+  max-width: 720px;
+  line-height: 1.5;
 }
 .marquee-pause-toggle-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 14px;
+  padding: 7px 16px;
   border-radius: 999px;
   border: 1px solid var(--studio-stroke);
-  background: var(--studio-surface);
+  background: var(--studio-soft);
   color: var(--studio-ink);
   font-size: 12px;
   font-weight: 650;
   cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+.marquee-pause-toggle-btn:hover {
+  background: var(--studio-accent);
+  color: #ffffff;
+  border-color: var(--studio-accent);
 }
 .dynamic-marquee-window {
   overflow: hidden;
   position: relative;
   width: 100%;
   padding: 10px 0;
-  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
 }
 .dynamic-marquee-track {
   display: flex;
   width: max-content;
-  animation: dynamicMarquee 38s linear infinite;
+}
+.dynamic-marquee-track.client-track {
+  animation: dynamicMarquee 34s linear infinite;
+}
+.dynamic-marquee-track.partner-track {
+  animation: dynamicMarqueeReverse 38s linear infinite;
 }
 .dynamic-marquee-window:hover .dynamic-marquee-track,
 .dynamic-marquee-window.is-paused .dynamic-marquee-track {
@@ -2206,13 +2241,36 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .network-pill-card {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  background: var(--studio-surface);
+  gap: 5px;
+  background: var(--studio-bg);
   border: 1px solid var(--studio-stroke);
-  border-radius: 14px;
-  padding: 12px 20px;
-  min-width: 160px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+  border-radius: 16px;
+  padding: 14px 22px;
+  min-width: 180px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+  cursor: default;
+}
+.network-pill-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--studio-accent);
+  box-shadow: 0 10px 24px rgba(11, 153, 167, 0.16);
+}
+.network-pill-card.client:hover {
+  border-color: #10b981;
+  box-shadow: 0 10px 24px rgba(16, 185, 129, 0.16);
+}
+.network-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+.network-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
 }
 .network-tag {
   font-size: 9px;
@@ -2226,20 +2284,34 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .network-icon-title {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
 }
 .network-name {
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 700;
   color: var(--studio-ink);
   white-space: nowrap;
 }
 .network-sub {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--studio-muted);
   white-space: nowrap;
 }
 @keyframes dynamicMarquee {
+  from { transform: translateX(0); }
   to { transform: translateX(-50%); }
+}
+@keyframes dynamicMarqueeReverse {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dynamic-marquee-track.client-track,
+  .dynamic-marquee-track.partner-track {
+    animation: none;
+    overflow-x: auto;
+  }
 }
 
 /* 5. Bottom Navigation & Important Links Grid */
