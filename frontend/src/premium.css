@@ -1917,6 +1917,14 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   border-radius: 999px;
   border: 1px solid var(--studio-stroke);
 }
+.dynamic-view-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  width: 100%;
+}
 .dynamic-view-title {
   font-size: clamp(22px, 2.5vw, 32px);
   font-weight: 700;
@@ -1931,6 +1939,42 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   color: var(--studio-muted);
   margin: 0;
   max-width: 800px;
+}
+
+/* CRM Image Toggle Controls */
+.crm-image-toggle-bar {
+  display: inline-flex;
+  align-items: center;
+  background: var(--studio-soft, rgba(11, 153, 167, 0.08));
+  border: 1px solid var(--studio-stroke, rgba(255, 255, 255, 0.1));
+  border-radius: 999px;
+  padding: 4px;
+  gap: 4px;
+}
+.crm-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--studio-muted, #94a3b8);
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  line-height: 1.2;
+}
+.crm-toggle-btn:hover {
+  color: var(--studio-ink, #ffffff);
+  background: rgba(255, 255, 255, 0.06);
+}
+.crm-toggle-btn.active {
+  background: var(--studio-accent, #0b99a7);
+  color: #ffffff;
+  border-color: var(--studio-accent, #0b99a7);
+  box-shadow: 0 2px 10px rgba(11, 153, 167, 0.32);
 }
 
 /* Media frame - 100% full original image visible without cropping or distortion */

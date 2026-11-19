@@ -36,7 +36,7 @@ const CATEGORIES = [
     icon: Users,
     fullForm: 'Customer Relationship Management (CRM)',
     image: '/crm-platform-pricing-promo.png',
-    altImage: '/avyukta-communications-dashboard.png'
+    altImage: '/crm-employee-dashboard.jpg'
   },
   { 
     id: 'command-center', 
@@ -231,15 +231,46 @@ export default function DynamicPricingSection({ navigateTo }) {
               className="dynamic-category-view animate-fade-in" 
               key={`${activeCategory}-${activeCategory === 'crm' ? crmView : 0}`}
             >
-              <h1 className="dynamic-view-title">{currentCategory.fullForm}</h1>
+              <div className="dynamic-view-title-row">
+                <h1 className="dynamic-view-title">{currentCategory.fullForm}</h1>
+
+                {/* CRM Image Toggle Controls: Display only one image at a time */}
+                {activeCategory === 'crm' && (
+                  <div className="crm-image-toggle-bar" role="tablist" aria-label="CRM View Options">
+                    <button
+                      type="button"
+                      role="tab"
+                      id="crm-tab-1"
+                      aria-selected={crmView === 0}
+                      className={`crm-toggle-btn ${crmView === 0 ? 'active' : ''}`}
+                      onClick={() => setCrmView(0)}
+                    >
+                      1. CRM Platform
+                    </button>
+                    <button
+                      type="button"
+                      role="tab"
+                      id="crm-tab-2"
+                      aria-selected={crmView === 1}
+                      className={`crm-toggle-btn ${crmView === 1 ? 'active' : ''}`}
+                      onClick={() => setCrmView(1)}
+                    >
+                      2. Employee Workspace
+                    </button>
+                  </div>
+                )}
+              </div>
+
               <div className="dynamic-media-frame">
                 <img 
                   src={getAssetUrl(displayImage)} 
-                  alt={currentCategory.fullForm}
+                  alt={activeCategory === 'crm' 
+                    ? (crmView === 0 ? 'Avyukta CRM Platform Dashboard' : 'Avyukta Employee Workspace and Telephony CRM')
+                    : currentCategory.fullForm}
                   className="dynamic-full-image"
                   onClick={activeCategory === 'crm' ? () => setCrmView(v => (v === 0 ? 1 : 0)) : undefined}
                   style={activeCategory === 'crm' ? { cursor: 'pointer' } : undefined}
-                  title={activeCategory === 'crm' ? 'Click to toggle alternate CRM view' : undefined}
+                  title={activeCategory === 'crm' ? `Click to switch to ${crmView === 0 ? 'Employee Workspace' : 'CRM Platform'}` : undefined}
                   loading="eager"
                   decoding="async"
                 />
