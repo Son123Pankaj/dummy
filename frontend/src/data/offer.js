@@ -2,9 +2,10 @@ import manifest from '../../public/samples/manifest.json';
 
 // Existing repository commercials; estimates pending business approval.
 export const PLANS = [
-  { id: 'silver', name: 'Silver', label: 'Everyday conversations', description: 'A starting point for routine enquiries and reminders.', modular: 3, bundle: 5, icon: 'S', features: ['Explore natural voice options', 'Discuss your inbound or outbound call flow', 'Review the setup with our team'] },
-  { id: 'gold', name: 'Gold', label: 'Indian-language voices', description: 'Explore voices for conversations closer to your customers.', modular: 5.8, bundle: 7, icon: 'G', features: ['Explore Indian-language voice options', 'Discuss lead follow-ups and bookings', 'Confirm language support for your use case'] },
-  { id: 'platinum', name: 'Platinum', label: 'Expressive brand voices', description: 'Explore expressive voices for conversations where tone matters.', modular: 10, bundle: 11, icon: 'P', features: ['Compare expressive studio voices', 'Discuss custom voice requirements', 'Confirm the right setup for your brand'] },
+  { id: 'bronze', name: 'Bronze', label: 'Basic voice assistant', description: 'Essential voice assistant for routine FAQs and notifications.', modular: 3.5, bundle: 5.5, icon: 'B', features: ['Explore standard clear voices', 'Automated reminders & routine answering', 'Sub-500ms voice turn cadence'] },
+  { id: 'silver', name: 'Silver', label: 'Everyday conversations', description: 'A starting point for routine enquiries and reminders.', modular: 5, bundle: 7, icon: 'S', features: ['Explore natural voice options', 'Discuss your inbound or outbound call flow', 'Review the setup with our team'] },
+  { id: 'gold', name: 'Gold', label: 'Indian-language voices', description: 'Explore voices for conversations closer to your customers.', modular: 9, bundle: 11.5, icon: 'G', features: ['Explore Indian-language voice options', 'Discuss lead follow-ups and bookings', 'Confirm language support for your use case'] },
+  { id: 'platinum', name: 'Platinum', label: 'Expressive brand voices', description: 'Explore expressive voices for conversations where tone matters.', modular: 11, bundle: 13.5, icon: 'P', features: ['Compare expressive studio voices', 'Discuss custom voice requirements', 'Confirm the right setup for your brand'] },
 ];
 export const MODELS = {
   modular: { label: 'AI usage only', detail: 'Phone connection, number rental and WhatsApp services are charged separately.' },

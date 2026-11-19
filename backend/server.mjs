@@ -46,7 +46,7 @@ export async function createLeadServer({dataDir = resolve(root, 'backend/data'),
         if (clean.name.length < 2 || !clean.useCase || (!clean.email && !clean.phone) || body.consent !== true) return json(response,400,{error:'Add your name, contact method, use case and contact permission.'});
         if (clean.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean.email)) return json(response,400,{error:'Enter a valid email.'});
         if (clean.phone && !/^\+?[\d\s().-]{7,25}$/.test(clean.phone)) return json(response,400,{error:'Enter a valid phone number.'});
-        if (clean.plan && !['silver','gold','platinum'].includes(clean.plan)) return json(response,400,{error:'Choose a valid plan.'});
+        if (clean.plan && !['bronze','silver','gold','platinum'].includes(clean.plan)) return json(response,400,{error:'Choose a valid plan.'});
         const requestKey = request.headers['idempotency-key'];
         if (typeof requestKey !== 'string' || !/^[a-zA-Z0-9-]{16,80}$/.test(requestKey)) return json(response,400,{error:'A request identifier is required.'});
         const digest = createHash('sha256').update(JSON.stringify(clean)).digest('hex');

@@ -20,18 +20,26 @@ import { claimPlayback, onOtherPlayback } from '../utils/playback';
 import AiSummarizer from './AiSummarizer';
 
 const CARD_TITLES = {
+  bronze: 'AVYUKTA AI BRONZE',
   silver: 'AVYUKTA AI SILVER',
   gold: 'AVYUKTA AI GOLD',
-  platinum: 'AVYUKTA AI DIAMOND'
+  platinum: 'AVYUKTA AI PLATINUM'
 };
 
 const DISPLAY_NAMES = {
+  bronze: 'Bronze',
   silver: 'Silver',
   gold: 'Gold',
-  platinum: 'Diamond'
+  platinum: 'Platinum'
 };
 
 const PLAN_FEATURES = {
+  bronze: [
+    'Standard clear AI voice assistant',
+    '24/7 basic inbound FAQ answering',
+    'Automated reminders & confirmation calls',
+    'Billed on connected calls only (unanswered ₹0)'
+  ],
   silver: [
     'Inbound routine enquiry answering (24/7)',
     'Outbound automated reminder & follow-up calls',
@@ -56,6 +64,12 @@ const PLAN_FEATURES = {
 
 // Real metadata mapping for genuine prerecorded audio files in /samples/
 const SAMPLE_DETAILS = {
+  // Bronze (bronze-1.mp3 through bronze-4.mp3)
+  'bronze-1': { label: 'Aarav', desc: 'Standard Clear Everyday Assistant' },
+  'bronze-2': { label: 'Diya', desc: 'Crisp Appointment & Reminder Caller' },
+  'bronze-3': { label: 'Kavya', desc: 'Warm Routine Enquiry Answering' },
+  'bronze-4': { label: 'Ananya', desc: 'Gentle Business Greeting Assistant' },
+
   // Silver (silver-1.mp3 through silver-8.mp3)
   'silver-1': { label: 'Achird', desc: 'Everyday Inbound & Customer Enquiries' },
   'silver-2': { label: 'Aoede', desc: 'Automated Reminders & Follow-up Calls' },
@@ -76,7 +90,7 @@ const SAMPLE_DETAILS = {
   'gold-7': { label: 'Pooja', desc: 'Meta WhatsApp Link & Call Summary' },
   'gold-8': { label: 'Rohan', desc: 'Indian Dialect High-Conversion Pitch' },
 
-  // Diamond (platinum-1.mp3 through platinum-8.mp3)
+  // Platinum (platinum-1.mp3 through platinum-8.mp3)
   'platinum-1': { label: 'Indian Origin 3', desc: 'Expressive Studio Brand Voice' },
   'platinum-2': { label: 'Indian Origin 2', desc: 'High-Concurrency Outbound Channel' },
   'platinum-3': { label: 'Indian Origin', desc: 'Speech Sentiment Intelligence' },
@@ -96,14 +110,15 @@ const formatTime = (secs) => {
 
 export default function PlanCards({ navigateTo }) {
   const [model, setModel] = useState('modular');
-  const [openDropdownCard, setOpenDropdownCard] = useState(null); // 'silver' | 'gold' | 'platinum' | null
+  const [openDropdownCard, setOpenDropdownCard] = useState(null); // 'bronze' | 'silver' | 'gold' | 'platinum' | null
   const [activeSampleByCard, setActiveSampleByCard] = useState({
+    bronze: 'bronze-1',
     silver: 'silver-1',
     gold: 'gold-1',
     platinum: 'platinum-1'
   });
   const [playbackState, setPlaybackState] = useState({
-    cardId: null,      // 'silver' | 'gold' | 'platinum' | null
+    cardId: null,      // 'bronze' | 'silver' | 'gold' | 'platinum' | null
     sampleId: null,
     status: 'idle',    // 'idle' | 'playing' | 'paused'
     currentTime: 0,
@@ -289,7 +304,7 @@ export default function PlanCards({ navigateTo }) {
               <Eyebrow>TRANSPARENT AI VOICE &amp; CALL PRICING</Eyebrow>
               <AiSummarizer 
                 title="AI Voice & Telephony Pricing Plans"
-                content="Avyukta IntelliCall AI Pricing Plans: Silver (₹3.00/min), Gold (₹5.80/min), and Diamond (₹10.00/min). Silver offers 24/7 inbound answering and sub-500ms voice turn cadence. Gold provides multilingual Hindi & English support, automated qualification, and live agent transfer. Diamond delivers studio-grade expressive brand voices, 100+ concurrent channels, and Pan-India STD CLI. Connected calls only billing with zero charge on unanswered calls."
+                content="Avyukta IntelliCall AI Pricing Plans: Bronze (₹3.50/min), Silver (₹5.00/min), Gold (₹9.00/min), and Platinum (₹11.00/min). Bronze offers standard clear voice assistance and routine FAQ answering. Silver offers 24/7 inbound answering and sub-500ms voice turn cadence. Gold provides multilingual Hindi & English support, automated qualification, and live agent transfer. Platinum delivers studio-grade expressive brand voices, 100+ concurrent channels, and Pan-India STD CLI. Connected calls only billing with zero charge on unanswered calls."
                 label="AI Plan Summary"
               />
             </div>
@@ -342,7 +357,7 @@ export default function PlanCards({ navigateTo }) {
 
                 <div className="studio-plan-card-top">
                   <span className="plan-purpose">{plan.label}</span>
-                  <div className="studio-plan-symbol" aria-hidden="true">{plan.id === 'platinum' ? 'D' : plan.icon}</div>
+                  <div className="studio-plan-symbol" aria-hidden="true">{plan.icon}</div>
                   <h3 className="plan-main-title">{CARD_TITLES[plan.id] || `AVYUKTA AI ${plan.name.toUpperCase()}`}</h3>
                   <p>{plan.description}</p>
                 </div>

@@ -1,4 +1,22 @@
 {
+ "bronze": [
+  {
+   "file": "bronze-1.mp3",
+   "name": "Aarav"
+  },
+  {
+   "file": "bronze-2.mp3",
+   "name": "Diya"
+  },
+  {
+   "file": "bronze-3.mp3",
+   "name": "Kavya"
+  },
+  {
+   "file": "bronze-4.mp3",
+   "name": "Ananya"
+  }
+ ],
  "silver": [
   {
    "file": "silver-1.mp3",
