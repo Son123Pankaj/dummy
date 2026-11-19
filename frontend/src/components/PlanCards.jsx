@@ -7,14 +7,12 @@ import {
   Pause, 
   Play, 
   Square, 
-  PhoneCall, 
-  ShieldCheck, 
-  Zap, 
-  Users,
   ChevronDown
 } from 'lucide-react';
 import { Eyebrow } from './StudioParts';
-import { PLANS, MODELS, COMMERCIAL_NOTE, demoUrl, rateLabel } from '../data/offer';
+import { PLANS, MODELS, COMMERCIAL_NOTE, SAMPLES, demoUrl, rateLabel } from '../data/offer';
+import { getAssetUrl } from '../utils/assetUrl';
+import { claimPlayback, onOtherPlayback } from '../utils/playback';
 
 const CARD_TITLES = {
   silver: 'AVYUKTA AI SILVER',
@@ -28,48 +26,176 @@ const DISPLAY_NAMES = {
   platinum: 'Diamond'
 };
 
-const VOICE_OPTIONS = [
-  {
-    id: 'full',
-    label: 'Complete Card Overview',
-    desc: 'Reads full title, description, commercial rates & features.',
-    icon: Sparkles
-  },
-  {
-    id: 'pricing',
-    label: 'Pricing & Commercial Terms',
-    desc: 'Reads per-minute rates, billing pulse & zero-cost unanswered calls.',
-    icon: Zap
-  },
-  {
-    id: 'features',
-    label: 'Verified Call Capabilities',
-    desc: 'Reads telephony SLAs, routing, dialects & platform features.',
-    icon: ShieldCheck
-  }
-];
+// Real metadata mapping for genuine prerecorded audio files in /samples/
+const SAMPLE_DETAILS = {
+  // Silver (silver-1.mp3 through silver-8.mp3)
+  'silver-1': { label: 'Achird', desc: 'Everyday Inbound & Customer Enquiries' },
+  'silver-2': { label: 'Aoede', desc: 'Automated Reminders & Follow-up Calls' },
+  'silver-3': { label: 'Charon', desc: 'Appointment Scheduling & Confirmations' },
+  'silver-4': { label: 'Kore', desc: 'Routine Information & FAQs' },
+  'silver-5': { label: 'Leda', desc: 'Front-Desk Call Answering' },
+  'silver-6': { label: 'Orus', desc: 'Standard Dispatch Assistance' },
+  'silver-7': { label: 'Achernar', desc: 'Direct Customer Outreach' },
+  'silver-8': { label: 'Algenib', desc: 'General Communication Assistant' },
+
+  // Gold (gold-1.mp3 through gold-8.mp3)
+  'gold-1': { label: 'Aditya', desc: 'Bilingual Hindi & English Sales Voice' },
+  'gold-2': { label: 'Ritu', desc: 'Indian Regional Dialect & Lead Qualification' },
+  'gold-3': { label: 'Ashutosh', desc: 'Natural Interruption & Support Handling' },
+  'gold-4': { label: 'Priya', desc: 'Warm Human Supervisor Transfer' },
+  'gold-5': { label: 'Neha', desc: 'High-Touch Customer Engagement' },
+  'gold-6': { label: 'Rahul', desc: 'Conversational Sales Booking' },
+  'gold-7': { label: 'Pooja', desc: 'Meta WhatsApp Link & Call Summary' },
+  'gold-8': { label: 'Rohan', desc: 'Indian Dialect High-Conversion Pitch' },
+
+  // Diamond (platinum-1.mp3 through platinum-8.mp3)
+  'platinum-1': { label: 'Indian Origin 3', desc: 'Expressive Studio Brand Voice' },
+  'platinum-2': { label: 'Indian Origin 2', desc: 'High-Concurrency Outbound Channel' },
+  'platinum-3': { label: 'Indian Origin', desc: 'Speech Sentiment Intelligence' },
+  'platinum-4': { label: 'Roger', desc: 'Executive Authority & Brand Trust' },
+  'platinum-5': { label: 'Sarah', desc: 'Polished Studio Ambassador' },
+  'platinum-6': { label: 'Laura', desc: 'Expressive Customer Care Voice' },
+  'platinum-7': { label: 'Charlie', desc: 'Dynamic Corporate Conversationalist' },
+  'platinum-8': { label: 'George', desc: 'Enterprise Global SLA Audio' }
+};
+
+const formatTime = (secs) => {
+  if (isNaN(secs) || !secs) return '00:00';
+  const m = Math.floor(secs / 60);
+  const s = Math.floor(secs % 60);
+  return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+};
 
 export default function PlanCards({ navigateTo }) {
   const [model, setModel] = useState('modular');
   const [openDropdownCard, setOpenDropdownCard] = useState(null); // 'silver' | 'gold' | 'platinum' | null
-  const [cardModes, setCardModes] = useState({
-    silver: 'full',
-    gold: 'full',
-    platinum: 'full'
+  const [activeSampleByCard, setActiveSampleByCard] = useState({
+    silver: 'silver-1',
+    gold: 'gold-1',
+    platinum: 'platinum-1'
   });
-  const [audioState, setAudioState] = useState({
-    activeCard: null, // 'silver' | 'gold' | 'platinum'
-    mode: 'full',
-    status: 'idle',   // 'idle' | 'playing' | 'paused'
+  const [playbackState, setPlaybackState] = useState({
+    cardId: null,      // 'silver' | 'gold' | 'platinum' | null
+    sampleId: null,
+    status: 'idle',    // 'idle' | 'playing' | 'paused'
+    currentTime: 0,
+    duration: 0
   });
 
-  const utteranceRef = useRef(null);
+  const audioRef = useRef(null);
 
-  // Stop speech if user navigates away or component unmounts
+  // Audio event listeners
+  const handleTimeUpdate = () => {
+    if (!audioRef.current) return;
+    setPlaybackState(prev => ({
+      ...prev,
+      currentTime: audioRef.current.currentTime,
+      duration: audioRef.current.duration || prev.duration
+    }));
+  };
+
+  const handleLoadedMetadata = () => {
+    if (!audioRef.current) return;
+    setPlaybackState(prev => ({
+      ...prev,
+      duration: audioRef.current.duration || 0
+    }));
+  };
+
+  const handleAudioEnded = () => {
+    setPlaybackState(prev => ({
+      ...prev,
+      status: 'idle',
+      currentTime: 0
+    }));
+  };
+
+  // Play genuine MP3 from /samples/ folder
+  const playSample = async (cardId, sampleItem) => {
+    if (!audioRef.current || !sampleItem) return;
+
+    claimPlayback('plancards');
+
+    const sampleSrc = getAssetUrl(sampleItem.src);
+    if (audioRef.current.src !== sampleSrc) {
+      audioRef.current.src = sampleSrc;
+      audioRef.current.currentTime = 0;
+    }
+
+    setActiveSampleByCard(prev => ({ ...prev, [cardId]: sampleItem.id }));
+    setPlaybackState({
+      cardId,
+      sampleId: sampleItem.id,
+      status: 'playing',
+      currentTime: 0,
+      duration: audioRef.current.duration || 0
+    });
+
+    try {
+      await audioRef.current.play();
+    } catch (e) {
+      if (e.name !== 'AbortError') {
+        setPlaybackState(prev => ({ ...prev, status: 'idle' }));
+      }
+    }
+  };
+
+  // Pause playback
+  const pauseSample = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+    setPlaybackState(prev => ({ ...prev, status: 'paused' }));
+  };
+
+  // Resume playback
+  const resumeSample = async () => {
+    if (!audioRef.current) return;
+    claimPlayback('plancards');
+    setPlaybackState(prev => ({ ...prev, status: 'playing' }));
+    try {
+      await audioRef.current.play();
+    } catch (e) {
+      setPlaybackState(prev => ({ ...prev, status: 'paused' }));
+    }
+  };
+
+  // Stop playback completely and reset
+  const stopSample = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+    setPlaybackState(prev => ({ ...prev, status: 'idle', currentTime: 0 }));
+  };
+
+  // Toggle Dropdown for a specific card
+  const handleToggleDropdown = (planId) => {
+    if (openDropdownCard === planId) {
+      // Closing this dropdown: stop audio if this card was playing
+      if (playbackState.cardId === planId) {
+        stopSample();
+      }
+      setOpenDropdownCard(null);
+    } else {
+      // Opening another card's dropdown: stop any existing audio immediately
+      stopSample();
+      setOpenDropdownCard(planId);
+    }
+  };
+
+  // Stop audio when another component plays audio globally
   useEffect(() => {
+    const unregister = onOtherPlayback('plancards', () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      setPlaybackState(prev => ({ ...prev, status: 'paused' }));
+    });
     return () => {
-      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
+      unregister();
+      if (audioRef.current) {
+        audioRef.current.pause();
       }
     };
   }, []);
@@ -80,21 +206,14 @@ export default function PlanCards({ navigateTo }) {
 
     const handleClickOutside = (e) => {
       if (!e.target.closest('.card-voice-dropdown-wrapper')) {
-        // Stop audio if playing on closed dropdown
-        if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-          window.speechSynthesis.cancel();
-        }
-        setAudioState({ activeCard: null, mode: 'full', status: 'idle' });
+        stopSample();
         setOpenDropdownCard(null);
       }
     };
 
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
-        if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-          window.speechSynthesis.cancel();
-        }
-        setAudioState({ activeCard: null, mode: 'full', status: 'idle' });
+        stopSample();
         setOpenDropdownCard(null);
       }
     };
@@ -122,135 +241,25 @@ export default function PlanCards({ navigateTo }) {
     navigateTo(path);
   };
 
-  // Card-wise speech text generator strictly matching the card's details and active mode
-  const getCardSpeechText = (plan, mode, currentModel) => {
-    const rate = rateLabel(plan[currentModel]);
-    const modelName = MODELS[currentModel].label;
-    const planTitle = CARD_TITLES[plan.id] || `AVYUKTA AI ${plan.name.toUpperCase()}`;
-
-    if (mode === 'pricing') {
-      if (plan.id === 'silver') {
-        return `${planTitle} pricing details. Starting at ₹${rate} per connected minute on ${modelName}, excluding GST. Calls are billed on connected conversation time only, with a thirty-second minimum pulse and six-second increments. Unanswered, busy, and failed calls cost zero rupees.`;
-      }
-      if (plan.id === 'gold') {
-        return `${planTitle} pricing details. Recommended and most popular for Indian businesses. Starting at ₹${rate} per connected minute on ${modelName}, excluding GST. Calls are billed on connected conversation time only, with a thirty-second minimum pulse and six-second increments. Unanswered and failed calls cost zero rupees.`;
-      }
-      return `${planTitle} pricing details. Premium expressive studio tier. Starting at ₹${rate} per connected minute on ${modelName}, excluding GST. Includes carrier-grade volume dialing, dedicated trunk options, thirty-second minimum pulse with six-second increments, and zero charges on unanswered calls.`;
-    }
-
-    if (mode === 'features') {
-      if (plan.id === 'silver') {
-        return `${planTitle} features include: Automated inbound routine enquiry answering available twenty-four seven; outbound automated reminder and follow-up calls; sub-500ms voice turn cadence; and basic lead capture.`;
-      }
-      if (plan.id === 'gold') {
-        return `${planTitle} features include: Multilingual calling in Hindi, English, and regional Indian dialects; automated lead qualification calls and booking; natural human turn-taking with live interruption handling; one-click live transfer to human supervisors; and Meta WhatsApp post-call summary drops.`;
-      }
-      return `${planTitle} features include: Studio-grade expressive brand voices with emotional inflection; high-concurrency outbound dialing for up to one hundred concurrent channels; custom Pan-India STD CLI for trusted caller ID; enterprise CRM synchronization with speech sentiment intelligence; and carrier-grade 99.99% uptime SLA.`;
-    }
-
-    // Default: 'full' mode (Reads title, description, pricing and features)
-    if (plan.id === 'silver') {
-      return `${planTitle}. Everyday customer conversations. A starting point for routine enquiries and reminders. Starting at ₹${rate} per connected minute on ${modelName}, excluding GST. Key call capabilities include: Automated inbound routine enquiry answering, outbound reminder and follow-up calling, sub-500ms voice turn cadence, and basic lead capture. Billed on connected calls only; unanswered and failed calls cost zero rupees.`;
-    }
-    if (plan.id === 'gold') {
-      return `${planTitle}. Recommended and most popular for Indian businesses. Fast multilingual conversations closer to your customers. Starting at ₹${rate} per connected minute on ${modelName}, excluding GST. Key call capabilities include: Multilingual calling in Hindi, English, and regional Indian dialects, automated lead qualification calls and booking, natural human turn-taking with live interruption handling, one-click live transfer to human supervisors, and Meta WhatsApp post-call summary drops. Thirty-second minimum pulse with six-second increments.`;
-    }
-    return `${planTitle}. Expressive studio brand voices where tone matters. Starting at ₹${rate} per connected minute on ${modelName}, excluding GST. Key call capabilities include: Studio-grade expressive brand voices with emotional inflection, high-concurrency outbound dialing for up to one hundred concurrent channels, custom Pan-India STD CLI for trusted caller ID, enterprise CRM synchronization with speech sentiment intelligence, and carrier-grade 99.99% uptime SLA.`;
-  };
-
-  // Toggle Dropdown for a specific card
-  const handleToggleDropdown = (planId) => {
-    if (openDropdownCard === planId) {
-      // Closing this dropdown: stop speech if playing on this card
-      if (audioState.activeCard === planId) {
-        if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-          window.speechSynthesis.cancel();
-        }
-        setAudioState({ activeCard: null, mode: 'full', status: 'idle' });
-      }
-      setOpenDropdownCard(null);
-    } else {
-      // Opening another card's dropdown: stop any existing speech immediately
-      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-      }
-      setAudioState({ activeCard: null, mode: 'full', status: 'idle' });
-      setOpenDropdownCard(planId);
-    }
-  };
-
-  // Start Playing Voice for a specific card and mode
-  const handlePlayVoice = (plan, modeToPlay) => {
-    if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
-      alert('Voice speech synthesis is not supported in this browser. Please use Chrome, Edge, or Safari.');
-      return;
-    }
-
-    const synth = window.speechSynthesis;
-
-    // Immediately stop any previously playing speech
-    synth.cancel();
-
-    const activeMode = modeToPlay || cardModes[plan.id] || 'full';
-    const textToRead = getCardSpeechText(plan, activeMode, model);
-    const utterance = new SpeechSynthesisUtterance(textToRead);
-    utteranceRef.current = utterance;
-
-    utterance.rate = 0.96;
-    utterance.pitch = 1.0;
-
-    // Pick a natural English/Indian voice if available
-    const voices = synth.getVoices();
-    const preferredVoice = voices.find(v => (v.lang.includes('en-IN') || v.lang.includes('en-US') || v.lang.includes('en-GB')) && !v.name.includes('Google') === false) || voices.find(v => v.lang.startsWith('en'));
-    if (preferredVoice) utterance.voice = preferredVoice;
-
-    utterance.onend = () => {
-      setAudioState({ activeCard: null, mode: 'full', status: 'idle' });
-    };
-
-    utterance.onerror = () => {
-      setAudioState({ activeCard: null, mode: 'full', status: 'idle' });
-    };
-
-    setAudioState({ activeCard: plan.id, mode: activeMode, status: 'playing' });
-    synth.speak(utterance);
-  };
-
-  // Pause Voice
-  const handlePauseVoice = (planId) => {
-    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
-    if (audioState.activeCard === planId && audioState.status === 'playing') {
-      window.speechSynthesis.pause();
-      setAudioState(prev => ({ ...prev, status: 'paused' }));
-    }
-  };
-
-  // Resume Voice
-  const handleResumeVoice = (planId) => {
-    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
-    if (audioState.activeCard === planId && audioState.status === 'paused') {
-      window.speechSynthesis.resume();
-      setAudioState(prev => ({ ...prev, status: 'playing' }));
-    }
-  };
-
-  // Stop Voice for a specific card
-  const handleStopVoice = (planId) => {
-    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-    }
-    setAudioState({ activeCard: null, mode: 'full', status: 'idle' });
-  };
-
   return (
-    <section id="pricing" className="studio-plan-section">
+    <section id="pricing" className="studio-plan-section" aria-label="Transparent AI Voice & Call Pricing">
+      {/* Hidden real audio player streaming genuine prerecorded MP3s from /samples/ */}
+      <audio 
+        ref={audioRef}
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={handleLoadedMetadata}
+        onEnded={handleAudioEnded}
+        onError={() => setPlaybackState(prev => ({ ...prev, status: 'idle' }))}
+        preload="none"
+      />
+
       <div className="studio-container">
         
         <div className="studio-plan-heading">
           <div>
             <Eyebrow>TRANSPARENT AI VOICE &amp; CALL PRICING</Eyebrow>
             <h2>AI Pricing <span className="studio-accent">Plans.</span></h2>
-            <p>Choose the right voice tier for your callers. Listen to each plan independently, compare verified call features, and request a tailored quote.</p>
+            <p>Choose the right voice tier for your callers. Listen to genuine recorded samples, compare verified call features, and request a tailored quote.</p>
           </div>
 
           <div className="studio-plan-toggle" role="group" aria-label="Pricing model toggle">
@@ -274,17 +283,20 @@ export default function PlanCards({ navigateTo }) {
 
         <p className="commercial-disclosure">{COMMERCIAL_NOTE}</p>
 
-        {/* The 3 Cards: SILVER | GOLD | PLATINUM */}
+        {/* The 3 Cards: SILVER | GOLD | PLATINUM / DIAMOND */}
         <div className="studio-plan-grid conversion-plan-grid">
           {PLANS.map(plan => {
             const isGold = plan.id === 'gold';
             const isDropdownOpen = openDropdownCard === plan.id;
-            const isCardActive = audioState.activeCard === plan.id;
-            const isPlaying = isCardActive && audioState.status === 'playing';
-            const isPaused = isCardActive && audioState.status === 'paused';
-            const activeMode = cardModes[plan.id] || 'full';
-            const currentOption = VOICE_OPTIONS.find(o => o.id === activeMode) || VOICE_OPTIONS[0];
-            const currentModeLabel = currentOption.label;
+            
+            // Available genuine audio samples from /samples/ manifest for this plan
+            const tierSamples = SAMPLES.filter(s => s.plan === plan.id);
+            const currentSampleId = activeSampleByCard[plan.id] || tierSamples[0]?.id;
+            const currentSample = tierSamples.find(s => s.id === currentSampleId) || tierSamples[0];
+
+            const isCardPlaying = playbackState.cardId === plan.id && playbackState.status === 'playing';
+            const isCardPaused = playbackState.cardId === plan.id && playbackState.status === 'paused';
+            const isCardActive = isCardPlaying || isCardPaused;
 
             return (
               <article 
@@ -313,7 +325,7 @@ export default function PlanCards({ navigateTo }) {
 
                 <div className="studio-plan-divider" />
 
-                {/* Verified Call-Related Features Checklist (Plan Content) */}
+                {/* Verified Call-Related Features Checklist (Core Plan Content) */}
                 <ul className="plan-feature-list">
                   {plan.features.map(feature => (
                     <li key={feature}>
@@ -406,22 +418,22 @@ export default function PlanCards({ navigateTo }) {
                     aria-expanded={isDropdownOpen}
                     aria-haspopup="true"
                     aria-controls={`voice-menu-${plan.id}`}
-                    title={`Open ${DISPLAY_NAMES[plan.id]} Voice Assistant Options`}
+                    title={`Open ${DISPLAY_NAMES[plan.id]} Original Voice Samples`}
                   >
                     <div className="dropdown-btn-main">
-                      <Volume2 size={16} className={`voice-icon ${isPlaying ? 'voice-icon-pulsing' : ''}`} />
+                      <Volume2 size={16} className={`voice-icon ${isCardPlaying ? 'voice-icon-pulsing' : ''}`} />
                       <span className="dropdown-btn-label">
-                        {isPlaying 
-                          ? `Playing ${DISPLAY_NAMES[plan.id]} (${currentModeLabel})...`
-                          : isPaused 
-                            ? `Paused · ${DISPLAY_NAMES[plan.id]}`
-                            : `Voice Assistant · ${DISPLAY_NAMES[plan.id]}`
+                        {isCardPlaying 
+                          ? `Playing: ${currentSample?.name} (${formatTime(playbackState.currentTime)} / ${formatTime(playbackState.duration)})`
+                          : isCardPaused 
+                            ? `Paused · ${currentSample?.name}`
+                            : `Original Voices · ${DISPLAY_NAMES[plan.id]} (${currentSample?.name})`
                         }
                       </span>
                     </div>
 
                     <div className="dropdown-btn-end">
-                      {isPlaying && (
+                      {isCardPlaying && (
                         <span className="voice-equalizer-dots" aria-hidden="true">
                           <span /><span /><span />
                         </span>
@@ -430,100 +442,103 @@ export default function PlanCards({ navigateTo }) {
                     </div>
                   </button>
 
-                  {/* Dropdown Menu */}
+                  {/* Dropdown Menu with Original Prerecorded MP3 Voices */}
                   {isDropdownOpen && (
                     <div 
                       id={`voice-menu-${plan.id}`}
                       className="card-voice-dropdown-menu animate-dropdown-fade"
                       role="region"
-                      aria-label={`${CARD_TITLES[plan.id]} Voice Controls`}
+                      aria-label={`${CARD_TITLES[plan.id]} Original Voice Controls`}
                     >
                       <div className="dropdown-menu-header">
                         <span className="dropdown-header-badge">
-                          <Sparkles size={12} /> {DISPLAY_NAMES[plan.id]} VOICE ENGINE
+                          <Sparkles size={12} /> ORIGINAL SAMPLES · {DISPLAY_NAMES[plan.id].toUpperCase()}
                         </span>
                         <span className="dropdown-header-rate">
-                          ₹{rateLabel(plan[model])}/min ({MODELS[model].label})
+                          {tierSamples.length} Genuine Recordings
                         </span>
                       </div>
 
-                      <div className="dropdown-options-list" role="radiogroup" aria-label="Listening Options">
-                        {VOICE_OPTIONS.map(opt => {
-                          const isSelected = activeMode === opt.id;
-                          const OptionIcon = opt.icon;
+                      {/* List of Real Voice Audio Samples from /samples/ */}
+                      <div className="dropdown-options-list" role="radiogroup" aria-label={`${DISPLAY_NAMES[plan.id]} Voice Options`}>
+                        {tierSamples.map(sampleItem => {
+                          const isSelected = currentSampleId === sampleItem.id;
+                          const isThisPlaying = isSelected && isCardPlaying;
+                          const details = SAMPLE_DETAILS[sampleItem.id] || { desc: `${sampleItem.tier} Voice Sample` };
 
                           return (
                             <button
-                              key={opt.id}
+                              key={sampleItem.id}
                               type="button"
                               role="radio"
                               aria-checked={isSelected}
                               className={`dropdown-option-row ${isSelected ? 'selected' : ''}`}
-                              onClick={() => {
-                                setCardModes(prev => ({ ...prev, [plan.id]: opt.id }));
-                                handlePlayVoice(plan, opt.id);
-                              }}
+                              onClick={() => playSample(plan.id, sampleItem)}
+                              title={`Listen to original audio: ${sampleItem.name} (${sampleItem.src.replace('/samples/', '')})`}
                             >
                               <div className="option-radio-dot">
                                 <span className={`dot-inner ${isSelected ? 'active' : ''}`} />
                               </div>
                               <div className="option-text-group">
                                 <div className="option-title-row">
-                                  <OptionIcon size={13} className="option-inline-icon" />
-                                  <strong>{opt.label}</strong>
+                                  <strong>{sampleItem.name}</strong>
+                                  <span className="sample-file-tag">{sampleItem.src.replace('/samples/', '')}</span>
+                                  {isThisPlaying && (
+                                    <span className="live-playing-badge">PLAYING</span>
+                                  )}
                                 </div>
-                                <p className="option-desc">{opt.desc}</p>
+                                <p className="option-desc">{details.desc}</p>
                               </div>
                             </button>
                           );
                         })}
                       </div>
 
-                      {/* Dropdown Playback Toolbar: Play, Pause, Resume, Stop */}
+                      {/* Dropdown Audio Progress Track & Toolbar */}
                       <div className="dropdown-audio-toolbar">
                         <div className="audio-status-readout">
-                          <span className={`status-indicator-dot ${isPlaying ? 'playing' : isPaused ? 'paused' : 'idle'}`} />
+                          <span className={`status-indicator-dot ${isCardPlaying ? 'playing' : isCardPaused ? 'paused' : 'idle'}`} />
                           <span className="status-readout-text">
-                            {isPlaying 
-                              ? `Speaking ${DISPLAY_NAMES[plan.id]}...`
-                              : isPaused 
-                                ? 'Paused'
-                                : 'Select option to listen'
+                            {isCardPlaying 
+                              ? `Playing: ${currentSample?.name}`
+                              : isCardPaused 
+                                ? `Paused (${currentSample?.name})`
+                                : `Select voice to play`
                             }
                           </span>
                         </div>
 
                         <div className="audio-control-buttons-group">
-                          {!isPlaying && !isPaused && (
+                          {!isCardPlaying && !isCardPaused && (
                             <button
                               type="button"
                               className="ctrl-btn play primary"
-                              onClick={() => handlePlayVoice(plan, activeMode)}
-                              aria-label={`Play ${DISPLAY_NAMES[plan.id]} Voice`}
+                              onClick={() => playSample(plan.id, currentSample)}
+                              aria-label={`Play ${currentSample?.name} voice`}
                               title="Play"
                             >
                               <Play size={14} /> <span>Play</span>
                             </button>
                           )}
 
-                          {isPlaying && (
+                          {isCardPlaying && (
                             <button
                               type="button"
                               className="ctrl-btn pause"
-                              onClick={() => handlePauseVoice(plan.id)}
-                              aria-label={`Pause ${DISPLAY_NAMES[plan.id]} Voice`}
+                              onClick={pauseSample}
+                              aria-label={`Pause ${currentSample?.name} voice`}
                               title="Pause"
                             >
                               <Pause size={14} /> <span>Pause</span>
                             </button>
                           )}
 
-                          {isPaused && (
+                          {isCardPaused && (
                             <button
                               type="button"
                               className="ctrl-btn resume primary"
-                              onClick={() => handleResumeVoice(plan.id)}
-                              aria-label={`Resume ${DISPLAY_NAMES[plan.id]} Voice`}
+                              onClick={resumeSample}
+                              aria-label={`Resume ${currentSample?.name} voice`}
                               title="Resume"
                             >
                               <Play size={14} /> <span>Resume</span>
@@ -533,13 +548,30 @@ export default function PlanCards({ navigateTo }) {
                           <button
                             type="button"
                             className="ctrl-btn stop"
-                            disabled={!isPlaying && !isPaused}
-                            onClick={() => handleStopVoice(plan.id)}
-                            aria-label={`Stop ${DISPLAY_NAMES[plan.id]} Voice`}
+                            disabled={!isCardPlaying && !isCardPaused}
+                            onClick={stopSample}
+                            aria-label={`Stop ${currentSample?.name} voice`}
                             title="Stop"
                           >
                             <Square size={12} /> <span>Stop</span>
                           </button>
+                        </div>
+                      </div>
+
+                      {/* Progress Bar & Timing */}
+                      <div className="dropdown-track-wrap">
+                        <div className="dropdown-time-strip">
+                          <span>{formatTime(isCardActive ? playbackState.currentTime : 0)}</span>
+                          <span className="sample-file-pill">{currentSample?.src.replace('/samples/', '')}</span>
+                          <span>{formatTime(isCardActive ? playbackState.duration : 0)}</span>
+                        </div>
+                        <div className="dropdown-track-bar">
+                          <div 
+                            className="dropdown-track-fill" 
+                            style={{ 
+                              width: `${isCardActive && playbackState.duration ? (playbackState.currentTime / playbackState.duration) * 100 : 0}%` 
+                            }} 
+                          />
                         </div>
                       </div>
                     </div>
@@ -558,8 +590,8 @@ export default function PlanCards({ navigateTo }) {
 
                   <a 
                     className={`studio-plan-cta ${isGold ? 'primary' : ''}`} 
-                    href={demoUrl(plan.id)} 
-                    onClick={event => local(event, demoUrl(plan.id))}
+                    href={demoUrl(plan.id, currentSample?.name)} 
+                    onClick={event => local(event, demoUrl(plan.id, currentSample?.name))}
                   >
                     <span>Request {DISPLAY_NAMES[plan.id] || plan.name} demo</span>
                     <ArrowUpRight size={17} />
