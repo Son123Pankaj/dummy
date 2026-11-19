@@ -306,7 +306,98 @@ export default function PlanCards({ navigateTo }) {
                   <p>{plan.description}</p>
                 </div>
 
-                {/* Independent Card-Wise Voice Dropdown Component */}
+                <div className="studio-plan-price">
+                  <strong><small>₹</small>{rateLabel(plan[model])}</strong>
+                  <span>per connected minute · indicative · GST extra</span>
+                </div>
+
+                <div className="studio-plan-divider" />
+
+                {/* Verified Call-Related Features Checklist (Plan Content) */}
+                <ul className="plan-feature-list">
+                  {plan.features.map(feature => (
+                    <li key={feature}>
+                      <Check size={16} className="plan-check-icon" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+
+                  {/* Silver Call Capabilities */}
+                  {plan.id === 'silver' && (
+                    <>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>Inbound routine enquiry answering (24/7)</span>
+                      </li>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>Outbound automated reminder &amp; follow-up calls</span>
+                      </li>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>Sub-500ms voice turn cadence</span>
+                      </li>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>Billed on connected calls only (unanswered ₹0)</span>
+                      </li>
+                    </>
+                  )}
+
+                  {/* Gold Call Capabilities (Recommended) */}
+                  {plan.id === 'gold' && (
+                    <>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>Multilingual Hindi, English &amp; regional Indian dialects</span>
+                      </li>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>Automated lead qualification &amp; booking calls</span>
+                      </li>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>Natural human turn-taking &amp; live interruption handling</span>
+                      </li>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>1-click live transfer to human supervisors</span>
+                      </li>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>Meta WhatsApp post-call summary &amp; link drops</span>
+                      </li>
+                    </>
+                  )}
+
+                  {/* Platinum Call Capabilities */}
+                  {plan.id === 'platinum' && (
+                    <>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>Studio-grade expressive brand voices with emotion inflection</span>
+                      </li>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>High-concurrency outbound dialing (100+ concurrent channels)</span>
+                      </li>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>Custom Pan-India STD CLI (011, 022, 080) caller ID</span>
+                      </li>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>Enterprise CRM sync with speech sentiment intelligence</span>
+                      </li>
+                      <li>
+                        <Check size={16} className="plan-check-icon" />
+                        <span>Dedicated telecom SLA &amp; 99.99% carrier uptime</span>
+                      </li>
+                    </>
+                  )}
+                </ul>
+
+                {/* Independent Card-Wise Voice Dropdown Component (Below Content) */}
                 <div className="card-voice-dropdown-wrapper">
                   <button
                     type="button"
@@ -454,97 +545,6 @@ export default function PlanCards({ navigateTo }) {
                     </div>
                   )}
                 </div>
-
-                <div className="studio-plan-price">
-                  <strong><small>₹</small>{rateLabel(plan[model])}</strong>
-                  <span>per connected minute · indicative · GST extra</span>
-                </div>
-
-                <div className="studio-plan-divider" />
-
-                {/* Verified Call-Related Features Checklist */}
-                <ul className="plan-feature-list">
-                  {plan.features.map(feature => (
-                    <li key={feature}>
-                      <Check size={16} className="plan-check-icon" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-
-                  {/* Silver Call Capabilities */}
-                  {plan.id === 'silver' && (
-                    <>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Inbound routine enquiry answering (24/7)</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Outbound automated reminder &amp; follow-up calls</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Sub-500ms voice turn cadence</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Billed on connected calls only (unanswered ₹0)</span>
-                      </li>
-                    </>
-                  )}
-
-                  {/* Gold Call Capabilities (Recommended) */}
-                  {plan.id === 'gold' && (
-                    <>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Multilingual Hindi, English &amp; regional Indian dialects</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Automated lead qualification &amp; booking calls</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Natural human turn-taking &amp; live interruption handling</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>1-click live transfer to human supervisors</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Meta WhatsApp post-call summary &amp; link drops</span>
-                      </li>
-                    </>
-                  )}
-
-                  {/* Platinum Call Capabilities */}
-                  {plan.id === 'platinum' && (
-                    <>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Studio-grade expressive brand voices with emotion inflection</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>High-concurrency outbound dialing (100+ concurrent channels)</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Custom Pan-India STD CLI (011, 022, 080) caller ID</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Enterprise CRM sync with speech sentiment intelligence</span>
-                      </li>
-                      <li>
-                        <Check size={16} className="plan-check-icon" />
-                        <span>Dedicated telecom SLA &amp; 99.99% carrier uptime</span>
-                      </li>
-                    </>
-                  )}
-                </ul>
 
                 <div className="plan-conversion-actions">
                   <a 
